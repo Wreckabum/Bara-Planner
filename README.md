@@ -1,2 +1,2 @@
 # Bara-Planner
-For any badass who need a rapid FYP scheduling tool
+For any badass who need a rapid FYP management tool
