@@ -1,0 +1,48 @@
+<?php
+	require_once("include/funcs/sql_funcs.php");
+	
+	sql_connect();
+	
+	/*
+		Base information for all accounts
+	*/
+	class Faculty extends Account{
+		private $position;
+		private $experience;
+		
+		/*
+			Constructor
+		*/
+		public function __construct($id){
+			parent::__construct($id);
+			
+			$this->position = $this->raw['position'];
+			$this->experience = $this->raw['experience'];
+			$this->majors = json_decode($this->raw['majors']);
+			
+			unset($this->raw);
+		}
+		
+		/*
+			Get majors for the account
+			
+			@param	bool
+			
+			True:
+				@return string
+			
+			False:
+				@return array of string
+		*/
+		public function get_majors($as_string = false){
+			if($as_string){
+				return (implode(", ", $this->majors));
+			}else{
+				return $this->majors;
+			}
+		}
+	}
+	
+	//Close connection
+	@mysqli_close($GLOBALS['mysql_link']);
+?>
