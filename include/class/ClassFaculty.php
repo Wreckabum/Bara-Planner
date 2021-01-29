@@ -36,7 +36,12 @@
 		*/
 		public function get_majors($as_string = false){
 			if($as_string){
-				return (implode(", ", $this->majors));
+				if($this->majors != null){
+					return (implode(", ", $this->majors));
+				}else{
+					//For admin staff
+					return "N/A";
+				}
 			}else{
 				return $this->majors;
 			}

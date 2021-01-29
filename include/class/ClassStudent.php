@@ -8,6 +8,8 @@
 	*/
 	class Student extends Account{
 		private $choices;
+		private $year;
+		private $quarter;
 		
 		/*
 			Constructor
@@ -17,6 +19,8 @@
 			
 			$this->majors = json_decode($this->raw['majors'])[0];
 			$this->choices = json_decode($this->raw['choices']);
+			$this->year = json_decode($this->raw['year']);			
+			$this->quarter = json_decode($this->raw['quarter']);
 			
 			unset($this->raw);
 		}
@@ -28,6 +32,20 @@
 		*/
 		public function get_majors(){
 			return $this->majors;
+		}
+		
+		/*
+			Get year of project
+		*/
+		public function get_year(){
+			return $this->year;
+		}
+		
+		/*
+			Get quarter of project
+		*/
+		public function get_quarter(){
+			return $this->quarter;
 		}
 	}
 	

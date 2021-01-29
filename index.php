@@ -11,13 +11,11 @@
 			sql_connect();
 			
 			//Testing accounts
-			$vader = new Faculty(1);
-			$luke = new Student(2);
-			$leia = new Student(3);
-			
-			var_dump($vader);
-			var_dump($luke);
-			var_dump($leia);
+			$super = new Faculty(1);
+			$admin = new Faculty(2);
+			$prof = new Faculty(10);
+			$ft = new Student(100);
+			$pt = new Student(1000);
 			
 			//Close connection
 			@mysqli_close($GLOBALS['mysql_link']);
@@ -28,15 +26,15 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $vader->get_full_name() ?>
+					<?= $super->get_full_name() ?>
 				</td>
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					Date of Birth:
+					Phone Number:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $vader->get_dob() ?>
+					<?= $super->get_phone() ?>
 				</td>
 			</tr>
 			<tr>
@@ -44,7 +42,7 @@
 					E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $vader->get_email() ?>
+					<?= $super->get_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -52,7 +50,7 @@
 					Account Type:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $vader->get_account_type() ?>
+					<?= $super->get_account_type() ?>
 				</td>
 			</tr>
 			<tr>
@@ -60,7 +58,49 @@
 					Major:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $vader->get_majors(true) ?>
+					<?= $super->get_majors(true) ?>
+				</td>
+			</tr>
+		</table>
+		<br /><table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Name:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_full_name() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Phone Number:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_phone() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Account Type:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_account_type() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Major:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_majors(true) ?>
 				</td>
 			</tr>
 		</table>
@@ -71,15 +111,15 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $luke->get_full_name() ?>
+					<?= $prof->get_full_name() ?>
 				</td>
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					Date of Birth:
+					Phone Number:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $luke->get_dob() ?>
+					<?= $prof->get_phone() ?>
 				</td>
 			</tr>
 			<tr>
@@ -87,7 +127,7 @@
 					E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $luke->get_email() ?>
+					<?= $prof->get_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -95,7 +135,7 @@
 					Account Type:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $luke->get_account_type() ?>
+					<?= $prof->get_account_type() ?>
 				</td>
 			</tr>
 			<tr>
@@ -103,7 +143,7 @@
 					Major:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $luke->get_majors() ?>
+					<?= $prof->get_majors(true) ?>
 				</td>
 			</tr>
 		</table>
@@ -114,15 +154,15 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $leia->get_full_name() ?>
+					<?= $ft->get_full_name() ?>
 				</td>
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					Date of Birth:
+					Phone Number:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $leia->get_dob() ?>
+					<?= $ft->get_phone() ?>
 				</td>
 			</tr>
 			<tr>
@@ -130,7 +170,7 @@
 					E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $leia->get_email() ?>
+					<?= $ft->get_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -138,7 +178,7 @@
 					Account Type:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $leia->get_account_type() ?>
+					<?= $ft->get_account_type() ?>
 				</td>
 			</tr>
 			<tr>
@@ -146,7 +186,82 @@
 					Major:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $leia->get_majors() ?>
+					<?= $ft->get_majors() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Year:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $ft->get_year() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Quarter:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $ft->get_quarter() ?>
+				</td>
+			</tr>
+		</table>
+		<br />
+		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Name:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_full_name() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Phone Number:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_phone() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Account Type:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_account_type() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Major:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_majors() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Year:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $ft->get_year() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Quarter:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $ft->get_quarter() ?>
 				</td>
 			</tr>
 		</table>

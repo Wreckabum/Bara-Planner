@@ -12,9 +12,10 @@
 		public	$id;
 		private	$first_name;
 		private	$last_name;
-		private	$dob;
+		private	$phone;
 		private	$email;
 		private $account_type;
+		private $position;
 		
 		protected $majors;
 		
@@ -33,9 +34,10 @@
 				$this->id = $result['id'];
 				$this->first_name = $result['first_name'];
 				$this->last_name = $result['last_name'];
-				$this->dob = $result['dob'];
+				$this->phone = $result['phone'];
 				$this->email = $result['email'];
 				$this->account_type = $result['type'];
+				$this->position = $result['position'];
 			}else{
 				throw new Exception("Account not found.");
 			}
@@ -63,10 +65,10 @@
 		}
 		
 		/*
-			Get date of birth
+			Get phone number
 		*/
-		public function get_dob(){
-			return $this->dob;
+		public function get_phone(){
+			return $this->phone;
 		}
 		
 		/*
@@ -90,10 +92,23 @@
 				case 2:
 					return "Part-time Student";
 					break;
+				case 8:
+					return "Administrator";
+					break;
+				case 9:
+					return "Super Administrator";
+					break;
 				default:
 					return "Unknown";
 					break;
 			};
+		}
+		
+		/*
+			Get position
+		*/
+		public function get_position(){
+			return $this->position;
 		}
 		
 		/*
@@ -130,6 +145,24 @@
 		*/
 		public function is_part_time(){
 			return $this->account_type == 2;
+		}
+		
+		/*
+			Checks if the account is an admin
+			
+			@return bool
+		*/
+		public function is_admin(){
+			return ($this->account_type == 8 || $this->account_type == 9);
+		}
+		
+		/*
+			Checks if the account is a super admin
+			
+			@return bool
+		*/
+		public function is_super(){
+			return $this->account_type == 9;
 		}
 		
 		/*
