@@ -38,4 +38,22 @@
 		
 		return $result;
 	}
+	
+	/*
+		Queries the DB
+		
+		@param	Query string
+		@return	SQL query result / error
+	*/
+	function get_account($id){
+		str_clean($id);
+		
+		$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `id` = '{$id}';"))['type'];
+		
+		if($type == 1 || $type == 2){
+			return new Student($id);
+		}else{
+			return new Faculty($id);
+		}
+	}
 ?>
