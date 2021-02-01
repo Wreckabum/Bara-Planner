@@ -1,0 +1,14 @@
+.basic_table {
+	border: 1px solid #000000;
+	border-collapse: collapse;
+}
+
+.basic_table tr td {
+	border: 1px solid #000000;
+	padding: 3px 5px;
+}
+
+.basic_table tr:first-child td {
+	background-color:#B0D8EA;
+	font-weight: bold;
+}

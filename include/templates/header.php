@@ -10,6 +10,15 @@
 			<?= $account->get_full_name() ?>
 		</a>
 	</a>!
+	<?php
+		if($account->is_admin()){
+	?>
+			<a href='add_student.php'>
+				[ Add a new student ]
+			</a>
+	<?php
+		}
+	?>
 </div>
 <div style='float:right;'>
 	<a href='logout.php'>

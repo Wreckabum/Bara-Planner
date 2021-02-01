@@ -30,7 +30,7 @@
 		$result = mysqli_query($GLOBALS['mysql_link'], $query);
 		$error = mysqli_error($GLOBALS['mysql_link']);
 		
-		if ($error != ""){
+		if(IS_LOCAL && $error != ""){
 			echo $error;
 			echo nl2br(var_export(debug_backtrace(), true));
 			exit();
@@ -40,10 +40,10 @@
 	}
 	
 	/*
-		Queries the DB
+		Returns the account object based on ID
 		
-		@param	Query string
-		@return	SQL query result / error
+		@param	int
+		@return	Faculty/Student object
 	*/
 	function get_account($id){
 		str_clean($id);
@@ -55,5 +55,25 @@
 		}else{
 			return new Faculty($id);
 		}
+	}
+	
+	/*
+		Returns a 2D array of all majors
+		
+		@return	2D array
+	*/
+	function get_all_majors(){
+		$query = db_query("SELECT `*` FROM `majors` ORDER BY `name` ASC;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			$output[$row['id']]['name'] = $row['name'];
+			$output[$row['id']]['description'] = $row['description'];
+			$output[$row['id']]['part_time'] = (bool)$row['part_time'];
+			$output[$row['id']]['full_time'] = (bool)$row['full_time'];
+		}
+		
+		return $output;
 	}
 ?>
