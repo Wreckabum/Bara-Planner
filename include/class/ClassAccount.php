@@ -27,7 +27,6 @@
 			
 			$query = db_query("SELECT * FROM `accounts` WHERE `id` = '{$id}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
-			$this->raw = $result;
 			
 			//If the account exists
 			if(mysqli_num_rows($query) == 1){
@@ -38,6 +37,7 @@
 				$this->email = $result['email'];
 				$this->account_type = $result['type'];
 				$this->position = $result['position'];
+				$this->raw = $result;
 			}else{
 				throw new Exception("Account not found.");
 			}

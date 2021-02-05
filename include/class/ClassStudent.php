@@ -17,12 +17,16 @@
 		public function __construct($id){
 			parent::__construct($id);
 			
-			$this->majors = json_decode($this->raw['majors'])[0];
-			$this->choices = json_decode($this->raw['choices']);
-			$this->year = json_decode($this->raw['year']);			
-			$this->quarter = json_decode($this->raw['quarter']);
-			
-			unset($this->raw);
+			if($this->account_type != 1 && $this->account_type != 2){
+				throw new Exception("Account is not a student.");
+			}else{
+				$this->majors = json_decode($this->raw['majors'])[0];
+				$this->choices = json_decode($this->raw['choices']);
+				$this->year = json_decode($this->raw['year']);			
+				$this->quarter = json_decode($this->raw['quarter']);
+				
+				unset($this->raw);
+			}
 		}
 		
 		/*

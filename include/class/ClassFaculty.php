@@ -16,11 +16,15 @@
 		public function __construct($id){
 			parent::__construct($id);
 			
-			$this->position = $this->raw['position'];
-			$this->experience = $this->raw['experience'];
-			$this->majors = json_decode($this->raw['majors']);
-			
-			unset($this->raw);
+			if($this->account_type == 1 || $this->account_type == 2){
+				throw new Exception("Account is not part of faculty.");
+			}else{
+				$this->position = $this->raw['position'];
+				$this->experience = $this->raw['experience'];
+				$this->majors = json_decode($this->raw['majors']);
+				
+				unset($this->raw);
+			}
 		}
 		
 		/*
