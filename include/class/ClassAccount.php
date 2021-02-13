@@ -14,7 +14,7 @@
 		private	$last_name;
 		private	$phone;
 		private	$email;
-		private $account_type;
+		protected int $account_type;
 		private $position;
 		
 		protected $majors;
@@ -164,17 +164,6 @@
 		public function is_super(){
 			return $this->account_type == 9;
 		}
-		
-		/*
-			Get majors for the account
-			
-			Faculty:
-				@return array of string
-			
-			Students:
-				@return string
-		*/
-		abstract public function get_majors();
 	}
 	
 	//Close connection

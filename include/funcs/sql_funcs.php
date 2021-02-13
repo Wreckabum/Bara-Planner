@@ -1,6 +1,7 @@
 <?php
 	require_once("config.php");
 	require_once("include/class/ClassAccount.php");
+	require_once("include/class/ClassAdmin.php");
 	require_once("include/class/ClassFaculty.php");
 	require_once("include/class/ClassStudent.php");
 	
@@ -52,6 +53,8 @@
 		
 		if($type == 1 || $type == 2){
 			return new Student($id);
+		}elseif($type == 8 || $type == 9){
+			return new Admin($id);
 		}else{
 			return new Faculty($id);
 		}

@@ -30,11 +30,11 @@
 			sql_connect();
 			
 			//Testing accounts
-			$super = new Faculty(1);
-			$admin = new Faculty(2);
-			$prof = new Faculty(10);
-			$ft = new Student(100);
-			$pt = new Student(1000);
+			$super = get_account(1);
+			$admin = get_account(2);
+			$prof = get_account(10);
+			$ft = get_account(100);
+			$pt = get_account(1000);
 			
 			//Close connection
 			@mysqli_close($GLOBALS['mysql_link']);
@@ -73,15 +73,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					Major:
-				</td>
-				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $super->get_majors(true) ?>
-				</td>
-			</tr>
 		</table>
-		<br /><table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<br />
+		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -112,14 +106,6 @@
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
 					<?= $admin->get_account_type() ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					Major:
-				</td>
-				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $admin->get_majors(true) ?>
 				</td>
 			</tr>
 		</table>
