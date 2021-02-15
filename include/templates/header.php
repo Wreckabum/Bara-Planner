@@ -6,7 +6,7 @@
 <div style='float:left;'>
 	Welcome 
 	<a href='#'>
-		<a href='#'>
+		<a href='view_account.php?a=<?= $account->id ?>'>
 			<?= $account->get_full_name() ?>
 		</a>
 	</a>!

@@ -67,44 +67,79 @@
 			</tr>
 			<tr>
 				<td style='width:25%;'>
-					Type:
-				</td>
-				<td>
-					<?= $view_account->get_account_type() ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
-					Major:
-				</td>
-				<td>
-					<?= $view_account->get_majors() ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
-					Year:
-				</td>
-				<td>
-					<?= $view_account->get_year() ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
-					Quarter:
-				</td>
-				<td>
-					<?= $view_account->get_quarter() ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
 					Phone:
 				</td>
 				<td>
 					<?= $view_account->get_phone() ?>
 				</td>
 			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Type:
+				</td>
+				<td>
+					<?= $view_account->get_account_type() ?>
+				</td>
+			</tr>
+			<?php
+				if(!$view_account->is_admin()){
+					if($view_account->is_student()){
+			?>
+						<tr>
+							<td style='width:25%;'>
+								Major:
+							</td>
+							<td>
+								<?= $view_account->get_majors() ?>
+							</td>
+						</tr>
+						<tr>
+							<td style='width:25%;'>
+								Year:
+							</td>
+							<td>
+								<?= $view_account->get_year() ?>
+							</td>
+						</tr>
+						<tr>
+							<td style='width:25%;'>
+								Quarter:
+							</td>
+							<td>
+								<?= $view_account->get_quarter() ?>
+							</td>
+						</tr>
+			<?php
+					}elseif($view_account->is_faculty()){
+			?>
+						<tr>
+							<td style='width:25%;'>
+								Majors:
+							</td>
+							<td>
+								<?= $view_account->get_majors(true) ?>
+							</td>
+						</tr>
+						<tr>
+							<td style='width:25%;'>
+								Position:
+							</td>
+							<td>
+								<?= $view_account->get_position() ?>
+							</td>
+						</tr>
+						<tr>
+							<td style='width:25%;'>
+								Experience:
+							</td>
+							<td>
+								<?= $view_account->get_experience() ?>
+							</td>
+						</tr>
+			<?php
+					}
+				}
+			?>
 		</table>
 		<br />
 		<a href='home.php'>Back to main page</a>

@@ -16,8 +16,6 @@
 		public function __construct($id){
 			parent::__construct($id);
 			
-			var_dump($this->account_type);
-			
 			if($this->account_type == 1 || $this->account_type == 2){
 				throw new Exception("Account is not part of faculty.");
 			}else{
@@ -51,6 +49,20 @@
 			}else{
 				return $this->majors;
 			}
+		}
+		
+		/*
+			Get Position
+		*/
+		public function get_position(){
+			return $this->position;
+		}
+		
+		/*
+			Get Experience
+		*/
+		public function get_experience(){
+			return $this->experience;
 		}
 	}
 	
