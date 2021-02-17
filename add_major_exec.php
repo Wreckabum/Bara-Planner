@@ -27,36 +27,37 @@
 		str_clean($value);
 	});
 	
-	$_POST['type'] = (int)$_POST['type'];
-	$_POST['year'] = (int)$_POST['year'];
-	$_POST['quarter'] = (int)$_POST['quarter'];
+	$pt = 0;
+	$ft = 0;
+	
+	if(isset($_POST['available_for'])){
+		foreach($_POST['available_for'] as $available_for){
+			if($available_for == "full"){
+				$ft = 1;
+			}elseif($available_for == "part"){
+				$pt = 1;
+			}
+		}
+	}
 	
 	if(db_query(
 		"INSERT INTO
-			`accounts`
+			`majors`
 				(`id`, 
-				`first_name`, 
-				`last_name`, 
-				`email`, 
-				`type`, 
-				`majors`, 
-				`year`, 
-				`quarter`,
-				`phone`)
+				`name`, 
+				`description`, 
+				`part_time`, 
+				`full_time`)
 			VALUES
-				(NULL, 
-				'{$_POST['first_name']}', 
-				'{$_POST['last_name']}', 
-				'{$_POST['email']}', 
-				'{$_POST['type']}', 
-				'[\"{$_POST['major']}\"]', 
-				'{$_POST['year']}', 
-				'{$_POST['quarter']}', 
-				'{$_POST['phone']}')"
+				('{$_POST['id']}', 
+				'{$_POST['name']}', 
+				'{$_POST['description']}', 
+				'{$pt}', 
+				'{$ft}')"
 	) !== true){
-		header("location: add_student.php?err=1");
+		header("location: add_major.php?err=1");
 	}else{
-		header("location: view_account.php?a=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
+		header("location: view_major.php?m={$_POST['id']}");
 	}
 	
 	//Close connection

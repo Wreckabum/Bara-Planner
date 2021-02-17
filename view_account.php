@@ -35,14 +35,14 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<table id='view_account' class='basic_table' style='width:30%;'>
+		<table id='view_account' class='basic_table' style='width:auto;'>
 			<tr>
 				<td colspan='2'>
 					<?= $view_account->get_full_name() ?>'s Profile
 				</td>
 			</tr>
 			<tr>
-				<td style='width:25%;'>
+				<td>
 					First Name:
 				</td>
 				<td>
@@ -50,7 +50,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style='width:25%;'>
+				<td>
 					Last Name:
 				</td>
 				<td>
@@ -58,7 +58,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style='width:25%;'>
+				<td>
 					E-mail:
 				</td>
 				<td>
@@ -66,7 +66,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style='width:25%;'>
+				<td>
 					Phone:
 				</td>
 				<td>
@@ -74,7 +74,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style='width:25%;'>
+				<td>
 					Type:
 				</td>
 				<td>
@@ -86,15 +86,18 @@
 					if($view_account->is_student()){
 			?>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Major:
 							</td>
 							<td>
-								<?= $view_account->get_majors() ?>
+								<?php						
+									$major = get_major($view_account->get_majors());
+								?>
+								<?= $major['id'] ?> - <?= $major['name'] ?>
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Year:
 							</td>
 							<td>
@@ -102,7 +105,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Quarter:
 							</td>
 							<td>
@@ -113,15 +116,24 @@
 					}elseif($view_account->is_faculty()){
 			?>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Majors:
 							</td>
 							<td>
-								<?= $view_account->get_majors(true) ?>
+								<?php						
+									$majors = get_major($view_account->get_majors());
+									
+									foreach($majors as $id => $major){
+								?>
+										<?= $id ?> - <?= $major['name'] ?>
+										<br />
+								<?php
+									}
+								?>
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Position:
 							</td>
 							<td>
@@ -129,7 +141,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td>
 								Experience:
 							</td>
 							<td>

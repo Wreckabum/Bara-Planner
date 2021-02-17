@@ -79,4 +79,81 @@
 		
 		return $output;
 	}
+	
+	/*
+		Returns an array for a major
+		
+		@param	string/array
+		@return array
+	*/
+	function get_major($id){
+		if(is_array($id)){
+			$query = db_query("SELECT `*` FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."');");
+		
+			$output = [];
+			
+			while($row = mysqli_fetch_assoc($query)){
+				$output[$row['id']]['name'] = $row['name'];
+				$output[$row['id']]['description'] = $row['description'];
+				$output[$row['id']]['part_time'] = (bool)$row['part_time'];
+				$output[$row['id']]['full_time'] = (bool)$row['full_time'];
+			}
+			
+			return $output;
+		}else{
+			return mysqli_fetch_assoc(db_query("SELECT `*` FROM `majors` WHERE `id` = '{$id}';"));
+		}
+	}
+	
+	/*
+		Returns a 2D array of all projects
+		
+		@return	2D array
+	*/
+	function get_all_projects(){
+		$query = db_query("SELECT `*` FROM `projects` ORDER BY `name` ASC;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			$output[$row['id']]['proj_id'] = $row['name'];
+			$output[$row['id']]['name'] = $row['name'];
+			$output[$row['id']]['description'] = $row['description'];
+			$output[$row['id']]['available_for'] = $row['available_for'];
+			$output[$row['id']]['active'] = (bool)$row['active'];
+		}
+		
+		return $output;
+	}
+	
+	/*
+		Returns an array for a project
+		
+		@param	int/array
+		@param	string (optional)
+		@return array
+	*/
+	function get_project($id, $from = "id"){
+		if($from != "proj_id"){
+			$from = "id";
+		}
+		
+		if(is_array($id)){
+			$query = db_query("SELECT `*` FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."');");
+		
+			$output = [];
+			
+			while($row = mysqli_fetch_assoc($query)){
+				$output[$row['id']]['proj_id'] = $row['proj_id'];
+				$output[$row['id']]['name'] = $row['name'];
+				$output[$row['id']]['description'] = $row['description'];
+				$output[$row['id']]['available_for'] = json_decode($row['available_for']);
+				$output[$row['id']]['active'] = (bool)$row['active'];
+			}
+			
+			return $output;
+		}else{
+			return mysqli_fetch_assoc(db_query("SELECT `*` FROM `projects` WHERE `{$from}` = '{$id}';"));
+		}
+	}
 ?>

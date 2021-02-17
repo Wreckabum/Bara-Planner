@@ -96,6 +96,12 @@
 					<input type='submit' class='btn btn-primary' value='Login'>
 				</div>
 			</form>
-		</div>	
+		</div>
+		<br />
+		<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<input type='hidden' name='email' value='carve.delah@mymail.sim.edu.sg'>
+			<input type='hidden' name='password' value='FfI0M2Na'>
+			<input type='submit' value='Super Admin'>
+		</form>
 	</body>
 </html>

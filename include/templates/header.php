@@ -16,6 +16,15 @@
 			<a href='add_student.php'>
 				[ Add a new student ]
 			</a>
+			<a href='add_faculty.php'>
+				[ Add a new faculty member ]
+			</a>
+			<a href='add_major.php'>
+				[ Add a new major ]
+			</a>
+			<a href='add_project.php'>
+				[ Add a new project ]
+			</a>
 	<?php
 		}
 	?>

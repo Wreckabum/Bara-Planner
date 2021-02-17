@@ -33,7 +33,7 @@
 			@param	bool
 			
 			True:
-				@return string
+				@return JSON
 			
 			False:
 				@return array of string

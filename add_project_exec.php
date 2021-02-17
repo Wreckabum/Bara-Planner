@@ -27,36 +27,28 @@
 		str_clean($value);
 	});
 	
-	$_POST['type'] = (int)$_POST['type'];
-	$_POST['year'] = (int)$_POST['year'];
-	$_POST['quarter'] = (int)$_POST['quarter'];
+	$_POST['active'] = (int)(bool)$_POST['active'];
 	
 	if(db_query(
 		"INSERT INTO
-			`accounts`
-				(`id`, 
-				`first_name`, 
-				`last_name`, 
-				`email`, 
-				`type`, 
-				`majors`, 
-				`year`, 
-				`quarter`,
-				`phone`)
+			`projects`
+				(`id`,
+				`proj_id`, 
+				`name`, 
+				`description`, 
+				`available_for`, 
+				`active`)
 			VALUES
 				(NULL, 
-				'{$_POST['first_name']}', 
-				'{$_POST['last_name']}', 
-				'{$_POST['email']}', 
-				'{$_POST['type']}', 
-				'[\"{$_POST['major']}\"]', 
-				'{$_POST['year']}', 
-				'{$_POST['quarter']}', 
-				'{$_POST['phone']}')"
+				'{$_POST['proj_id']}', 
+				'{$_POST['name']}', 
+				'{$_POST['description']}', 
+				'". addslashes(json_encode($_POST['majors'])) ."', 
+				'{$_POST['active']}')"
 	) !== true){
-		header("location: add_student.php?err=1");
+		header("location: add_project.php?err=1");
 	}else{
-		header("location: view_account.php?a=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
+		header("location: view_project.php?p=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
 	}
 	
 	//Close connection

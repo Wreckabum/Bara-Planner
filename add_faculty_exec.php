@@ -27,9 +27,7 @@
 		str_clean($value);
 	});
 	
-	$_POST['type'] = (int)$_POST['type'];
-	$_POST['year'] = (int)$_POST['year'];
-	$_POST['quarter'] = (int)$_POST['quarter'];
+	$_POST['experience'] = (($_POST['experience'] == "" || empty($_POST['experience'])) ? 0 : (int)$_POST['experience']);
 	
 	if(db_query(
 		"INSERT INTO
@@ -40,21 +38,21 @@
 				`email`, 
 				`type`, 
 				`majors`, 
-				`year`, 
-				`quarter`,
+				`position`, 
+				`experience`, 
 				`phone`)
 			VALUES
 				(NULL, 
 				'{$_POST['first_name']}', 
 				'{$_POST['last_name']}', 
 				'{$_POST['email']}', 
-				'{$_POST['type']}', 
-				'[\"{$_POST['major']}\"]', 
-				'{$_POST['year']}', 
-				'{$_POST['quarter']}', 
+				'0', 
+				'". addslashes(json_encode($_POST['majors'])) ."', 
+				'{$_POST['position']}', 
+				'{$_POST['experience']}', 
 				'{$_POST['phone']}')"
 	) !== true){
-		header("location: add_student.php?err=1");
+		header("location: add_faculty.php?err=1");
 	}else{
 		header("location: view_account.php?a=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
 	}

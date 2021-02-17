@@ -41,18 +41,18 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Add a new student</title>
+		<title>Add a new faculty member</title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
-		<form action='add_student_exec.php' method='POST'>
-			<table id='add_student' class='basic_table' style='width:auto;'>
+		<form action='add_faculty_exec.php' method='POST'>
+			<table id='add_faculty' class='basic_table' style='width:auto;'>
 				<tr>
 					<td colspan='2'>
-						Add a new student
+						Add a new faculty member
 					</td>
 				</tr>
 				<tr>
@@ -81,46 +81,19 @@
 				</tr>
 				<tr>
 					<td>
-						Type
+						Majors
 					</td>
 					<td>
-						<label><input type='radio' name='type' value='1' required /> Full-time Student</label>
-						<br />
-						<label><input type='radio' name='type' value='2' required /> Part-time Student</label>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Major
-					</td>
-					<td>
-						<select name='major' style='width:97%;' required>
-							<?php
-								$all_majors = get_all_majors();
-								
-								foreach($all_majors as $id => $details){
-							?>
-									<option value='<?= $id ?>'><?= $details['name'] ?></option>
-							<?php
-								}
-							?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Year
-					</td>
-					<td>
-						<input type='number' name='year' value='<?= date('Y') ?>' maxlength='4'  style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Quarter
-					</td>
-					<td>
-						<input type='number' name='quarter' value='<?= ceil(date('n') / 3) ?>' min='1' max='4' style='width:97%;' required />
+						<?php
+							$all_majors = get_all_majors();
+							
+							foreach($all_majors as $id => $details){
+						?>
+								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' /><?= $details['name'] ?></label>
+								<br />
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -132,8 +105,24 @@
 					</td>
 				</tr>
 				<tr>
+					<td>
+						Position
+					</td>
+					<td>
+						<input type='text' name='position' style='width:97%;' />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Experience
+					</td>
+					<td>
+						<input type='number' name='experience' placeholder='0' style='width:97%;' />
+					</td>
+				</tr>
+				<tr>
 					<td colspan='2'>
-						<input type='submit' name='submit' value='Add student'>
+						<input type='submit' name='submit' value='Add faculty member'>
 					</td>
 				</tr>
 			</table>
