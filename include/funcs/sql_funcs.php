@@ -41,10 +41,44 @@
 	}
 	
 	/*
+		Returns a 2D array of all accounts (filter optional)
+		
+		@param	array of ints -> account types (optinal)
+		@return	2D array of Faculty/Student/Admin objects
+	*/
+	function get_all_accounts($type = []){
+		array_walk($type, function(&$value, $key){
+			$value = (int)$value;
+		});
+		
+		$where = "";
+		
+		if(!empty($type)){
+			$where = "WHERE `type` in ('". implode("', '", $type) ."')";
+		}
+		
+		$query = db_query("SELECT `*` FROM `accounts` {$where} ORDER BY `id` ASC;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			if($row['type'] == 1 || $row['type'] == 2){
+				$output[] = new Student($row['id']);
+			}elseif($row['type'] == 8 || $row['type'] == 9){
+				$output[] = new Admin($row['id']);
+			}elseif($row['type'] == 0){
+				$output[] = new Faculty($row['id']);
+			}
+		}
+		
+		return $output;
+	}
+	
+	/*
 		Returns the account object based on ID
 		
 		@param	int
-		@return	Faculty/Student object
+		@return	Faculty/Student/Admin object
 	*/
 	function get_account($id){
 		str_clean($id);
@@ -55,9 +89,11 @@
 			return new Student($id);
 		}elseif($type == 8 || $type == 9){
 			return new Admin($id);
-		}else{
+		}elseif($type == 0){
 			return new Faculty($id);
 		}
+		
+		return false;
 	}
 	
 	/*
@@ -66,7 +102,7 @@
 		@return	2D array
 	*/
 	function get_all_majors(){
-		$query = db_query("SELECT `*` FROM `majors` ORDER BY `name` ASC;");
+		$query = db_query("SELECT `*` FROM `majors` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -88,7 +124,7 @@
 	*/
 	function get_major($id){
 		if(is_array($id)){
-			$query = db_query("SELECT `*` FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."');");
+			$query = db_query("SELECT `*` FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
@@ -111,7 +147,7 @@
 		@return	2D array
 	*/
 	function get_all_projects(){
-		$query = db_query("SELECT `*` FROM `projects` ORDER BY `name` ASC;");
+		$query = db_query("SELECT `*` FROM `projects` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -139,7 +175,7 @@
 		}
 		
 		if(is_array($id)){
-			$query = db_query("SELECT `*` FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."');");
+			$query = db_query("SELECT `*` FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			

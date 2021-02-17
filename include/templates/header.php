@@ -10,6 +10,9 @@
 			<?= $account->get_full_name() ?>
 		</a>
 	</a>!
+	<a href='view_all.php'>
+		[ View All ]
+	</a>
 	<?php
 		if($account->is_admin()){
 	?>
