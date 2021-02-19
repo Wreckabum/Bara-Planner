@@ -20,6 +20,11 @@
 	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		if(isset($_POST['forgetPassword'])){
+			header("location: forgetPassword.php");
+			exit();
+		}
+
 		//Connect to database
 		sql_connect();
 		
@@ -93,7 +98,8 @@
 				</div>
 				<span class='help-block'><?php echo $login_error; ?></span>
 				<div class='form-group'>
-					<input type='submit' class='btn btn-primary' value='Login'>
+					<input type='submit' name='login' class='btn btn-primary' value='Login'>
+					<input type='submit' name='forgetPassword' class='btn btn-primary' value='Forget Password'>
 				</div>
 			</form>
 		</div>
