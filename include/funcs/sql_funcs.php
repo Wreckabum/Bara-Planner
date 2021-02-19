@@ -4,6 +4,7 @@
 	require_once("include/class/ClassAdmin.php");
 	require_once("include/class/ClassFaculty.php");
 	require_once("include/class/ClassStudent.php");
+	require_once("sub_funcs.php");
 	
 	/*
 		Connects to the DB when required
