@@ -57,10 +57,10 @@
 				</tr>
 				<tr>
 					<td>
-						First Name
+						ID
 					</td>
 					<td>
-						<input type='text' name='first_name' placeholder='First Name' maxlength='64' style='width:97%;' required />
+						<input type='text' name='id' placeholder='Student ID' maxlength='64' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -68,7 +68,7 @@
 						Last Name
 					</td>
 					<td>
-						<input type='text' name='last_name' placeholder='Last Name' maxlength='64'  style='width:97%;' required />
+						<input type='text' name='name' placeholder='Name' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

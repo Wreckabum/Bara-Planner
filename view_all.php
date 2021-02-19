@@ -34,6 +34,10 @@
 				$rows = get_all_accounts([0]);
 				break;
 			
+			case "admin":
+				$rows = get_all_accounts([8, 9]);
+				break;
+			
 			case "majors":
 				$rows = get_all_majors();
 				break;
@@ -61,16 +65,19 @@
 		<?php include("include/templates/header.php"); ?>
 		<table id='view_all' class='basic_table'>
 			<tr>
-				<td style='width:25%; text-align:center;' onClick="show_student_options();">
+				<td style='width:20%; text-align:center;' onClick="show_student_options();">
 					Students
 				</td>
-				<td style='width:25%; text-align:center;' onClick="get_accounts('faculty');">
+				<td style='width:20%; text-align:center;' onClick="get_accounts('faculty');">
 					Faculty
 				</td>
-				<td style='width:25%; text-align:center;' onClick="get_accounts('majors');">
+				<td style='width:20%; text-align:center;' onClick="get_accounts('admin');">
+					Admin
+				</td>
+				<td style='width:20%; text-align:center;' onClick="get_accounts('majors');">
 					Majors
 				</td>
-				<td style='width:25%; text-align:center;' onClick="get_accounts('projects');">
+				<td style='width:20%; text-align:center;' onClick="get_accounts('projects');">
 					Projects
 				</td>
 			</tr>
@@ -96,15 +103,14 @@
 		?>
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
-					<label><input type='checkbox' id='search_first_name' class='search_checkbox' value='1' /> First Name</label>
-					<label><input type='checkbox' id='search_last_name' class='search_checkbox' value='2' /> Last Name</label>
-					<label><input type='checkbox' id='search_email' class='search_checkbox' value='3' /> E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
-					<label><input type='checkbox' id='search_type' class='search_checkbox' value='5'/> Type</label>
-					<label><input type='checkbox' id='search_major' class='search_checkbox' value='6' /> Major</label>
-					<label><input type='checkbox' id='search_year' class='search_checkbox' value='7' /> Year</label>
-					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='8' /> Quarter</label>
-					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='9' /> Choices</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
+					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
+					<label><input type='checkbox' id='search_type' class='search_checkbox' value='4'/> Type</label>
+					<label><input type='checkbox' id='search_major' class='search_checkbox' value='5' /> Major</label>
+					<label><input type='checkbox' id='search_year' class='search_checkbox' value='6' /> Year</label>
+					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='7' /> Quarter</label>
+					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='8' /> Choices</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -113,10 +119,7 @@
 								ID
 							</td>
 							<td style='text-align:center;'>
-								First Name
-							</td>
-							<td style='text-align:center;'>
-								Last Name
+								Name
 							</td>
 							<td style='text-align:center;'>
 								Email
@@ -148,10 +151,7 @@
 										<?= $student->id ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
-										<?= $student->get_first_name() ?>
-									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
-										<?= $student->get_last_name() ?>
+										<?= $student->get_name() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
 										<?= $student->get_email() ?>
@@ -184,13 +184,10 @@
 		?>
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
-					<label><input type='checkbox' id='search_first_name' class='search_checkbox' value='1' /> First Name</label>
-					<label><input type='checkbox' id='search_last_name' class='search_checkbox' value='2' /> Last Name</label>
-					<label><input type='checkbox' id='search_email' class='search_checkbox' value='3' /> E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
-					<label><input type='checkbox' id='search_position' class='search_checkbox' value='5'/> Position</label>
-					<label><input type='checkbox' id='search_experience' class='search_checkbox' value='6' /> Experience</label>
-					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='7' /> Majors</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
+					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
+					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='4' /> Majors</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -199,22 +196,13 @@
 								ID
 							</td>
 							<td style='text-align:center;'>
-								First Name
-							</td>
-							<td style='text-align:center;'>
-								Last Name
+								Name
 							</td>
 							<td style='text-align:center;'>
 								Email
 							</td>
 							<td style='text-align:center;'>
 								Phone
-							</td>
-							<td style='text-align:center;'>
-								Position
-							</td>
-							<td style='text-align:center;'>
-								Experience
 							</td>
 							<td style='text-align:center;'>
 								Majors
@@ -228,10 +216,7 @@
 										<?= $faculty->id ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_first_name() ?>
-									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_last_name() ?>
+										<?= $faculty->get_name() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
 										<?= $faculty->get_email() ?>
@@ -240,13 +225,53 @@
 										<?= $faculty->get_phone() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_position() ?>
-									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_experience() ?>
-									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
 										<?= $faculty->get_majors(true) ?>
+									</td>
+								</tr>
+						<?php
+							}
+						?>
+					</table>
+		<?php
+				}elseif($_GET['t'] == "admin"){
+		?>
+					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
+					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
+					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
+					<br />
+					<br />
+					<table id='filter_table' class='basic_table'>
+						<tr>
+							<td style='text-align:center;'>
+								ID
+							</td>
+							<td style='text-align:center;'>
+								Name
+							</td>
+							<td style='text-align:center;'>
+								Email
+							</td>
+							<td style='text-align:center;'>
+								Phone
+							</td>
+						</tr>
+						<?php
+							foreach($rows as $faculty){
+						?>
+								<tr>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+										<?= $faculty->id ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+										<?= $faculty->get_name() ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+										<?= $faculty->get_email() ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+										<?= $faculty->get_phone() ?>
 									</td>
 								</tr>
 						<?php
@@ -315,7 +340,8 @@
 					<label><input type='checkbox' id='search_first_name' class='search_checkbox' value='2' /> Name</label>
 					<label><input type='checkbox' id='search_last_name' class='search_description' value='3' /> Description</label>
 					<label><input type='checkbox' id='search_available_for' class='search_checkbox' value='4' /> Available for</label>
-					<label><input type='checkbox' id='search_active' class='search_checkbox' value='5' /> Active</label>
+					<label><input type='checkbox' id='search_year' class='search_checkbox' value='5' /> Year</label>
+					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='6' /> Quarter</label>
 					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
@@ -334,7 +360,10 @@
 								Available for
 							</td>
 							<td style='text-align:center;'>
-								Active
+								Year
+							</td>
+							<td style='text-align:center;'>
+								Quarter
 							</td>
 						</tr>
 						<?php
@@ -357,7 +386,10 @@
 										<?= implode(", ", json_decode($project['available_for'])) ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
-										<?= ($project['active'] ? "Yes" : "No") ?>
+										<?= $project['year'] ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+										<?= $project['quarter'] ?>
 									</td>
 								</tr>
 						<?php

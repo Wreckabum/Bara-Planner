@@ -45,7 +45,7 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $super->get_full_name() ?>
+					<?= $super->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -81,7 +81,7 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $admin->get_full_name() ?>
+					<?= $admin->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -116,7 +116,7 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $prof->get_full_name() ?>
+					<?= $prof->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -159,7 +159,7 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $ft->get_full_name() ?>
+					<?= $ft->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -218,7 +218,7 @@
 					Name:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $pt->get_full_name() ?>
+					<?= $pt->get_name() ?>
 				</td>
 			</tr>
 			<tr>

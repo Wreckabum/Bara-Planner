@@ -50,7 +50,6 @@
 					<?= nl2br($project['description']) ?>
 				</td>
 			</tr>
-			
 			<tr>
 				<td style='width:25%;'>
 					Available for:
@@ -68,13 +67,20 @@
 					?>
 				</td>
 			</tr>
-			
 			<tr>
 				<td style='width:25%;'>
-					Active:
+					Year:
 				</td>
 				<td>
-					<?= ($project['active'] ? "Yes" : "No") ?>
+					<?= $project['year'] ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Quarter:
+				</td>
+				<td>
+					<?= $project['quarter'] ?>
 				</td>
 			</tr>
 		</table>

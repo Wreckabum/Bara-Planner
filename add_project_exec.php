@@ -27,7 +27,8 @@
 		str_clean($value);
 	});
 	
-	$_POST['active'] = (int)(bool)$_POST['active'];
+	$_POST['year'] = (int)$_POST['year'];
+	$_POST['quarter'] = (int)$_POST['quarter'];
 	
 	if(db_query(
 		"INSERT INTO
@@ -37,14 +38,16 @@
 				`name`, 
 				`description`, 
 				`available_for`, 
-				`active`)
+				`year`, 
+				`quarter`)
 			VALUES
 				(NULL, 
 				'{$_POST['proj_id']}', 
 				'{$_POST['name']}', 
 				'{$_POST['description']}', 
 				'". addslashes(json_encode($_POST['majors'])) ."', 
-				'{$_POST['active']}')"
+				'{$_POST['year']}', 
+				'{$_POST['quarter']}')"
 	) !== true){
 		header("location: add_project.php?err=1");
 	}else{

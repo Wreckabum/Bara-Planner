@@ -27,8 +27,6 @@
 		str_clean($value);
 	});
 	
-	$_POST['experience'] = (($_POST['experience'] == "" || empty($_POST['experience'])) ? 0 : (int)$_POST['experience']);
-	
 	if(db_query(
 		"INSERT INTO
 			`accounts`
@@ -38,8 +36,6 @@
 				`email`, 
 				`type`, 
 				`majors`, 
-				`position`, 
-				`experience`, 
 				`phone`)
 			VALUES
 				(NULL, 
@@ -48,8 +44,6 @@
 				'{$_POST['email']}', 
 				'0', 
 				'". addslashes(json_encode($_POST['majors'])) ."', 
-				'{$_POST['position']}', 
-				'{$_POST['experience']}', 
 				'{$_POST['phone']}')"
 	) !== true){
 		header("location: add_faculty.php?err=1");

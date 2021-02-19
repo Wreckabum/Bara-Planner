@@ -7,8 +7,6 @@
 		Base information for all accounts
 	*/
 	class Faculty extends Account{
-		private $position;
-		private $experience;
 		
 		/*
 			Constructor
@@ -19,8 +17,6 @@
 			if($this->account_type == 1 || $this->account_type == 2){
 				throw new Exception("Account is not part of faculty.");
 			}else{
-				$this->position = $this->raw['position'];
-				$this->experience = $this->raw['experience'];
 				$this->majors = json_decode($this->raw['majors']);
 				
 				unset($this->raw);
@@ -49,20 +45,6 @@
 			}else{
 				return $this->majors;
 			}
-		}
-		
-		/*
-			Get Position
-		*/
-		public function get_position(){
-			return $this->position;
-		}
-		
-		/*
-			Get Experience
-		*/
-		public function get_experience(){
-			return $this->experience;
 		}
 	}
 	

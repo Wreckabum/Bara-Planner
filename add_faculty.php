@@ -105,22 +105,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						Position
-					</td>
-					<td>
-						<input type='text' name='position' style='width:97%;' />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Experience
-					</td>
-					<td>
-						<input type='number' name='experience' placeholder='0' style='width:97%;' />
-					</td>
-				</tr>
-				<tr>
 					<td colspan='2'>
 						<input type='submit' name='submit' value='Add faculty member'>
 					</td>

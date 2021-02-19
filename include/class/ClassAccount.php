@@ -10,12 +10,10 @@
 		protected $raw;
 		
 		public	$id;
-		private	$first_name;
-		private	$last_name;
+		private	$name;
 		private	$phone;
 		private	$email;
 		protected int $account_type;
-		private $position;
 		
 		protected $majors;
 		
@@ -31,12 +29,10 @@
 			//If the account exists
 			if(mysqli_num_rows($query) == 1){
 				$this->id = $result['id'];
-				$this->first_name = $result['first_name'];
-				$this->last_name = $result['last_name'];
+				$this->name = $result['name'];
 				$this->phone = $result['phone'];
 				$this->email = $result['email'];
 				$this->account_type = $result['type'];
-				$this->position = $result['position'];
 				$this->raw = $result;
 			}else{
 				throw new Exception("Account not found.");
@@ -44,24 +40,10 @@
 		}
 		
 		/*
-			Get first name
+			Get name
 		*/
-		public function get_first_name(){
-			return $this->first_name;
-		}
-		
-		/*
-			Get last name
-		*/
-		public function get_last_name(){
-			return $this->last_name;
-		}
-		
-		/*
-			Get full name
-		*/
-		public function get_full_name(){
-			return $this->first_name . " " . $this->last_name;
+		public function get_name(){
+			return $this->name;
 		}
 		
 		/*

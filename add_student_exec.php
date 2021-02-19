@@ -35,8 +35,7 @@
 		"INSERT INTO
 			`accounts`
 				(`id`, 
-				`first_name`, 
-				`last_name`, 
+				`name`, 
 				`email`, 
 				`type`, 
 				`majors`, 
@@ -44,9 +43,8 @@
 				`quarter`,
 				`phone`)
 			VALUES
-				(NULL, 
-				'{$_POST['first_name']}', 
-				'{$_POST['last_name']}', 
+				('{$_POST['id']}', 
+				'{$_POST['name']}', 
 				'{$_POST['email']}', 
 				'{$_POST['type']}', 
 				'[\"{$_POST['major']}\"]', 

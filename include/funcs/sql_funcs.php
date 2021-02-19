@@ -157,7 +157,8 @@
 			$output[$row['id']]['name'] = $row['name'];
 			$output[$row['id']]['description'] = $row['description'];
 			$output[$row['id']]['available_for'] = $row['available_for'];
-			$output[$row['id']]['active'] = (bool)$row['active'];
+			$output[$row['id']]['year'] = $row['year'];
+			$output[$row['id']]['quarter'] = $row['quarter'];
 		}
 		
 		return $output;
@@ -185,7 +186,8 @@
 				$output[$row['id']]['name'] = $row['name'];
 				$output[$row['id']]['description'] = $row['description'];
 				$output[$row['id']]['available_for'] = json_decode($row['available_for']);
-				$output[$row['id']]['active'] = (bool)$row['active'];
+				$output[$row['id']]['year'] = $row['year'];
+				$output[$row['id']]['quarter'] = $row['quarter'];
 			}
 			
 			return $output;

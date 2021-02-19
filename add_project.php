@@ -98,11 +98,18 @@
 				</tr>
 				<tr>
 					<td>
-						Active
+						Year
 					</td>
 					<td>
-						<label><input type='radio' name='active' value='0' required /> No</label>
-						<label><input type='radio' name='active' value='1' checked required /> Yes</label>
+						<input type='number' name='year' value='<?= date('Y') ?>' maxlength='4'  style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Quarter
+					</td>
+					<td>
+						<input type='number' name='quarter' value='<?= ceil(date('n') / 3) ?>' min='1' max='4' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

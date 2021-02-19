@@ -29,7 +29,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>View Account - <?= $view_account->get_full_name() ?></title>
+		<title>View Account - <?= $view_account->get_name() ?></title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
@@ -38,23 +38,15 @@
 		<table id='view_account' class='basic_table' style='width:auto;'>
 			<tr>
 				<td colspan='2'>
-					<?= $view_account->get_full_name() ?>'s Profile
+					<?= $view_account->get_name() ?>'s Profile
 				</td>
 			</tr>
 			<tr>
 				<td>
-					First Name:
+					Name:
 				</td>
 				<td>
-					<?= ucfirst($view_account->get_first_name()) ?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Last Name:
-				</td>
-				<td>
-					<?= ucfirst($view_account->get_last_name()) ?>
+					<?= ucfirst($view_account->get_name()) ?>
 				</td>
 			</tr>
 			<tr>
@@ -130,22 +122,6 @@
 								<?php
 									}
 								?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Position:
-							</td>
-							<td>
-								<?= $view_account->get_position() ?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Experience:
-							</td>
-							<td>
-								<?= $view_account->get_experience() ?>
 							</td>
 						</tr>
 			<?php
