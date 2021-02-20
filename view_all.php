@@ -363,9 +363,8 @@
 					<label><input type='checkbox' id='search_proj_id' class='search_checkbox' value='1' /> Project ID</label>
 					<label><input type='checkbox' id='search_first_name' class='search_checkbox' value='2' /> Name</label>
 					<label><input type='checkbox' id='search_last_name' class='search_description' value='3' /> Description</label>
-					<label><input type='checkbox' id='search_available_for' class='search_checkbox' value='4' /> Available for</label>
-					<label><input type='checkbox' id='search_year' class='search_checkbox' value='5' /> Year</label>
-					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='6' /> Quarter</label>
+					<label><input type='checkbox' id='search_year' class='search_checkbox' value='4' /> Year</label>
+					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='5' /> Quarter</label>
 					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
@@ -379,9 +378,6 @@
 							</td>
 							<td style='text-align:center;'>
 								Description
-							</td>
-							<td style='text-align:center;'>
-								Available for
 							</td>
 							<td style='text-align:center;'>
 								Year
@@ -408,9 +404,6 @@
 									</td>
 									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
 										<?= nl2br($project['description']) ?>
-									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
-										<?= implode(", ", json_decode($project['available_for'])) ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['year'] ?>

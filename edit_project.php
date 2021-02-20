@@ -56,7 +56,7 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_project.php' method='POST'>
-			<table id='edit_project' class='basic_table' style='width:auto;'>
+			<table id='edit_project' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
 						Edit a project
@@ -84,24 +84,6 @@
 					</td>
 					<td>
 						<textarea name='description' rows='10' style='width:97%;' required><?= $project['description'] ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Available for
-					</td>
-					<td>
-						<?php
-							$all_majors = get_all_majors();
-							$available_for_array = json_decode($project['available_for']);
-							
-							foreach($all_majors as $id => $details){
-						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' <?= (in_array($id, $available_for_array) ? "checked" : "") ?>/><?= $id ?> - <?= $details['name'] ?></label>
-								<br />
-						<?php
-							}
-						?>
 					</td>
 				</tr>
 				<tr>

@@ -39,7 +39,6 @@
 					`proj_id`, 
 					`name`, 
 					`description`, 
-					`available_for`, 
 					`year`, 
 					`quarter`)
 				VALUES
@@ -47,7 +46,6 @@
 					'{$_POST['proj_id']}', 
 					'{$_POST['name']}', 
 					'{$_POST['description']}', 
-					'". addslashes(json_encode($_POST['majors'])) ."', 
 					'{$_POST['year']}', 
 					'{$_POST['quarter']}')"
 			) !== true){
@@ -64,7 +62,6 @@
 					`proj_id` = '{$_POST['proj_id']}', 
 					`name` = '{$_POST['name']}', 
 					`description` = '{$_POST['description']}', 
-					`available_for` = '". addslashes(json_encode($_POST['majors'])) ."', 
 					`year` = '{$_POST['year']}', 
 					`quarter` = '{$_POST['quarter']}'
 				WHERE

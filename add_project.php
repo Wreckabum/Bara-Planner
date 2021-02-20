@@ -49,7 +49,7 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_project.php' method='POST'>
-			<table id='add_project' class='basic_table' style='width:auto;'>
+			<table id='add_project' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
 						Add a new project
@@ -77,23 +77,6 @@
 					</td>
 					<td>
 						<textarea name='description' placeholder='A summary of the project' rows='10' style='width:97%;' required></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Available for
-					</td>
-					<td>
-						<?php
-							$all_majors = get_all_majors();
-							
-							foreach($all_majors as $id => $details){
-						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' /><?= $id ?> - <?= $details['name'] ?></label>
-								<br />
-						<?php
-							}
-						?>
 					</td>
 				</tr>
 				<tr>

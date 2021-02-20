@@ -156,7 +156,6 @@
 			$output[$row['id']]['proj_id'] = $row['name'];
 			$output[$row['id']]['name'] = $row['name'];
 			$output[$row['id']]['description'] = $row['description'];
-			$output[$row['id']]['available_for'] = $row['available_for'];
 			$output[$row['id']]['year'] = $row['year'];
 			$output[$row['id']]['quarter'] = $row['quarter'];
 		}
@@ -185,7 +184,6 @@
 				$output[$row['id']]['proj_id'] = $row['proj_id'];
 				$output[$row['id']]['name'] = $row['name'];
 				$output[$row['id']]['description'] = $row['description'];
-				$output[$row['id']]['available_for'] = json_decode($row['available_for']);
 				$output[$row['id']]['year'] = $row['year'];
 				$output[$row['id']]['quarter'] = $row['quarter'];
 			}

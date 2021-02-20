@@ -57,23 +57,6 @@
 			</tr>
 			<tr>
 				<td style='width:25%;'>
-					Available for:
-				</td>
-				<td>
-					<?php						
-						$available_for = get_major(json_decode($project['available_for']));
-						
-						foreach($available_for as $id => $major){
-					?>
-							<?= $id ?> - <?= $major['name'] ?>
-							<br />
-					<?php
-						}
-					?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
 					Year:
 				</td>
 				<td>
