@@ -35,13 +35,21 @@
 				break;
 		}
 	}
+	
+	try{
+		$student = get_account(str_clean($_GET['a']));
+	}catch(Exception $e){
+		header("location: view_all.php?t=students");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
 ?>
 
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Add a new student</title>
+		<title>Edit a student</title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
@@ -49,10 +57,10 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_student.php' method='POST'>
-			<table id='add_student' class='basic_table' style='width:auto;'>
+			<table id='edit_student' class='basic_table' style='width:auto;'>
 				<tr>
 					<td colspan='2'>
-						Add a new student
+						Edit a student
 					</td>
 				</tr>
 				<tr>
@@ -60,15 +68,15 @@
 						ID
 					</td>
 					<td>
-						<input type='text' name='id' placeholder='Student ID' maxlength='64' style='width:97%;' required />
+						<?= $student->id ?>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						Last Name
+						Name
 					</td>
 					<td>
-						<input type='text' name='name' placeholder='Name' maxlength='64'  style='width:97%;' required />
+						<input type='text' name='name' maxlength='64' value='<?= $student->get_name() ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -76,7 +84,7 @@
 						E-mail
 					</td>
 					<td>
-						<input type='email' name='email' placeholder='account@email.com' maxlength='64'  style='width:97%;' required />
+						<input type='email' name='email' maxlength='64' value='<?= $student->get_email() ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -84,9 +92,9 @@
 						Type
 					</td>
 					<td>
-						<label><input type='radio' name='type' value='1' required /> Full-time Student</label>
+						<label><input type='radio' name='type' value='1' required <?= ($student->is_full_time() ? "checked" : "") ?>/> Full-time Student</label>
 						<br />
-						<label><input type='radio' name='type' value='2' required /> Part-time Student</label>
+						<label><input type='radio' name='type' value='2' required <?= ($student->is_part_time() ? "checked" : "") ?>/> Part-time Student</label>
 					</td>
 				</tr>
 				<tr>
@@ -100,7 +108,7 @@
 								
 								foreach($all_majors as $id => $details){
 							?>
-									<option value='<?= $id ?>'><?= $id ?> - <?= $details['name'] ?></option>
+									<option value='<?= $id ?>' <?= ($id == $student->get_majors() ? "selected" : "") ?>><?= $id ?> - <?= $details['name'] ?></option>
 							<?php
 								}
 							?>
@@ -112,7 +120,7 @@
 						Year
 					</td>
 					<td>
-						<input type='number' name='year' value='<?= date('Y') ?>' maxlength='4'  style='width:97%;' required />
+						<input type='number' name='year' value='<?= $student->get_year() ?>' maxlength='4'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -120,7 +128,7 @@
 						Quarter
 					</td>
 					<td>
-						<input type='number' name='quarter' value='<?= ceil(date('n') / 3) ?>' min='1' max='4' style='width:97%;' required />
+						<input type='number' name='quarter' value='<?= $student->get_quarter() ?>' min='1' max='4' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -128,12 +136,13 @@
 						Phone number
 					</td>
 					<td>
-						<input type='text' name='phone' placeholder='98789636' style='width:97%;' required />
+						<input type='text' name='phone' value='<?= $student->get_phone() ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='submit' name='add' value='Add student'>
+						<input type='hidden' name='id' value='<?= $student->id ?>'/>
+						<input type='submit' name='edit' value='Edit student'>
 					</td>
 				</tr>
 			</table>

@@ -51,6 +51,24 @@
 		public function get_quarter(){
 			return $this->quarter;
 		}
+		
+		/*
+			Checks if the account is a full-time student
+			
+			@return bool
+		*/
+		public function is_full_time(){
+			return $this->account_type == 1;
+		}
+		
+		/*
+			Checks if the account is a part-time student
+			
+			@return bool
+		*/
+		public function is_part_time(){
+			return $this->account_type == 2;
+		}
 	}
 	
 	//Close connection

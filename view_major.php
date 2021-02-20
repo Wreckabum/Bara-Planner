@@ -16,6 +16,11 @@
 	
 	$account = get_account($_SESSION["id"]);
 	$major = get_major($_GET['m']);
+	
+	//If no such major
+	if(is_null($major)){
+		header("location: view_all.php?t=majors");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +55,14 @@
 					<?= nl2br($major['description']) ?>
 				</td>
 			</tr>
-			
+			<tr>
+				<td style='width:25%;'>
+					Full Time:
+				</td>
+				<td>
+					<?= ($major['full_time'] ? "Yes" : "No") ?>
+				</td>
+			</tr>
 			<tr>
 				<td style='width:25%;'>
 					Part Time:
@@ -60,14 +72,6 @@
 				</td>
 			</tr>
 			
-			<tr>
-				<td style='width:25%;'>
-					Full Time:
-				</td>
-				<td>
-					<?= ($major['full_time'] ? "Yes" : "No") ?>
-				</td>
-			</tr>
 		</table>
 		<br />
 		<a href='home.php'>Back to main page</a>

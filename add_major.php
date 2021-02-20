@@ -48,7 +48,7 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
-		<form action='add_major_exec.php' method='POST'>
+		<form action='exec_major.php' method='POST'>
 			<table id='add_major' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
@@ -91,7 +91,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='submit' name='submit' value='Add major'>
+						<input type='submit' name='add' value='Add major'>
 					</td>
 				</tr>
 			</table>

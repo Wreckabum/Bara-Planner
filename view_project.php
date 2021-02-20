@@ -14,8 +14,13 @@
 	//Connect to database
 	sql_connect();
 	
-	$account = get_account($_SESSION["id"]);
+	$account = get_account($_SESSION["id"]);	
 	$project = get_project($_GET['p']);
+	
+	//If no such project
+	if(is_null($project)){
+		header("location: view_all.php?t=projects");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +33,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<table id='view_major' class='basic_table' style='width:30%;'>
+		<table id='view_major' class='basic_table' style='width:40%;'>
 			<tr>
 				<td colspan='2'>
 					<?= $project['proj_id'] ?> (<?= $project['id'] ?>)

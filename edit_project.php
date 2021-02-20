@@ -27,7 +27,7 @@
 	if(isset($_GET['err'])){
 		switch($_GET['err']){
 			case 1:
-				$err = "Account already exists.";
+				$err = "Project ID already exists.";
 				break;
 			
 			default:
@@ -35,76 +35,73 @@
 				break;
 		}
 	}
+	
+	$project = get_project(str_clean($_GET['p']));
+	
+	//If no such project
+	if(is_null($project)){
+		header("location: view_all.php?t=projects");
+	}
 ?>
 
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Add a new student</title>
+		<title>Edit a project</title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
-		<form action='exec_student.php' method='POST'>
-			<table id='add_student' class='basic_table' style='width:auto;'>
+		<form action='exec_project.php' method='POST'>
+			<table id='edit_project' class='basic_table' style='width:auto;'>
 				<tr>
 					<td colspan='2'>
-						Add a new student
+						Edit a project
 					</td>
 				</tr>
 				<tr>
 					<td>
-						ID
+						Project ID
 					</td>
 					<td>
-						<input type='text' name='id' placeholder='Student ID' maxlength='64' style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Last Name
-					</td>
-					<td>
-						<input type='text' name='name' placeholder='Name' maxlength='64'  style='width:97%;' required />
+						<input type='text' name='proj_id' maxlength='11' value='<?= $project['proj_id'] ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						E-mail
+						Name
 					</td>
 					<td>
-						<input type='email' name='email' placeholder='account@email.com' maxlength='64'  style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Type
-					</td>
-					<td>
-						<label><input type='radio' name='type' value='1' required /> Full-time Student</label>
-						<br />
-						<label><input type='radio' name='type' value='2' required /> Part-time Student</label>
+						<input type='text' name='name' maxlength='24' value='<?= $project['name'] ?>'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						Major
+						Description
 					</td>
 					<td>
-						<select name='major' style='width:97%;' required>
-							<?php
-								$all_majors = get_all_majors();
-								
-								foreach($all_majors as $id => $details){
-							?>
-									<option value='<?= $id ?>'><?= $id ?> - <?= $details['name'] ?></option>
-							<?php
-								}
-							?>
-						</select>
+						<textarea name='description' rows='10' style='width:97%;' required><?= $project['description'] ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Available for
+					</td>
+					<td>
+						<?php
+							$all_majors = get_all_majors();
+							$available_for_array = json_decode($project['available_for']);
+							
+							foreach($all_majors as $id => $details){
+						?>
+								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' <?= (in_array($id, $available_for_array) ? "checked" : "") ?>/><?= $id ?> - <?= $details['name'] ?></label>
+								<br />
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -112,7 +109,7 @@
 						Year
 					</td>
 					<td>
-						<input type='number' name='year' value='<?= date('Y') ?>' maxlength='4'  style='width:97%;' required />
+						<input type='number' name='year' value='<?= $project['year'] ?>' maxlength='4'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -120,20 +117,13 @@
 						Quarter
 					</td>
 					<td>
-						<input type='number' name='quarter' value='<?= ceil(date('n') / 3) ?>' min='1' max='4' style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Phone number
-					</td>
-					<td>
-						<input type='text' name='phone' placeholder='98789636' style='width:97%;' required />
+						<input type='number' name='quarter' value='<?= $project['quarter'] ?>' min='1' max='4' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='submit' name='add' value='Add student'>
+						<input type='hidden' name='id' value='<?= $project['id'] ?>'/>
+						<input type='submit' name='edit' value='Edit project'>
 					</td>
 				</tr>
 			</table>

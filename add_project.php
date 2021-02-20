@@ -48,7 +48,7 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
-		<form action='add_project_exec.php' method='POST'>
+		<form action='exec_project.php' method='POST'>
 			<table id='add_project' class='basic_table' style='width:auto;'>
 				<tr>
 					<td colspan='2'>
@@ -89,7 +89,7 @@
 							
 							foreach($all_majors as $id => $details){
 						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' /><?= $details['name'] ?></label>
+								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' /><?= $id ?> - <?= $details['name'] ?></label>
 								<br />
 						<?php
 							}
@@ -114,7 +114,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='submit' name='submit' value='Add project'>
+						<input type='submit' name='add' value='Add project'>
 					</td>
 				</tr>
 			</table>

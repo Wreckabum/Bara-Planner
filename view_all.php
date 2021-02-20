@@ -88,11 +88,11 @@
 				<td style='width:33%; text-align:center;' onClick="get_accounts('students');">
 					All
 				</td>
-				<td style='width:33%; text-align:center;' onClick="get_accounts('pt');">
-					Part-Time
-				</td>
 				<td style='width:33%; text-align:center;' onClick="get_accounts('ft');">
 					Full-Time
+				</td>
+				<td style='width:33%; text-align:center;' onClick="get_accounts('pt');">
+					Part-Time
 				</td>
 			</tr>
 		</table>
@@ -142,6 +142,9 @@
 							<td style='text-align:center;'>
 								Choices
 							</td>
+							<td style='text-align:center;'>
+								Actions
+							</td>
 						</tr>
 						<?php
 							foreach($rows as $student){
@@ -173,6 +176,11 @@
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
 										
+									</td>
+									<td style='text-align:center;'>
+										<a href='edit_student.php?a=<?= $student->id ?>'>
+											[ Edit ]
+										</a>
 									</td>
 								</tr>
 						<?php
@@ -207,6 +215,9 @@
 							<td style='text-align:center;'>
 								Majors
 							</td>
+							<td style='text-align:center;'>
+								Actions
+							</td>
 						</tr>
 						<?php
 							foreach($rows as $faculty){
@@ -226,6 +237,11 @@
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
 										<?= $faculty->get_majors(true) ?>
+									</td>
+									<td style='text-align:center;'>
+										<a href='edit_faculty.php?a=<?= $faculty->id ?>'>
+											[ Edit ]
+										</a>
 									</td>
 								</tr>
 						<?php
@@ -285,8 +301,8 @@
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
 					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
 					<label><input type='checkbox' id='search_description' class='search_checkbox' value='2' /> Description</label>
-					<label><input type='checkbox' id='search_part_time' class='search_checkbox' value='3' /> Part-Time</label>
-					<label><input type='checkbox' id='search_full_time' class='search_checkbox' value='4' /> Full-Time</label>
+					<label><input type='checkbox' id='search_full_time' class='search_checkbox' value='3' /> Full-Time</label>
+					<label><input type='checkbox' id='search_part_time' class='search_checkbox' value='4' /> Part-Time</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -301,10 +317,13 @@
 								Description
 							</td>
 							<td style='text-align:center;'>
+								Full-Time
+							</td>
+							<td style='text-align:center;'>
 								Part-Time
 							</td>
 							<td style='text-align:center;'>
-								Full-Time
+								Actions
 							</td>
 						</tr>
 						<?php
@@ -321,10 +340,15 @@
 										<?= nl2br($major['description']) ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
-										<?= ($major['part_time'] ? "Yes" : "No") ?>
+										<?= ($major['full_time'] ? "Yes" : "No") ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
-										<?= ($major['full_time'] ? "Yes" : "No") ?>
+										<?= ($major['part_time'] ? "Yes" : "No") ?>
+									</td>
+									<td style='text-align:center;'>
+										<a href='edit_major.php?m=<?= $id ?>'>
+											[ Edit ]
+										</a>
 									</td>
 								</tr>
 						<?php
@@ -365,6 +389,9 @@
 							<td style='text-align:center;'>
 								Quarter
 							</td>
+							<td style='text-align:center;'>
+								Actions
+							</td>
 						</tr>
 						<?php
 							foreach($rows as $id => $project){
@@ -390,6 +417,11 @@
 									</td>
 									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['quarter'] ?>
+									</td>
+									<td style='text-align:center;'>
+										<a href='edit_project.php?p=<?= $id ?>'>
+											[ Edit ]
+										</a>
 									</td>
 								</tr>
 						<?php
