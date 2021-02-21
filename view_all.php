@@ -18,16 +18,16 @@
 	
 	if(isset($_GET['t'])){
 		switch($_GET['t']){
+			case "ft":
+				$rows = get_all_accounts([1]);
+				break;
+			
 			case "students":
 				$rows = get_all_accounts([1, 2]);
 				break;
 			
 			case "pt":
 				$rows = get_all_accounts([2]);
-				break;
-			
-			case "ft":
-				$rows = get_all_accounts([1]);
 				break;
 			
 			case "faculty":
@@ -44,6 +44,10 @@
 			
 			case "projects":
 				$rows = get_all_projects();
+				break;
+			
+			case "groups":
+				$rows = get_all_groups();
 				break;
 			
 			default:
@@ -65,20 +69,23 @@
 		<?php include("include/templates/header.php"); ?>
 		<table id='view_all' class='basic_table'>
 			<tr>
-				<td style='width:20%; text-align:center;' onClick="show_student_options();">
+				<td style='width:16%; text-align:center;' onClick="show_student_options();">
 					Students
 				</td>
-				<td style='width:20%; text-align:center;' onClick="get_accounts('faculty');">
+				<td style='width:16%; text-align:center;' onClick="get_accounts('faculty');">
 					Faculty
 				</td>
-				<td style='width:20%; text-align:center;' onClick="get_accounts('admin');">
+				<td style='width:16%; text-align:center;' onClick="get_accounts('admin');">
 					Admin
 				</td>
-				<td style='width:20%; text-align:center;' onClick="get_accounts('majors');">
+				<td style='width:16%; text-align:center;' onClick="get_accounts('majors');">
 					Majors
 				</td>
-				<td style='width:20%; text-align:center;' onClick="get_accounts('projects');">
+				<td style='width:16%; text-align:center;' onClick="get_accounts('projects');">
 					Projects
+				</td>
+				<td style='width:16%; text-align:center;' onClick="get_accounts('groups');">
+					Groups
 				</td>
 			</tr>
 		</table>
@@ -422,6 +429,88 @@
 						?>
 					</table>
 		<?php
+				}elseif($_GET['t'] == "groups"){
+		?>
+					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
+					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
+					<label><input type='checkbox' id='search_supervisor' class='search_checkbox' value='2' /> Supervisor</label>
+					<label><input type='checkbox' id='search_assessor' class='search_checkbox' value='3' /> Assessor</label>
+					<label><input type='checkbox' id='search_members' class='search_checkbox' value='4' /> Members</label>
+					<label><input type='checkbox' id='search_project' class='search_checkbox' value='5' /> Project</label>
+					<label><input type='checkbox' id='search_deadline' class='search_checkbox' value='6' /> Deadline</label>
+					<br />
+					<br />
+					<table id='filter_table' class='basic_table'>
+						<tr>
+							<td style='text-align:center;'>
+								ID
+							</td>
+							<td style='text-align:center;'>
+								Name
+							</td>
+							<td style='text-align:center;'>
+								Supervisor
+							</td>
+							<td style='text-align:center;'>
+								Assessor
+							</td>
+							<td style='text-align:center;'>
+								Members
+							</td>
+							<td style='text-align:center;'>
+								Project
+							</td>
+							<td style='text-align:center;'>
+								Deadline
+							</td>
+							<td style='text-align:center;'>
+								Actions
+							</td>
+						</tr>
+						<?php
+							foreach($rows as $id => $group){
+						?>
+								<tr>
+									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+										<?= $id ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+										<?= $group['name'] ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->id} - {$group['supervisor']->get_name()}") ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->id} - {$group['assessor']->get_name()}") ?>
+									</td>
+									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
+										<?php
+											foreach($group['members'] as $member){
+										?>
+												<?= $member->id ?> - <?= $member->get_name() ?>
+												<br />
+										<?php
+											}
+										?>
+									</td>
+									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
+										<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+										<?= $group['deadline'] ?>
+									</td>
+									<td style='text-align:center;'>
+										<a href='edit_group.php?g=<?= $id ?>'>
+											[ Edit ]
+										</a>
+									</td>
+								</tr>
+						<?php
+							}
+						?>
+					</table>
+		<?php
 				}
 			}
 		?>
@@ -449,6 +538,8 @@
 				window.location.href = "view_major?m=" + id;
 			}else if(type == "project"){
 				window.location.href = "view_project?p=" + id;
+			}else if(type == "group"){
+				window.location.href = "view_group?g=" + id;
 			}
 		}
 	</script>
