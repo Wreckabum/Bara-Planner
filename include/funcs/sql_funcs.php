@@ -58,7 +58,7 @@
 			$where = "WHERE `type` in ('". implode("', '", $type) ."')";
 		}
 		
-		$query = db_query("SELECT `*` FROM `accounts` {$where} ORDER BY `id` ASC;");
+		$query = db_query("SELECT * FROM `accounts` {$where} ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -103,7 +103,7 @@
 		@return	2D array
 	*/
 	function get_all_majors(){
-		$query = db_query("SELECT `*` FROM `majors` ORDER BY `id` ASC;");
+		$query = db_query("SELECT * FROM `majors` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -125,7 +125,7 @@
 	*/
 	function get_major($id){
 		if(is_array($id)){
-			$query = db_query("SELECT `*` FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
+			$query = db_query("SELECT * FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
@@ -138,7 +138,7 @@
 			
 			return $output;
 		}else{
-			return mysqli_fetch_assoc(db_query("SELECT `*` FROM `majors` WHERE `id` = '{$id}';"));
+			return mysqli_fetch_assoc(db_query("SELECT * FROM `majors` WHERE `id` = '{$id}';"));
 		}
 	}
 	
@@ -148,7 +148,7 @@
 		@return	2D array
 	*/
 	function get_all_projects(){
-		$query = db_query("SELECT `*` FROM `projects` ORDER BY `id` ASC;");
+		$query = db_query("SELECT * FROM `projects` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -176,7 +176,7 @@
 		}
 		
 		if(is_array($id)){
-			$query = db_query("SELECT `*` FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
+			$query = db_query("SELECT * FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
@@ -190,7 +190,7 @@
 			
 			return $output;
 		}else{
-			return mysqli_fetch_assoc(db_query("SELECT `*` FROM `projects` WHERE `{$from}` = '{$id}';"));
+			return mysqli_fetch_assoc(db_query("SELECT * FROM `projects` WHERE `{$from}` = '{$id}';"));
 		}
 	}
 	
@@ -200,7 +200,7 @@
 		@return	2D array
 	*/
 	function get_all_groups(){
-		$query = db_query("SELECT `*` FROM `groups` ORDER BY `id` ASC;");
+		$query = db_query("SELECT * FROM `groups` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -238,7 +238,7 @@
 	*/
 	function get_group($id){		
 		if(is_array($id)){
-			$query = db_query("SELECT `*` FROM `groups` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
+			$query = db_query("SELECT * FROM `groups` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
@@ -267,7 +267,7 @@
 			
 			return $output;
 		}else{
-			$group = mysqli_fetch_assoc(db_query("SELECT `*` FROM `groups` WHERE `id` = '{$id}';"));
+			$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE `id` = '{$id}';"));
 			
 			$output['id'] = $group['id'];
 			$output['name'] = $group['name'];
