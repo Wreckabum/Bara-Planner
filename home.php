@@ -25,19 +25,12 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<?php
-			require_once("include/funcs/sql_funcs.php");
-			
-			sql_connect();
-			
 			//Testing accounts
 			$super = get_account(1);
 			$admin = get_account(2);
 			$prof = get_account(10);
 			$ft = get_account(100);
 			$pt = get_account(1000);
-			
-			//Close connection
-			@mysqli_close($GLOBALS['mysql_link']);
 		?>
 		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
