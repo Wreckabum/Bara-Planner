@@ -65,7 +65,7 @@
 				</tr>
 				<tr>
 					<td>
-						Last Name
+						Name
 					</td>
 					<td>
 						<input type='text' name='name' placeholder='Name' maxlength='64'  style='width:97%;' required />
