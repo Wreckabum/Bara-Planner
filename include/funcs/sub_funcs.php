@@ -1,6 +1,6 @@
 <?php
 
-	function generatePassword(){
+	function generate_password(){
 			$password_list = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?~@#-_+<>[]{}';
 		    $password_list_length = strlen($password_list) - 1; //strlen starts from 0 so to get number of characters deduct 1
 		     
