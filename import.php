@@ -20,13 +20,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PHP import Excel data</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>PHP import csv data</title>
+
 	<?php include("include/templates/header.php"); ?>
 </head>
 <body>
 <div class="container">
-	<h1>Upload Excel File</h1>
+	<h1>Upload CSV File</h1>
 	<form method="POST" action="upload_csv.php" enctype="multipart/form-data">
 		<div class="form-group">
 			<label>Choose File</label>
