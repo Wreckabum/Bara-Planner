@@ -16,6 +16,12 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
+	//Ensure not student
+	if($account->is_student()){
+		header("location: home.php");
+		exit();
+	}
+	
 	if(isset($_GET['t'])){
 		switch($_GET['t']){
 			case "ft":
@@ -149,9 +155,15 @@
 							<td style='text-align:center;'>
 								Choices
 							</td>
-							<td style='text-align:center;'>
-								Actions
-							</td>
+							<?php
+								if($account->is_admin()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
 							foreach($rows as $student){
@@ -184,11 +196,17 @@
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
 										
 									</td>
-									<td style='text-align:center;'>
-										<a href='edit_student.php?a=<?= $student->id ?>'>
-											[ Edit ]
-										</a>
-									</td>
+									<?php
+										if($account->is_admin()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_student.php?a=<?= $student->id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}
@@ -222,9 +240,15 @@
 							<td style='text-align:center;'>
 								Majors
 							</td>
-							<td style='text-align:center;'>
-								Actions
-							</td>
+							<?php
+								if($account->is_admin()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
 							foreach($rows as $faculty){
@@ -245,11 +269,17 @@
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
 										<?= $faculty->get_majors(true) ?>
 									</td>
-									<td style='text-align:center;'>
-										<a href='edit_faculty.php?a=<?= $faculty->id ?>'>
-											[ Edit ]
-										</a>
-									</td>
+									<?php
+										if($account->is_admin()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_faculty.php?a=<?= $faculty->id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}
@@ -279,23 +309,43 @@
 							<td style='text-align:center;'>
 								Phone
 							</td>
+							<?php
+								if($account->is_super()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
-							foreach($rows as $faculty){
+							foreach($rows as $admin){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->id ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+										<?= $admin->id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_name() ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+										<?= $admin->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_email() ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+										<?= $admin->get_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_phone() ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+										<?= $admin->get_phone() ?>
 									</td>
+									<?php
+										if($account->is_super()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_admin.php?a=<?= $admin->id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}
@@ -329,9 +379,15 @@
 							<td style='text-align:center;'>
 								Part-Time
 							</td>
-							<td style='text-align:center;'>
-								Actions
-							</td>
+							<?php
+								if($account->is_admin()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
 							foreach($rows as $id => $major){
@@ -352,11 +408,17 @@
 									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
 										<?= ($major['part_time'] ? "Yes" : "No") ?>
 									</td>
-									<td style='text-align:center;'>
-										<a href='edit_major.php?m=<?= $id ?>'>
-											[ Edit ]
-										</a>
-									</td>
+									<?php
+										if($account->is_admin()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_major.php?m=<?= $id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}
@@ -392,9 +454,15 @@
 							<td style='text-align:center;'>
 								Quarter
 							</td>
-							<td style='text-align:center;'>
-								Actions
-							</td>
+							<?php
+								if($account->is_admin()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
 							foreach($rows as $id => $project){
@@ -418,11 +486,17 @@
 									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['quarter'] ?>
 									</td>
-									<td style='text-align:center;'>
-										<a href='edit_project.php?p=<?= $id ?>'>
-											[ Edit ]
-										</a>
-									</td>
+									<?php
+										if($account->is_admin()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_project.php?p=<?= $id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}
@@ -464,9 +538,15 @@
 							<td style='text-align:center;'>
 								Deadline
 							</td>
-							<td style='text-align:center;'>
-								Actions
-							</td>
+							<?php
+								if($account->is_admin()){
+							?>
+									<td style='text-align:center;'>
+										Actions
+									</td>
+							<?php
+								}
+							?>
 						</tr>
 						<?php
 							foreach($rows as $id => $group){
@@ -500,11 +580,17 @@
 									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
 										<?= $group['deadline'] ?>
 									</td>
-									<td style='text-align:center;'>
-										<a href='edit_group.php?g=<?= $id ?>'>
-											[ Edit ]
-										</a>
-									</td>
+									<?php
+										if($account->is_admin()){
+									?>
+											<td style='text-align:center;'>
+												<a href='edit_group.php?g=<?= $id ?>'>
+													[ Edit ]
+												</a>
+											</td>
+									<?php
+										}
+									?>
 								</tr>
 						<?php
 							}

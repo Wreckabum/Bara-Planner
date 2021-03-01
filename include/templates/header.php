@@ -38,7 +38,7 @@
 </style>
 
 <div class="navbar navbar-expand-md navbar-dark bg-dark mb-4" role="navigation">
-    <a class="navbar-brand" href="#">Welcome </a>
+    <a class="navbar-brand" href="home.php">Welcome </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -49,10 +49,15 @@
 					<?= $account->get_name() ?>
 				</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="view_all.php">View All</a>
-            </li>
 			<?php
+				if(!$account->is_student()){
+			?>
+					<li class="nav-item">
+						<a class="nav-link" href="view_all.php">View All</a>
+					</li>
+			<?php
+				}
+				
 				if($account->is_admin()){
 			?>
 					<li class="nav-item">
@@ -69,6 +74,14 @@
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="import.php">Import</a>
+					</li>
+			<?php
+				}
+				
+				if($account->is_super()){
+			?>
+					<li class="nav-item">
+						<a class="nav-link" href="add_admin.php">Add an administrator</a>
 					</li>
 			<?php
 				}

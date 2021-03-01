@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
+	//If not super admin
+	if(!$account->is_super()){
 		header("location: home.php");
 		exit();
 	}
@@ -28,10 +28,6 @@
 		$value = htmlspecialchars($value);
 	});
 	
-	$_POST['type'] = (int)$_POST['type'];
-	$_POST['year'] = (int)$_POST['year'];
-	$_POST['quarter'] = (int)$_POST['quarter'];
-	
 	if(isset($_POST['add'])){
 		if(db_query(
 			"INSERT INTO
@@ -40,50 +36,40 @@
 					`name`, 
 					`email`, 
 					`type`, 
-					`majors`, 
-					`year`, 
-					`quarter`,
 					`phone`)
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
 					'{$_POST['email']}', 
-					'{$_POST['type']}', 
-					'[\"{$_POST['major']}\"]', 
-					'{$_POST['year']}', 
-					'{$_POST['quarter']}', 
+					'8', 
 					'{$_POST['phone']}')"
 			) !== true){
 			//Error when adding
-			header("location: add_student.php?err=1");
+			header("location: add_admin.php?err=1");
 		}else{
 			//Sucessfully added
 			header("location: view_account.php?a={$_POST['id']}");
 		}
-	}if(isset($_POST['edit'])){
+	}elseif(isset($_POST['edit'])){
 		if(db_query(
 			"UPDATE `accounts` 
 				SET
 					`id` = '{$_POST['new_id']}',
 					`name` = '{$_POST['name']}', 
 					`email` = '{$_POST['email']}', 
-					`type` = '{$_POST['type']}', 
-					`majors` = '[\"{$_POST['major']}\"]', 
-					`year` = '{$_POST['year']}', 
-					`quarter` = '{$_POST['quarter']}',
 					`phone` = '{$_POST['phone']}'
 				WHERE
 					`id` = '{$_POST['old_id']}';"
 			) !== true){
 			//Error when updating
-			header("location: add_student.php?a={$_POST['old_id']}err=1");
+			header("location: edit_admin.php?a={$_POST['old_id']}err=1");
 		}else{
 			//Sucessfully edited
 			header("location: view_account.php?a={$_POST['new_id']}");
 		}
 	}else{
 		//Unknown error
-		header("location: view_all.php?t=students");
+		header("location: view_all.php?t=admin");
 	}
 	
 	//Close connection

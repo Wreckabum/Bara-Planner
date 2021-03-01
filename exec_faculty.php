@@ -39,7 +39,7 @@
 					`majors`, 
 					`phone`)
 				VALUES
-					(NULL, 
+					('{$_POST['id']}', 
 					'{$_POST['name']}', 
 					'{$_POST['email']}', 
 					'0', 
@@ -50,24 +50,25 @@
 			header("location: add_faculty.php?err=1");
 		}else{
 			//Sucessfully added
-			header("location: view_account.php?a=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
+			header("location: view_account.php?a={$_POST['id']}");
 		}
 	}elseif(isset($_POST['edit'])){
 		if(db_query(
 			"UPDATE `accounts` 
 				SET
+					`id` = '{$_POST['new_id']}',
 					`name` = '{$_POST['name']}', 
 					`email` = '{$_POST['email']}', 
 					`majors` = '". addslashes(json_encode($_POST['majors'])) ."', 
 					`phone` = '{$_POST['phone']}'
 				WHERE
-					`id` = '{$_POST['id']}';"
+					`id` = '{$_POST['old_id']}';"
 			) !== true){
 			//Error when updating
-			header("location: edit_faculty.php?a={$_POST['id']}err=1");
+			header("location: edit_faculty.php?a={$_POST['old_id']}err=1");
 		}else{
 			//Sucessfully edited
-			header("location: view_account.php?a={$_POST['id']}");
+			header("location: view_account.php?a={$_POST['new_id']}");
 		}
 	}else{
 		//Unknown error

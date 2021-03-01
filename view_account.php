@@ -74,6 +74,7 @@
 				</td>
 			</tr>
 			<?php
+				//For non admin acocunts, show extra details
 				if(!$view_account->is_admin()){
 					if($view_account->is_student()){
 			?>
@@ -130,6 +131,23 @@
 			?>
 		</table>
 		<br />
+		<?php
+			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin())){
+				$go_to = "";
+				
+				if($view_account->is_admin()){
+					$go_to = "edit_admin";
+				}elseif($view_account->is_faculty()){
+					$go_to = "edit_faculty";
+				}elseif($view_account->is_student()){
+					$go_to = "edit_student";
+				}
+		?>
+				<a href="<?= $go_to ?>?a=<?= $view_account->id ?>">Edit Account</a>
+				<br />
+		<?php
+			}
+		?>
 		<a href='home.php'>Back to main page</a>
 	</body>
 </html>

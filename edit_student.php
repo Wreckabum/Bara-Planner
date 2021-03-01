@@ -68,7 +68,7 @@
 						ID
 					</td>
 					<td>
-						<?= $student->id ?>
+						<input type='text' name='new_id' maxlength='10' value='<?= $student->id ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -141,7 +141,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='id' value='<?= $student->id ?>'/>
+						<input type='hidden' name='old_id' value='<?= $student->id ?>'/>
 						<input type='submit' name='edit' value='Edit student'>
 					</td>
 				</tr>

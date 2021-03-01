@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
+	//If not super admin
+	if(!$account->is_super()){
 		header("location: home.php");
 		exit();
 	}
@@ -35,32 +35,24 @@
 				break;
 		}
 	}
-	
-	try{
-		$faculty = get_account(str_clean($_GET['a']));
-	}catch(Exception $e){
-		header("location: view_all.php?t=faculty");
-		@mysqli_close($GLOBALS['mysql_link']);
-		exit();
-	}
 ?>
 
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Edit a faculty account</title>
+		<title>Add a new faculty member</title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
-		<form action='exec_faculty.php' method='POST'>
-			<table id='edit_faculty' class='basic_table' style='width:auto;'>
+		<form action='exec_admin.php' method='POST'>
+			<table id='add_admin' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
-						Edit faculty member
+						Add a new administrator
 					</td>
 				</tr>
 				<tr>
@@ -68,7 +60,7 @@
 						ID
 					</td>
 					<td>
-						<input type='text' name='new_id' maxlength='10' value='<?= $faculty->id ?>' style='width:97%;' required />
+						<input type='text' name='id' placeholder='ID' maxlength='10' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -76,7 +68,7 @@
 						Name
 					</td>
 					<td>
-						<input type='text' name='name' maxlength='64' value='<?= $faculty->get_name() ?>' style='width:97%;' required />
+						<input type='text' name='name' placeholder='Name' maxlength='64' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -84,24 +76,7 @@
 						E-mail
 					</td>
 					<td>
-						<input type='email' name='email' maxlength='64' value='<?= $faculty->get_email() ?>'  style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Majors
-					</td>
-					<td>
-						<?php
-							$all_majors = get_all_majors();
-							
-							foreach($all_majors as $id => $details){
-						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' <?= (in_array($id, $faculty->get_majors()) ? "checked" : "") ?>/><?= $id ?> - <?= $details['name'] ?></label>
-								<br />
-						<?php
-							}
-						?>
+						<input type='email' name='email' placeholder='account@email.com' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -109,13 +84,12 @@
 						Phone number
 					</td>
 					<td>
-						<input type='text' name='phone' value='<?= $faculty->get_phone() ?>' style='width:97%;' required />
+						<input type='text' name='phone' placeholder='98789636' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_id' value='<?= $faculty->id ?>'/>
-						<input type='submit' name='edit' value='Edit faculty member'>
+						<input type='submit' name='add' value='Add administrator'>
 					</td>
 				</tr>
 			</table>

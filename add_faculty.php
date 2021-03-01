@@ -57,6 +57,14 @@
 				</tr>
 				<tr>
 					<td>
+						ID
+					</td>
+					<td>
+						<input type='text' name='id' placeholder='ID' maxlength='10' style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
 						Name
 					</td>
 					<td>
