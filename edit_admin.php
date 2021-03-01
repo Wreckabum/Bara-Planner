@@ -57,7 +57,7 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_admin.php' method='POST'>
-			<table id='edit_admin' class='basic_table' style='width:auto;'>
+			<table id='edit_admin' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
 						Edit administrator
@@ -65,10 +65,18 @@
 				</tr>
 				<tr>
 					<td>
-						ID
+						SIM ID
 					</td>
 					<td>
-						<input type='text' name='new_id' maxlength='10' value='<?= $admin->id ?>' style='width:97%;' required />
+						<input type='text' name='new_sim_id' maxlength='10' value='<?= $admin->sim_id ?>' style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						UOW ID
+					</td>
+					<td>
+						<input type='text' name='new_uow_id' maxlength='10' value='<?= $admin->uow_id ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -105,7 +113,8 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_id' value='<?= $admin->id ?>'/>
+						<input type='hidden' name='old_sim_id' value='<?= $admin->sim_id ?>'/>
+						<input type='hidden' name='old_uow_id' value='<?= $admin->uow_id ?>'/>
 						<input type='submit' name='edit' value='Edit admnistrator'>
 					</td>
 				</tr>

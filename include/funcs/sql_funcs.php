@@ -58,17 +58,17 @@
 			$where = "WHERE `type` in ('". implode("', '", $type) ."')";
 		}
 		
-		$query = db_query("SELECT * FROM `accounts` {$where} ORDER BY `id` ASC;");
+		$query = db_query("SELECT * FROM `accounts` {$where} ORDER BY `sim_id` ASC;");
 		
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
 			if($row['type'] == 1 || $row['type'] == 2){
-				$output[] = new Student($row['id']);
+				$output[] = new Student($row['sim_id']);
 			}elseif($row['type'] == 8 || $row['type'] == 9){
-				$output[] = new Admin($row['id']);
+				$output[] = new Admin($row['sim_id']);
 			}elseif($row['type'] == 0){
-				$output[] = new Faculty($row['id']);
+				$output[] = new Faculty($row['sim_id']);
 			}
 		}
 		
@@ -76,7 +76,7 @@
 	}
 	
 	/*
-		Returns the account object based on ID
+		Returns the account object based on SIM ID
 		
 		@param	int
 		@return	Faculty/Student/Admin object
@@ -84,7 +84,7 @@
 	function get_account($id){
 		str_clean($id);
 		
-		$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `id` = '{$id}';"))['type'];
+		$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_id` = '{$id}';"))['type'];
 		
 		if($type == 1 || $type == 2){
 			return new Student($id);

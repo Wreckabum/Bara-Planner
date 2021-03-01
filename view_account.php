@@ -17,7 +17,7 @@
 	$account = get_account($_SESSION["id"]);
 	
 	//For students, only allow viewing of own accounts
-	if($account->is_student() && $account->id != $_GET['a']){
+	if($account->is_student() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -146,7 +146,7 @@
 		</table>
 		<br />
 		<?php
-			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->id == $view_account->id){
+			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->sim_id == $view_account->sim_id){
 				$go_to = "";
 				
 				if($view_account->is_admin()){
@@ -157,7 +157,7 @@
 					$go_to = "edit_student";
 				}
 		?>
-				<a href="<?= $go_to ?>?a=<?= $view_account->id ?>">Edit Account</a>
+				<a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">Edit Account</a>
 				<br />
 		<?php
 			}

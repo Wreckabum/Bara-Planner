@@ -21,13 +21,13 @@
 	
 	if($account->is_student()){
 		//For students, only allow viewing of own group
-		$group = get_group_by_member($account->id);
+		$group = get_group_by_member($account->sim_id);
 	}elseif(isset($_GET['g'])){
 		//Non-students viewing specific group	
 		$group = get_group($_GET['g']);
 	}elseif($account->is_faculty()){
 		//Faculty viewing their assigned groups
-		$group_array = get_group_by_faculty($account->id);
+		$group_array = get_group_by_faculty($account->sim_id);
 	}
 	
 	//If no such group
@@ -69,7 +69,7 @@
 								Supervisor:
 							</td>
 							<td>
-								<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->id})") ?>
+								<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
 							</td>
 						</tr>
 						<tr>
@@ -77,7 +77,7 @@
 								Assessor:
 							</td>
 							<td>
-								<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->id})") ?>
+								<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
 							</td>
 						</tr>
 						
@@ -89,7 +89,7 @@
 								<?php
 									foreach($group['members'] as $member){
 								?>
-										<?= $member->get_name() ?> (<?= $member->id ?>)
+										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 										<br />
 								<?php
 									}
@@ -137,7 +137,7 @@
 							Supervisor:
 						</td>
 						<td>
-							<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->id})") ?>
+							<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
 						</td>
 					</tr>
 					<tr>
@@ -145,7 +145,7 @@
 							Assessor:
 						</td>
 						<td>
-							<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->id})") ?>
+							<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
 						</td>
 					</tr>
 					
@@ -157,7 +157,7 @@
 							<?php
 								foreach($group['members'] as $member){
 							?>
-									<?= $member->get_name() ?> (<?= $member->id ?>)
+									<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 									<br />
 							<?php
 								}

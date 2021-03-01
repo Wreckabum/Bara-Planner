@@ -32,14 +32,16 @@
 		if(db_query(
 			"INSERT INTO
 				`accounts`
-					(`id`, 
+					(`sim_id`, 
+					`uow_id`, 
 					`name`, 
 					`sim_email`, 
 					`personal_email`, 
 					`type`, 
 					`phone`)
 				VALUES
-					('{$_POST['id']}', 
+					('{$_POST['sim_id']}', 
+					'{$_POST['uow_id']}', 
 					'{$_POST['name']}', 
 					'{$_POST['sim_email']}', 
 					'{$_POST['personal_email']}', 
@@ -50,25 +52,26 @@
 			header("location: add_admin.php?err=1");
 		}else{
 			//Sucessfully added
-			header("location: view_account.php?a={$_POST['id']}");
+			header("location: view_account.php?a={$_POST['sim_id']}");
 		}
 	}elseif(isset($_POST['edit'])){
 		if(db_query(
 			"UPDATE `accounts` 
 				SET
-					`id` = '{$_POST['new_id']}',
+					`sim_id` = '{$_POST['new_sim_id']}', 
+					`uow_id` = '{$_POST['new_uow_id']}', 
 					`name` = '{$_POST['name']}', 
 					`sim_email` = '{$_POST['sim_email']}',  
 					`personal_email` = '{$_POST['personal_email']}',  
 					`phone` = '{$_POST['phone']}'
 				WHERE
-					`id` = '{$_POST['old_id']}';"
+					`sim_id` = '{$_POST['old_sim_id']}';"
 			) !== true){
 			//Error when updating
-			header("location: edit_admin.php?a={$_POST['old_id']}err=1");
+			header("location: edit_admin.php?a={$_POST['old_sim_id']}err=1");
 		}else{
 			//Sucessfully edited
-			header("location: view_account.php?a={$_POST['new_id']}");
+			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{
 		//Unknown error

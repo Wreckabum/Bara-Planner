@@ -115,22 +115,26 @@
 				if($_GET['t'] == "students" || $_GET['t'] == "pt" || $_GET['t'] == "ft"){
 		?>
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
-					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
-					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
-					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
-					<label><input type='checkbox' id='search_type' class='search_checkbox' value='5'/> Type</label>
-					<label><input type='checkbox' id='search_major' class='search_checkbox' value='6' /> Major</label>
-					<label><input type='checkbox' id='search_year' class='search_checkbox' value='7' /> Year</label>
-					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='8' /> Quarter</label>
-					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='9' /> Choices</label>
+					<label><input type='checkbox' id='search_sim_id' class='search_checkbox' value='0' checked/> SIM ID</label>
+					<label><input type='checkbox' id='search_uow_id' class='search_checkbox' value='1' checked/> UOW ID</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='2' /> Name</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='3' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='4' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='5' /> Phone</label>
+					<label><input type='checkbox' id='search_type' class='search_checkbox' value='6'/> Type</label>
+					<label><input type='checkbox' id='search_major' class='search_checkbox' value='7' /> Major</label>
+					<label><input type='checkbox' id='search_year' class='search_checkbox' value='8' /> Year</label>
+					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='9' /> Quarter</label>
+					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='10' /> Choices</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
-								ID
+								SIM ID
+							</td>
+							<td style='text-align:center;'>
+								UOW ID
 							</td>
 							<td style='text-align:center;'>
 								Name
@@ -173,41 +177,44 @@
 							foreach($rows as $student){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
-										<?= $student->id ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+										<?= $student->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+										<?= $student->uow_id ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_phone() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= ($student->is_part_time() ? "Part-Time" : ($student->is_full_time() ? "Full-Time" : "")) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_majors(true) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_year() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_quarter() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										
 									</td>
 									<?php
 										if($account->is_admin()){
 									?>
 											<td style='text-align:center;'>
-												<a href='edit_student.php?a=<?= $student->id ?>'>
+												<a href='edit_student.php?a=<?= $student->sim_id ?>'>
 													[ Edit ]
 												</a>
 											</td>
@@ -223,18 +230,22 @@
 				}elseif($_GET['t'] == "faculty"){
 		?>
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
-					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
-					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
-					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
-					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='5' /> Majors</label>
+					<label><input type='checkbox' id='search_sim_id' class='search_checkbox' value='0' checked/> SIM ID</label>
+					<label><input type='checkbox' id='search_uow_id' class='search_checkbox' value='1' checked/> UOW ID</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='2' /> Name</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='3' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='4' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='5' /> Phone</label>
+					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='6' /> Majors</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
-								ID
+								SIM ID
+							</td>
+							<td style='text-align:center;'>
+								UOW ID
 							</td>
 							<td style='text-align:center;'>
 								Name
@@ -265,29 +276,32 @@
 							foreach($rows as $faculty){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->id ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+										<?= $faculty->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+										<?= $faculty->uow_id ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_phone() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_majors(true) ?>
 									</td>
 									<?php
 										if($account->is_admin()){
 									?>
 											<td style='text-align:center;'>
-												<a href='edit_faculty.php?a=<?= $faculty->id ?>'>
+												<a href='edit_faculty.php?a=<?= $faculty->sim_id ?>'>
 													[ Edit ]
 												</a>
 											</td>
@@ -303,17 +317,21 @@
 				}elseif($_GET['t'] == "admin"){
 		?>
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
-					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
-					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
-					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
+					<label><input type='checkbox' id='search_sim_id' class='search_checkbox' value='0' checked/> SIM ID</label>
+					<label><input type='checkbox' id='search_uow_id' class='search_checkbox' value='1' checked/> UOW ID</label>
+					<label><input type='checkbox' id='search_name' class='search_checkbox' value='2' /> Name</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='3' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='4' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='5' /> Phone</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
-								ID
+								SIM ID
+							</td>
+							<td style='text-align:center;'>
+								UOW ID
 							</td>
 							<td style='text-align:center;'>
 								Name
@@ -341,26 +359,29 @@
 							foreach($rows as $admin){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
-										<?= $admin->id ?>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+										<?= $admin->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+										<?= $admin->uow_id ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_phone() ?>
 									</td>
 									<?php
 										if($account->is_super()){
 									?>
 											<td style='text-align:center;'>
-												<a href='edit_admin.php?a=<?= $admin->id ?>'>
+												<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
 													[ Edit ]
 												</a>
 											</td>
@@ -580,16 +601,16 @@
 										<?= $group['name'] ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
-										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->id})") ?>
+										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
-										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->id})") ?>
+										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
 									</td>
 									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
 										<?php
 											foreach($group['members'] as $member){
 										?>
-												<?= $member->get_name() ?> (<?= $member->id ?>)
+												<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 												<br />
 										<?php
 											}

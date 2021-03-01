@@ -56,7 +56,7 @@
 				
 				//Store data in session variables
 				$_SESSION["loggedin"] = true;
-				$_SESSION["id"] = $result['id'];							
+				$_SESSION["id"] = $result['sim_id'];							
 				
 				//Redirect user to main landing page
 				header("location: home.php");

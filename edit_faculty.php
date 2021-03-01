@@ -65,10 +65,18 @@
 				</tr>
 				<tr>
 					<td>
-						ID
+						SIM ID
 					</td>
 					<td>
-						<input type='text' name='new_id' maxlength='10' value='<?= $faculty->id ?>' style='width:97%;' required />
+						<input type='text' name='new_sim_id' maxlength='10' value='<?= $faculty->sim_id ?>' style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						UOW ID
+					</td>
+					<td>
+						<input type='text' name='new_uow_id' maxlength='10' value='<?= $faculty->uow_id ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -122,7 +130,8 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_id' value='<?= $faculty->id ?>'/>
+						<input type='hidden' name='old_sim_id' value='<?= $faculty->sim_id ?>'/>
+						<input type='hidden' name='old_uow_id' value='<?= $faculty->uow_id ?>'/>
 						<input type='submit' name='edit' value='Edit faculty member'>
 					</td>
 				</tr>

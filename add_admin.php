@@ -57,10 +57,18 @@
 				</tr>
 				<tr>
 					<td>
-						ID
+						SIM ID
 					</td>
 					<td>
-						<input type='text' name='id' placeholder='ID' maxlength='10' style='width:97%;' required />
+						<input type='text' name='sim_id' placeholder='SIM ID' maxlength='10' style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						UOW ID
+					</td>
+					<td>
+						<input type='text' name='uow_id' placeholder='UOW ID' maxlength='10' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

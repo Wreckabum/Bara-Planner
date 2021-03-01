@@ -17,7 +17,7 @@
 	$account = get_account($_SESSION["id"]);
 	
 	//If not admin or own account
-	if(!$account->is_admin() && $account->id != $_POST['id']){
+	if(!$account->is_admin() && $account->sim_id != $_POST['id']){
 		header("location: home.php");
 		exit();
 	}
@@ -36,7 +36,8 @@
 		if(db_query(
 			"INSERT INTO
 				`accounts`
-					(`id`, 
+					(`sim_id`, 
+					`uow_id`, 
 					`name`, 
 					`sim_email`, 
 					`personal_email`, 
@@ -46,7 +47,8 @@
 					`quarter`,
 					`phone`)
 				VALUES
-					('{$_POST['id']}', 
+					('{$_POST['sim_id']}', 
+					'{$_POST['uow_id']}', 
 					'{$_POST['name']}', 
 					'{$_POST['sim_email']}', 
 					'{$_POST['personal_email']}', 
@@ -60,10 +62,10 @@
 			header("location: add_student.php?err=1");
 		}else{
 			//Sucessfully added
-			header("location: view_account.php?a={$_POST['id']}");
+			header("location: view_account.php?a={$_POST['sim_id']}");
 		}
-	}if(isset($_POST['edit'])){		
-		if($account->id == $_POST['id']){
+	}elseif(isset($_POST['edit'])){	
+		if($account->sim_id == $_POST['id']){
 			$query = 
 				"UPDATE `accounts` 
 				SET
@@ -71,31 +73,33 @@
 					`personal_email` = '{$_POST['personal_email']}', 
 					`phone` = '{$_POST['phone']}'
 				WHERE
-					`id` = '{$_POST['id']}';";
+					`sim_id` = '{$_POST['id']}';";
 			
-			$_POST['new_id'] = $_POST['id'];
+			$_POST['new_sim_id'] = $_POST['id'];
 		}else{
 			$query = 
 			"UPDATE `accounts` 
 				SET
-					`id` = '{$_POST['new_id']}',
+					`sim_id` = '{$_POST['new_sim_id']}', 
+					`uow_id` = '{$_POST['new_uow_id']}',
 					`name` = '{$_POST['name']}', 
-					`email` = '{$_POST['email']}', 
+					`sim_email` = '{$_POST['sim_email']}', 
+					`personal_email` = '{$_POST['personal_email']}', 
 					`type` = '{$_POST['type']}', 
 					`majors` = '[\"{$_POST['major']}\"]', 
 					`year` = '{$_POST['year']}', 
 					`quarter` = '{$_POST['quarter']}',
 					`phone` = '{$_POST['phone']}'
 				WHERE
-					`id` = '{$_POST['old_id']}';";
+					`sim_id` = '{$_POST['old_sim_id']}';";
 		}
 		
 		if(db_query($query) !== true){
 			//Error when updating
-			header("location: edit_student.php?a={$_POST['old_id']}err=1");
+			header("location: edit_student.php?a={$_POST['old_sim_id']}err=1");
 		}else{
 			//Sucessfully edited
-			header("location: view_account.php?a={$_POST['new_id']}");
+			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{
 		//Unknown error

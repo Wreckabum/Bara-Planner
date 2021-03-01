@@ -9,7 +9,9 @@
 	abstract class Account{
 		protected $raw;
 		
-		public	$id;
+		public	$sim_id;
+		public	$uow_id;
+		
 		private	$name;
 		private	$phone;
 		private	$sim_email;
@@ -24,12 +26,13 @@
 		public function __construct($id){
 			$id = str_clean($id);
 			
-			$query = db_query("SELECT * FROM `accounts` WHERE `id` = '{$id}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `accounts` WHERE `sim_id` = '{$id}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the account exists
 			if(mysqli_num_rows($query) == 1){
-				$this->id = $result['id'];
+				$this->sim_id = $result['sim_id'];
+				$this->uow_id = $result['uow_id'];
 				$this->name = $result['name'];
 				$this->phone = $result['phone'];
 				$this->sim_email = $result['sim_email'];

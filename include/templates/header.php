@@ -45,7 +45,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-				<a class="nav-link"  href='view_account.php?a=<?= $account->id ?>'>
+				<a class="nav-link"  href='view_account.php?a=<?= $account->sim_id ?>'>
 					<?= $account->get_name() ?>
 				</a>
             </li>
@@ -99,42 +99,3 @@
 		<a class="nav-link" href="logout.php">Logout</a>
     </div>
 </div>
-<!-- <div style='float:left;'>
-	Welcome 
-	<a href='#'>
-		<a href='view_account.php?a=<?= $account->id ?>'>
-			<?= $account->get_name() ?>
-		</a>
-	</a>!
-	<a href='view_all.php'>
-		[ View All ]
-	</a>
-	<?php
-		if($account->is_admin()){
-	?>
-			<a href='add_student.php'>
-				[ Add a new student ]
-			</a>
-			<a href='add_faculty.php'>
-				[ Add a new faculty member ]
-			</a>
-			<a href='add_major.php'>
-				[ Add a new major ]
-			</a>
-			<a href='add_project.php'>
-				[ Add a new project ]
-			</a>
-			<a href='import.php'>
-				[ Import file ]
-			</a>
-	<?php
-		}
-	?>
-</div>
-<div style='float:right;'>
-	<a href='logout.php'>
-		Logout
-	</a>
-</div>
-<br />
-<br /> -->

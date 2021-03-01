@@ -17,7 +17,7 @@
 	$account = get_account($_SESSION["id"]);
 	
 	//If not admin or not own account
-	if(!$account->is_admin() && $account->id != $_GET['a']){
+	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -57,7 +57,7 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_student.php' method='POST'>
-			<table id='edit_student' class='basic_table' style='width:<?= ($account->is_admin() ? "auto" : "30%") ?>;'>
+			<table id='edit_student' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
 						Edit a student
@@ -65,17 +65,35 @@
 				</tr>
 				<tr>
 					<td>
-						ID
+						SIM ID
 					</td>
 					<td>
 						<?php
 							if($account->is_admin()){
 						?>
-								<input type='text' name='new_id' maxlength='10' value='<?= $student->id ?>' style='width:97%;' required />
+								<input type='text' name='new_sim_id' maxlength='10' value='<?= $student->sim_id ?>' style='width:97%;' required />
 						<?php
 							}else{
 						?>
-								<?= $student->id ?>
+								<?= $student->sim_id ?>
+						<?php
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						UOW ID
+					</td>
+					<td>
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='text' name='new_uow_id' maxlength='10' value='<?= $student->uow_id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $student->uow_id ?>
 						<?php
 							}
 						?>
@@ -214,11 +232,12 @@
 						<?php
 							if($account->is_admin()){
 						?>
-								<input type='hidden' name='old_id' value='<?= $student->id ?>'/>
+								<input type='hidden' name='old_sim_id' value='<?= $student->sim_id ?>'/>
+								<input type='hidden' name='old_uow_id' value='<?= $student->uow_id ?>'/>
 						<?php
 							}else{
 						?>
-								<input type='hidden' name='id' value='<?= $student->id ?>'/>
+								<input type='hidden' name='id' value='<?= $student->sim_id ?>'/>
 						<?php
 							}
 						?>
