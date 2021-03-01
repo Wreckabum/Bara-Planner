@@ -26,13 +26,13 @@
 		<?php include("include/templates/header.php"); ?>
 		<?php
 			//Testing accounts
-			$super = get_account(1);
-			$admin = get_account(2);
-			$prof = get_account(10);
-			$ft = get_account(100);
-			$pt = get_account(1000);
+			$super = get_account(10261688);
+			$admin = get_account(10274631);
+			$prof = get_account(10284263);
+			$ft = get_account(10280958);
+			$pt = get_account(10213701);
 		?>
-		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -76,7 +76,7 @@
 			<tr>
 		</table>
 		<br />
-		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -119,7 +119,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -170,7 +170,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -237,7 +237,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:20%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
