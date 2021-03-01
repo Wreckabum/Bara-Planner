@@ -16,6 +16,12 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
+	//For students, only allow viewing of own accounts
+	if($account->is_student() && $account->id != $_GET['a']){
+		header("location: home.php");
+		exit();
+	}
+	
 	try{
 		$view_account = get_account($_GET['a']);
 	}catch(Exception $e){

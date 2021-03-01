@@ -58,6 +58,15 @@
 			<?php
 				}
 				
+				if($account->is_student() || $account->is_faculty()){
+					$s = ($account->is_faculty() ? "s" : "");
+			?>
+					<li class="nav-item">
+						<a class="nav-link" href="view_group.php">View Group<?= $s ?></a>
+					</li>
+			<?php
+				}
+				
 				if($account->is_admin()){
 			?>
 					<li class="nav-item">

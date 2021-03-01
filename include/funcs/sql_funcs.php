@@ -125,6 +125,11 @@
 	*/
 	function get_major($id){
 		if(is_array($id)){
+			array_walk_recursive($id, function(&$value, $key){
+				str_clean($value);
+				$value = htmlspecialchars($value);
+			});
+			
 			$query = db_query("SELECT * FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
@@ -138,6 +143,8 @@
 			
 			return $output;
 		}else{
+			str_clean($id);
+			
 			return mysqli_fetch_assoc(db_query("SELECT * FROM `majors` WHERE `id` = '{$id}';"));
 		}
 	}
@@ -176,6 +183,11 @@
 		}
 		
 		if(is_array($id)){
+			array_walk_recursive($id, function(&$value, $key){
+				str_clean($value);
+				$value = htmlspecialchars($value);
+			});
+			
 			$query = db_query("SELECT * FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
@@ -190,6 +202,8 @@
 			
 			return $output;
 		}else{
+			str_clean($id);
+			
 			return mysqli_fetch_assoc(db_query("SELECT * FROM `projects` WHERE `{$from}` = '{$id}';"));
 		}
 	}
@@ -238,6 +252,11 @@
 	*/
 	function get_group($id){		
 		if(is_array($id)){
+			array_walk_recursive($id, function(&$value, $key){
+				str_clean($value);
+				$value = htmlspecialchars($value);
+			});
+			
 			$query = db_query("SELECT * FROM `groups` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
@@ -267,6 +286,8 @@
 			
 			return $output;
 		}else{
+			str_clean($id);
+			
 			$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE `id` = '{$id}';"));
 			
 			$output['id'] = $group['id'];
@@ -293,5 +314,80 @@
 			
 			return $output;
 		}
+	}
+	
+	/*
+		Returns an array for a group based on membership
+		
+		@param	string
+		@return array
+	*/
+	function get_group_by_member($id){
+		str_clean($id);
+		
+		$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` where JSON_CONTAINS(`members`, '\"{$id}\"');"));
+			
+		$output['id'] = $group['id'];
+		$output['name'] = $group['name'];
+		$output['deadline'] = date_format(date_create($group['deadline']),"d M Y");;
+		
+		try{
+			$output['supervisor'] = new Faculty($group['supervisor']);
+		}catch(Exception $e){
+			$output['supervisor'] = null;
+		}
+		
+		try{
+			$output['assessor'] = new Faculty($group['assessor']);
+		}catch(Exception $e){
+			$output['assessor'] = null;
+		}
+		
+		foreach(json_decode($group['members']) as $member_id){
+			$output['members'][] = new Student ($member_id);
+		}
+		
+		$output['project'] = get_project($group['project'], "proj_id");
+		
+		return $output;
+	}
+	
+	/*
+		Returns an array for a group based on membership
+		
+		@param	string
+		@return 2D array
+	*/
+	function get_group_by_faculty($id){
+		str_clean($id);
+		
+		$query = db_query("SELECT * FROM `groups` WHERE `supervisor` = '{$id}' OR `assessor` = '{$id}';");
+			
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			$output[$row['id']]['name'] = $row['name'];
+			$output[$row['id']]['deadline'] = date_format(date_create($row['deadline']),"d M Y");;
+			
+			try{
+				$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
+			}catch(Exception $e){
+				$output[$row['id']]['supervisor'] = null;
+			}
+			
+			try{
+				$output[$row['id']]['assessor'] = new Faculty($row['assessor']);
+			}catch(Exception $e){
+				$output[$row['id']]['assessor'] = null;
+			}
+			
+			foreach(json_decode($row['members']) as $member_id){
+				$output[$row['id']]['members'][] = new Student ($member_id);
+			}
+			
+			$output[$row['id']]['project'] = get_project($row['project'], "proj_id");
+		}
+		
+		return $output;
 	}
 ?>
