@@ -21,64 +21,14 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title>Test</title>
-		
-	<style>
-		/*Add a black background color to the top navigation */
-		.topnav {
-		  background-color: #333;
-		  overflow: hidden;
-		}
-
-		/* Style the links inside the navigation bar */
-		.topnav a {
-		 float: left;
-		  color: #f2f2f2;
-		  text-align: center;
-		  padding: 14px 16px;
-		  text-decoration: none;
-		 font-size: 17px;
-		}
-
-		/* Change the color of links on hover */
-		.topnav a:hover {
-		 background-color: #ddd;
-		  color: black;
-		}
-
-		/* Adda color to the active/current link */
-		.topnava.active {
-		  background-color: #4CAF50;
-		  color: white;
-		}
-		
-		
-		
-		table {
-		  border-collapse: collapse;
-		  width: 100%;
-		}
-
-		th, td {
-		  padding: 8px;
-		  text-align: left;
-		  border-bottom: 1px solid #ddd;
-		}
-
-		tr:hover {background-color:#f5f5f5;}
-	</style>
+		<link rel='stylesheet' href='include/css/main.css' />
 	</head>
 	<body>
-	<div class="topnav">
-	  <a class="active" href="home.php">Home</a>
-	  <a href="#news">News</a>
-	  <a href="#contact">Contact</a>
-	  <a href="#about">About</a>
-	</div> 
 	
 		<?php include("include/templates/header.php"); ?>
 		
 
-		<table border='0';>
+		<table border='0'; class='project_table' >
 		<?php
 		$test = get_all_projects();
 		$counter = 0;
