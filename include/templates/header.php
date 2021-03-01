@@ -64,6 +64,9 @@
 					<li class="nav-item">
 						<a class="nav-link" href="view_group.php">View Group<?= $s ?></a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="list_projects.php">View All Projects</a>
+					</li>
 			<?php
 				}
 				
