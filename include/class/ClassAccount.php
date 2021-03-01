@@ -12,7 +12,8 @@
 		public	$id;
 		private	$name;
 		private	$phone;
-		private	$email;
+		private	$sim_email;
+		private	$personal_email;
 		protected int $account_type;
 		
 		protected $majors;
@@ -31,7 +32,8 @@
 				$this->id = $result['id'];
 				$this->name = $result['name'];
 				$this->phone = $result['phone'];
-				$this->email = $result['email'];
+				$this->sim_email = $result['sim_email'];
+				$this->personal_email = $result['personal_email'];
 				$this->account_type = $result['type'];
 				$this->raw = $result;
 			}else{
@@ -54,10 +56,17 @@
 		}
 		
 		/*
-			Get E-mail
+			Get SIM E-mail
 		*/
-		public function get_email(){
-			return $this->email;
+		public function get_sim_email(){
+			return $this->sim_email;
+		}
+		
+		/*
+			Get personal E-mail
+		*/
+		public function get_personal_email(){
+			return $this->personal_email;
 		}
 		
 		/*

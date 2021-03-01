@@ -91,10 +91,29 @@
 				</tr>
 				<tr>
 					<td>
-						E-mail
+						SIM E-mail
 					</td>
 					<td>
-						<input type='email' name='email' maxlength='64' value='<?= $student->get_email() ?>' style='width:97%;' required />
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='email' name='sim_email' value='<?= $student->get_sim_email() ?>' maxlength='64'  style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $student->get_sim_email() ?>
+						<?php
+							}
+						?>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Personal E-mail
+					</td>
+					<td>
+						<input type='email' name='personal_email' value='<?= $student->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

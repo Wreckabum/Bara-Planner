@@ -51,10 +51,18 @@
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					E-Mail:
+					SIM E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $super->get_email() ?>
+					<?= $super->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Personal E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $super->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -87,10 +95,18 @@
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					E-Mail:
+					SIM E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $admin->get_email() ?>
+					<?= $admin->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Personal E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $admin->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -122,10 +138,18 @@
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					E-Mail:
+					SIM E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $prof->get_email() ?>
+					<?= $prof->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Personal E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $prof->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -165,10 +189,18 @@
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					E-Mail:
+					SIM E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $ft->get_email() ?>
+					<?= $ft->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Personal E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $ft->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>
@@ -224,10 +256,18 @@
 			</tr>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
-					E-Mail:
+					SIM E-Mail:
 				</td>
 				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
-					<?= $pt->get_email() ?>
+					<?= $pt->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
+					Personal E-Mail:
+				</td>
+				<td style='width:70%; border:1px #000 solid; padding-left:7px;'>
+					<?= $pt->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>

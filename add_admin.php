@@ -73,10 +73,18 @@
 				</tr>
 				<tr>
 					<td>
-						E-mail
+						SIM E-mail
 					</td>
 					<td>
-						<input type='email' name='email' placeholder='account@email.com' maxlength='64'  style='width:97%;' required />
+						<input type='email' name='sim_email' placeholder='account@mymail.sim.edu.sg' maxlength='64'  style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Personal E-mail
+					</td>
+					<td>
+						<input type='email' name='personal_email' placeholder='account@email.com' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

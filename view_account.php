@@ -57,10 +57,18 @@
 			</tr>
 			<tr>
 				<td>
-					E-mail:
+					SIM E-mail:
 				</td>
 				<td>
-					<?= $view_account->get_email() ?>
+					<?= $view_account->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Personal E-mail:
+				</td>
+				<td>
+					<?= $view_account->get_personal_email() ?>
 				</td>
 			</tr>
 			<tr>

@@ -34,14 +34,16 @@
 				`accounts`
 					(`id`, 
 					`name`, 
-					`email`, 
+					`sim_email`, 
+					`personal_email`, 
 					`type`, 
 					`majors`, 
 					`phone`)
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
-					'{$_POST['email']}', 
+					'{$_POST['sim_email']}', 
+					'{$_POST['personal_email']}', 
 					'0', 
 					'". addslashes(json_encode($_POST['majors'])) ."', 
 					'{$_POST['phone']}')"
@@ -58,7 +60,8 @@
 				SET
 					`id` = '{$_POST['new_id']}',
 					`name` = '{$_POST['name']}', 
-					`email` = '{$_POST['email']}', 
+					`sim_email` = '{$_POST['sim_email']}', 
+					`personal_email` = '{$_POST['personal_email']}', 
 					`majors` = '". addslashes(json_encode($_POST['majors'])) ."', 
 					`phone` = '{$_POST['phone']}'
 				WHERE

@@ -117,13 +117,14 @@
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
 					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
-					<label><input type='checkbox' id='search_type' class='search_checkbox' value='4'/> Type</label>
-					<label><input type='checkbox' id='search_major' class='search_checkbox' value='5' /> Major</label>
-					<label><input type='checkbox' id='search_year' class='search_checkbox' value='6' /> Year</label>
-					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='7' /> Quarter</label>
-					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='8' /> Choices</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
+					<label><input type='checkbox' id='search_type' class='search_checkbox' value='5'/> Type</label>
+					<label><input type='checkbox' id='search_major' class='search_checkbox' value='6' /> Major</label>
+					<label><input type='checkbox' id='search_year' class='search_checkbox' value='7' /> Year</label>
+					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='8' /> Quarter</label>
+					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='9' /> Choices</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -135,7 +136,10 @@
 								Name
 							</td>
 							<td style='text-align:center;'>
-								Email
+								SIM Email
+							</td>
+							<td style='text-align:center;'>
+								Personal Email
 							</td>
 							<td style='text-align:center;'>
 								Phone
@@ -176,7 +180,10 @@
 										<?= $student->get_name() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
-										<?= $student->get_email() ?>
+										<?= $student->get_sim_email() ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
+										<?= $student->get_personal_email() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $student->id ?>');">
 										<?= $student->get_phone() ?>
@@ -218,9 +225,10 @@
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
 					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
-					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='4' /> Majors</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
+					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='5' /> Majors</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -232,7 +240,10 @@
 								Name
 							</td>
 							<td style='text-align:center;'>
-								Email
+								SIM Email
+							</td>
+							<td style='text-align:center;'>
+								Personal Email
 							</td>
 							<td style='text-align:center;'>
 								Phone
@@ -261,7 +272,10 @@
 										<?= $faculty->get_name() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
-										<?= $faculty->get_email() ?>
+										<?= $faculty->get_sim_email() ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
+										<?= $faculty->get_personal_email() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->id ?>');">
 										<?= $faculty->get_phone() ?>
@@ -291,8 +305,9 @@
 					Search: <input type='text' name='view_all_filter' id='view_all_filter' placeholder='Search for ticket' /> <span id='cancel_search'>X</span>
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
 					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
-					<label><input type='checkbox' id='search_email' class='search_checkbox' value='2' /> E-Mail</label>
-					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='3' /> Phone</label>
+					<label><input type='checkbox' id='search_sim_email' class='search_checkbox' value='2' /> SIM E-Mail</label>
+					<label><input type='checkbox' id='search_personal_email' class='search_checkbox' value='3' /> Personal E-Mail</label>
+					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='4' /> Phone</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -304,7 +319,10 @@
 								Name
 							</td>
 							<td style='text-align:center;'>
-								Email
+								SIM Email
+							</td>
+							<td style='text-align:center;'>
+								Personal Email
 							</td>
 							<td style='text-align:center;'>
 								Phone
@@ -330,7 +348,10 @@
 										<?= $admin->get_name() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
-										<?= $admin->get_email() ?>
+										<?= $admin->get_sim_email() ?>
+									</td>
+									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
+										<?= $admin->get_personal_email() ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->id ?>');">
 										<?= $admin->get_phone() ?>

@@ -38,7 +38,8 @@
 				`accounts`
 					(`id`, 
 					`name`, 
-					`email`, 
+					`sim_email`, 
+					`personal_email`, 
 					`type`, 
 					`majors`, 
 					`year`, 
@@ -47,7 +48,8 @@
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
-					'{$_POST['email']}', 
+					'{$_POST['sim_email']}', 
+					'{$_POST['personal_email']}', 
 					'{$_POST['type']}', 
 					'[\"{$_POST['major']}\"]', 
 					'{$_POST['year']}', 
@@ -66,7 +68,7 @@
 				"UPDATE `accounts` 
 				SET
 					`name` = '{$_POST['name']}', 
-					`email` = '{$_POST['email']}', 
+					`personal_email` = '{$_POST['personal_email']}', 
 					`phone` = '{$_POST['phone']}'
 				WHERE
 					`id` = '{$_POST['id']}';";

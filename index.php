@@ -47,7 +47,7 @@
 		}
 		
 		if(!empty($email) && !empty($password)){
-			$query = db_query("SELECT * FROM `accounts` WHERE `email` = '{$email}' AND password = '{$password}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `accounts` WHERE `sim_email` = '{$email}' AND password = '{$password}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			if($result != NULL){

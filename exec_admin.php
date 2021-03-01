@@ -34,13 +34,15 @@
 				`accounts`
 					(`id`, 
 					`name`, 
-					`email`, 
+					`sim_email`, 
+					`personal_email`, 
 					`type`, 
 					`phone`)
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
-					'{$_POST['email']}', 
+					'{$_POST['sim_email']}', 
+					'{$_POST['personal_email']}', 
 					'8', 
 					'{$_POST['phone']}')"
 			) !== true){
@@ -56,7 +58,8 @@
 				SET
 					`id` = '{$_POST['new_id']}',
 					`name` = '{$_POST['name']}', 
-					`email` = '{$_POST['email']}', 
+					`sim_email` = '{$_POST['sim_email']}',  
+					`personal_email` = '{$_POST['personal_email']}',  
 					`phone` = '{$_POST['phone']}'
 				WHERE
 					`id` = '{$_POST['old_id']}';"

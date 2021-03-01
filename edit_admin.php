@@ -81,10 +81,18 @@
 				</tr>
 				<tr>
 					<td>
-						E-mail
+						SIM E-mail
 					</td>
 					<td>
-						<input type='email' name='email' maxlength='64' value='<?= $admin->get_email() ?>'  style='width:97%;' required />
+						<input type='email' name='sim_email' value='<?= $admin->get_sim_email() ?>' maxlength='64'  style='width:97%;' required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Personal E-mail
+					</td>
+					<td>
+						<input type='email' name='personal_email' value='<?= $admin->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
