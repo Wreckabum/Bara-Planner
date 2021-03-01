@@ -21,6 +21,7 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title>Test</title>
+		<link rel='stylesheet' href='include/css/main.css' />
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
@@ -32,7 +33,7 @@
 			$ft = get_account(10280958);
 			$pt = get_account(10213701);
 		?>
-		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table class='profile_details' style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -76,7 +77,7 @@
 			<tr>
 		</table>
 		<br />
-		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table class='profile_details' style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -119,7 +120,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table class='profile_details' style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -170,7 +171,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table class='profile_details' style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
@@ -237,7 +238,7 @@
 			</tr>
 		</table>
 		<br />
-		<table style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
+		<table class='profile_details' style='width:30%; border-collapse:collapse; border:1px #000 solid; padding-left:7px;'>
 			<tr>
 				<td style='width:30%; border:1px #000 solid; padding-left:7px;'>
 					Name:
