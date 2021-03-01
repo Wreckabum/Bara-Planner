@@ -45,34 +45,31 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-			    
-            		<a class="nav-link"  href='view_account.php?a=<?= $account->id ?>'>
-						<?= $account->get_name() ?>
-					</a>
-		        </a>
+				<a class="nav-link"  href='view_account.php?a=<?= $account->id ?>'>
+					<?= $account->get_name() ?>
+				</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="view_all.php" target="_blank">View All</a>
+                <a class="nav-link" href="view_all.php">View All</a>
             </li>
 			<?php
 				if($account->is_admin()){
 			?>
-            <li class="nav-item">
-                <a class="nav-link" href="add_student.php">Add a new student</a>
-            </li>
-			<li class="nav-item">
-                <a class="nav-link" href="add_faculty.php">Add a new faculty member</a>
-            </li>
-			<li class="nav-item">
-                <a class="nav-link" href="add_major.php">Add a new major</a>
-            </li>
-			<li class="nav-item">
-                <a class="nav-link" href="add_project.php">Add a new project</a>
-            </li>
-			<li class="nav-item">
-                <a class="nav-link" href="import.php">Import</a>
-            </li>
-
+					<li class="nav-item">
+						<a class="nav-link" href="add_student.php">Add a new student</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="add_faculty.php">Add a new faculty member</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="add_major.php">Add a new major</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="add_project.php">Add a new project</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="import.php">Import</a>
+					</li>
 			<?php
 				}
 			?>
@@ -116,6 +113,6 @@
 	<a href='logout.php'>
 		Logout
 	</a>
-</div> -->
+</div>
 <br />
-<br />
+<br /> -->

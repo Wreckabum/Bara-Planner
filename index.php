@@ -109,5 +109,29 @@
 			<input type='hidden' name='password' value='FfI0M2Na'>
 			<input type='submit' value='Super Admin'>
 		</form>
+		<br />
+		<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<input type='hidden' name='email' value='abiga.attre@mymail.sim.edu.sg'>
+			<input type='hidden' name='password' value='XiRSszCDo9iS'>
+			<input type='submit' value='Admin'>
+		</form>
+		<br />
+		<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
+			<input type='hidden' name='password' value='sZoS3rWaSJ'>
+			<input type='submit' value='Faculty'>
+		</form>
+		<br />
+		<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<input type='hidden' name='email' value='cleme.tanby@mymail.sim.edu.sg'>
+			<input type='hidden' name='password' value='OQGJrSSz6D'>
+			<input type='submit' value='Full-time Student'>
+		</form>
+		<br />
+		<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<input type='hidden' name='email' value='delan.abell@mymail.sim.edu.sg'>
+			<input type='hidden' name='password' value='1FS3sT1bmx'>
+			<input type='submit' value='Part-time Student'>
+		</form>
 	</body>
 </html>
