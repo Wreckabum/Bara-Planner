@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 01, 2021 at 11:39 AM
+-- Generation Time: Mar 01, 2021 at 02:48 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.4.11
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `majproj_active`
 --
+CREATE DATABASE IF NOT EXISTS `majproj_active` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `majproj_active`;
 
 -- --------------------------------------------------------
 
