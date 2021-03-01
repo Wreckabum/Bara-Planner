@@ -559,16 +559,16 @@
 										<?= $group['name'] ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
-										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->id} - {$group['supervisor']->get_name()}") ?>
+										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->id})") ?>
 									</td>
 									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
-										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->id} - {$group['assessor']->get_name()}") ?>
+										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->id})") ?>
 									</td>
 									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
 										<?php
 											foreach($group['members'] as $member){
 										?>
-												<?= $member->id ?> - <?= $member->get_name() ?>
+												<?= $member->get_name() ?> (<?= $member->id ?>)
 												<br />
 										<?php
 											}

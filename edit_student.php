@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
+	//If not admin or not own account
+	if(!$account->is_admin() && $account->id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -57,7 +57,7 @@
 		<?php include("include/templates/header.php"); ?>
 		<span style='color:#E22C2C'><?= $err ?></span>
 		<form action='exec_student.php' method='POST'>
-			<table id='edit_student' class='basic_table' style='width:auto;'>
+			<table id='edit_student' class='basic_table' style='width:<?= ($account->is_admin() ? "auto" : "30%") ?>;'>
 				<tr>
 					<td colspan='2'>
 						Edit a student
@@ -68,7 +68,17 @@
 						ID
 					</td>
 					<td>
-						<input type='text' name='new_id' maxlength='10' value='<?= $student->id ?>' style='width:97%;' required />
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='text' name='new_id' maxlength='10' value='<?= $student->id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $student->id ?>
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -89,50 +99,6 @@
 				</tr>
 				<tr>
 					<td>
-						Type
-					</td>
-					<td>
-						<label><input type='radio' name='type' value='1' required <?= ($student->is_full_time() ? "checked" : "") ?>/> Full-time Student</label>
-						<br />
-						<label><input type='radio' name='type' value='2' required <?= ($student->is_part_time() ? "checked" : "") ?>/> Part-time Student</label>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Major
-					</td>
-					<td>
-						<select name='major' style='width:97%;' required>
-							<?php
-								$all_majors = get_all_majors();
-								
-								foreach($all_majors as $id => $details){
-							?>
-									<option value='<?= $id ?>' <?= ($id == $student->get_majors() ? "selected" : "") ?>><?= $id ?> - <?= $details['name'] ?></option>
-							<?php
-								}
-							?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Year
-					</td>
-					<td>
-						<input type='number' name='year' value='<?= $student->get_year() ?>' maxlength='4'  style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Quarter
-					</td>
-					<td>
-						<input type='number' name='quarter' value='<?= $student->get_quarter() ?>' min='1' max='4' style='width:97%;' required />
-					</td>
-				</tr>
-				<tr>
-					<td>
 						Phone number
 					</td>
 					<td>
@@ -140,8 +106,103 @@
 					</td>
 				</tr>
 				<tr>
+					<td>
+						Type
+					</td>
+					<td>
+						<?php
+							if($account->is_admin()){
+						?>
+								<label><input type='radio' name='type' value='1' required <?= ($student->is_full_time() ? "checked" : "") ?>/> Full-time Student</label>
+								<br />
+								<label><input type='radio' name='type' value='2' required <?= ($student->is_part_time() ? "checked" : "") ?>/> Part-time Student</label>
+						<?php
+							}else{
+						?>
+								<?= ($student->is_full_time() ? "Full-time Student" : "Part-time Student") ?>
+						<?php
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Major
+					</td>
+					<td>
+						<?php
+							if($account->is_admin()){
+						?>
+								<select name='major' style='width:97%;' required>
+								<?php
+									$all_majors = get_all_majors();
+									
+									foreach($all_majors as $id => $details){
+								?>
+										<option value='<?= $id ?>' <?= ($id == $student->get_majors() ? "selected" : "") ?>><?= $id ?> - <?= $details['name'] ?></option>
+								<?php
+									}
+								?>
+							</select>
+						<?php
+							}else{
+						?>
+								<?= $student->get_majors() ?>
+						<?php
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Year
+					</td>
+					<td>
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='number' name='year' value='<?= $student->get_year() ?>' maxlength='4'  style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $student->get_year() ?>
+						<?php
+							}
+						?>						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Quarter
+					</td>
+					<td>
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='number' name='quarter' value='<?= $student->get_quarter() ?>' min='1' max='4' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $student->get_quarter() ?>
+						<?php
+							}
+						?>
+						
+					</td>
+				</tr>
+				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_id' value='<?= $student->id ?>'/>
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='hidden' name='old_id' value='<?= $student->id ?>'/>
+						<?php
+							}else{
+						?>
+								<input type='hidden' name='id' value='<?= $student->id ?>'/>
+						<?php
+							}
+						?>
 						<input type='submit' name='edit' value='Edit student'>
 					</td>
 				</tr>

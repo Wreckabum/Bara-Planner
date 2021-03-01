@@ -138,7 +138,7 @@
 		</table>
 		<br />
 		<?php
-			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin())){
+			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->id == $view_account->id){
 				$go_to = "";
 				
 				if($view_account->is_admin()){

@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
+	//If not admin or own account
+	if(!$account->is_admin() && $account->id != $_POST['id']){
 		header("location: home.php");
 		exit();
 	}
@@ -28,9 +28,9 @@
 		$value = htmlspecialchars($value);
 	});
 	
-	$_POST['type'] = (int)$_POST['type'];
-	$_POST['year'] = (int)$_POST['year'];
-	$_POST['quarter'] = (int)$_POST['quarter'];
+	(isset($_POST['type']) ? $_POST['type'] = (int)$_POST['type'] : "");
+	(isset($_POST['year']) ? $_POST['year'] = (int)$_POST['year'] : "");
+	(isset($_POST['quarter']) ? $_POST['quarter'] = (int)$_POST['quarter'] : "");
 	
 	if(isset($_POST['add'])){
 		if(db_query(
@@ -60,8 +60,20 @@
 			//Sucessfully added
 			header("location: view_account.php?a={$_POST['id']}");
 		}
-	}if(isset($_POST['edit'])){
-		if(db_query(
+	}if(isset($_POST['edit'])){		
+		if($account->id == $_POST['id']){
+			$query = 
+				"UPDATE `accounts` 
+				SET
+					`name` = '{$_POST['name']}', 
+					`email` = '{$_POST['email']}', 
+					`phone` = '{$_POST['phone']}'
+				WHERE
+					`id` = '{$_POST['id']}';";
+			
+			$_POST['new_id'] = $_POST['id'];
+		}else{
+			$query = 
 			"UPDATE `accounts` 
 				SET
 					`id` = '{$_POST['new_id']}',
@@ -73,10 +85,12 @@
 					`quarter` = '{$_POST['quarter']}',
 					`phone` = '{$_POST['phone']}'
 				WHERE
-					`id` = '{$_POST['old_id']}';"
-			) !== true){
+					`id` = '{$_POST['old_id']}';";
+		}
+		
+		if(db_query($query) !== true){
 			//Error when updating
-			header("location: add_student.php?a={$_POST['old_id']}err=1");
+			header("location: edit_student.php?a={$_POST['old_id']}err=1");
 		}else{
 			//Sucessfully edited
 			header("location: view_account.php?a={$_POST['new_id']}");
