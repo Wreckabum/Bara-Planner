@@ -70,10 +70,145 @@
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
+		<style>
+
+			#sidebar-wrapper {
+				margin-top: -105px;
+				z-index: 0;
+				position: fixed;
+				left: 250px;
+				width: 0;
+				height: 105%;
+				margin-left: -250px;
+				overflow-y: auto;
+				background: #000;
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+
+			#page-content-wrapper {
+				width: 100%;
+				position: absolute;
+				padding: 15px;
+			}
+			/* Sidebar Styles */
+
+			.sidebar-nav {
+				position: absolute;
+				top: 0;
+				width: 250px;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.sidebar-nav li {
+				text-indent: 20px;
+				line-height: 40px;
+			}
+			.sidebar-nav li a {
+				display: block;
+				text-decoration: none;
+				color: #999999;
+			}
+			.sidebar-nav li a:hover {
+				text-decoration: none;
+				color: #fff;
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.active-page{
+				text-decoration: none;
+				color: #fff;
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.sidebar-nav li a:active,
+			.sidebar-nav li a:focus {
+			   text-decoration: none;
+			}
+			.sidebar-nav > .sidebar-brand {
+				height: 65px;
+				font-size: 18px;
+				line-height: 60px;
+			}
+			.sidebar-nav > .sidebar-brand a {
+			    color: #999999;
+			}
+			.sidebar-nav > .sidebar-brand a:hover {
+				color: #fff;
+				background: none;
+			}
+			@media(min-width:768px) {
+			#wrapper {
+				padding-left: 250px;
+			}
+			#wrapper.toggled {
+				padding-left: 0;
+			}
+			#sidebar-wrapper {
+				width: 250px;
+			}
+			#wrapper.toggled #sidebar-wrapper {
+				width: 0;
+			}
+			#page-content-wrapper {
+				padding: 20px;
+				position: relative;
+			}
+			#wrapper.toggled #page-content-wrapper {
+				position: relative;
+				margin-right: 0;
+			}
+			}
+
+		</style>
 	</head>
 	<body>
+		
 		<?php include("include/templates/header.php"); ?>
-		<table id='view_all' class='basic_table'>
+
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand">
+				<a href="#"></a>
+				</li>
+				<li class="sidebar-brand">
+				<a href="#"></a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="show_student_options();get_active();">Students</a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="get_accounts('faculty');get_active();">Faculty</a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="get_accounts('admin');get_active();">Admin</a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="get_accounts('majors');get_active();">Majors</a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="get_accounts('projects');get_active();">Projects</a>
+				</li>
+				<li>
+				<a href="#" class='menu' onClick="get_accounts('groups');get_active();">Groups</a>
+				</li>
+				<hr>
+				<div id='view_student' style='display:none;'>
+					<li>
+					<a href="#" pnClick="get_accounts('students');">All</a>
+					</li>
+					<li>
+					<a href="#" onClick="get_accounts('ft');">Full-Time</a>
+					</li>
+					<li>
+					<a href="#" onClick="get_accounts('pt');">Part-Time</a>
+					</li>
+				</div>
+			</ul>
+		</div>
+		<!-- <table id='view_all' class='basic_table container'>
 			<tr>
 				<td style='width:16%; text-align:center;' onClick="show_student_options();">
 					Students
@@ -96,7 +231,7 @@
 			</tr>
 		</table>
 		<br />
-		<table id='view_student' class='basic_table' style='display:none;'>
+		<table id='view_student' class='basic_table container' style='display:none;'>
 			<tr>
 				<td style='width:33%; text-align:center;' onClick="get_accounts('students');">
 					All
@@ -108,8 +243,9 @@
 					Part-Time
 				</td>
 			</tr>
-		</table>
+		</table> -->
 		<br />
+		<div class='container'>
 		<?php
 			if(isset($rows)){
 				if($_GET['t'] == "students" || $_GET['t'] == "pt" || $_GET['t'] == "ft"){
@@ -128,7 +264,7 @@
 					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='10' /> Choices</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -239,7 +375,7 @@
 					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='6' /> Majors</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -325,7 +461,7 @@
 					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='5' /> Phone</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -404,7 +540,7 @@
 					<label><input type='checkbox' id='search_part_time' class='search_checkbox' value='4' /> Part-Time</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -476,7 +612,7 @@
 					<label><input type='checkbox' id='search_last_name' class='search_description' value='3' /> Description</label>
 					<label><input type='checkbox' id='search_year' class='search_checkbox' value='4' /> Year</label>
 					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='5' /> Quarter</label>
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -557,7 +693,7 @@
 					<label><input type='checkbox' id='search_deadline' class='search_checkbox' value='6' /> Deadline</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table'>
+					<table id='filter_table' class='basic_table container'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -642,7 +778,8 @@
 				}
 			}
 		?>
-		<table id='no_records' class='basic_table' style='width:60%; display:none;'>
+		</div>
+		<table id='no_records' class='basic_table container' style='width:60%; display:none;'>
 			<tr>
 				<td style="text-align:center; background-color:#C9E0EF;">
 					:: No Matching tickets ::
@@ -653,6 +790,7 @@
 	<script>
 		function show_student_options(){
 			$("#view_student").show();
+			
 		}
 		
 		function get_accounts(type){
@@ -670,6 +808,11 @@
 				window.location.href = "view_group?g=" + id;
 			}
 		}
+		
+		$(".menu").click(function() {  
+			$('.menu').removeClass('active-page');
+			$(this).addClass("active-page");      
+		});
 	</script>
 	<script src='include/js/view_filter.js'></script>
 </html>
