@@ -29,6 +29,7 @@
 	});
 	
 	if(isset($_POST['add'])){
+		$password = generate_password();
 		if(db_query(
 			"INSERT INTO
 				`accounts`
@@ -39,7 +40,9 @@
 					`personal_email`, 
 					`type`, 
 					`majors`, 
-					`phone`)
+					`phone`,
+					`password`
+					)
 				VALUES
 					('{$_POST['sim_id']}', 
 					'{$_POST['uow_id']}', 
@@ -48,7 +51,8 @@
 					'{$_POST['personal_email']}', 
 					'0', 
 					'". addslashes(json_encode($_POST['majors'])) ."', 
-					'{$_POST['phone']}')"
+					'{$_POST['phone']}',
+					'{$password}')"
 			) !== true){
 			//Error when adding
 			header("location: add_faculty.php?err=1");

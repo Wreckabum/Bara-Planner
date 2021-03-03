@@ -33,6 +33,8 @@
 	(isset($_POST['quarter']) ? $_POST['quarter'] = (int)$_POST['quarter'] : "");
 	
 	if(isset($_POST['add'])){
+		$password = generate_password();
+
 		if(db_query(
 			"INSERT INTO
 				`accounts`
@@ -45,7 +47,9 @@
 					`majors`, 
 					`year`, 
 					`quarter`,
-					`phone`)
+					`phone`,
+					`password`
+					)
 				VALUES
 					('{$_POST['sim_id']}', 
 					'{$_POST['uow_id']}', 
@@ -56,7 +60,8 @@
 					'[\"{$_POST['major']}\"]', 
 					'{$_POST['year']}', 
 					'{$_POST['quarter']}', 
-					'{$_POST['phone']}')"
+					'{$_POST['phone']}',
+					'{$password}')"
 			) !== true){
 			//Error when adding
 			header("location: add_student.php?err=1");
