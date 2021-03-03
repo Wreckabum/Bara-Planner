@@ -32,3 +32,11 @@
 .profile_details tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
+
+
+/* can change .profile_details to just table if want all the able first column to change */
+.profile_details td:nth-child(1){
+    font-weight: bold;
+	
+}
+
