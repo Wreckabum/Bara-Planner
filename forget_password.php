@@ -34,21 +34,28 @@
 		}
 		
 		if(!empty($email)){
-			$query = db_query("SELECT * FROM `accounts` WHERE `email` = '{$email}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `accounts` WHERE `sim_email` = '{$email}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
-			
 			if($result != NULL){
 				
 				//Store data in session variables
-				$id = $result['id'];							
+				$id = $result['sim_id'];	
+				$personal_email = $result['personal_email'];					
 				$password = generate_password();
-				$update = db_query("UPDATE `accounts` SET `password` = '{$password}' WHERE `id` = '{$id}';");
+				$update = db_query("UPDATE `accounts` SET `password` = '{$password}' WHERE `sim_id` = '{$id}';");
 				if($update){
+
+					$sender = 'noreply@fyp.com';
+					$subject = "Reset Password";
+					$message = "New Password: " . $password;
+					$headers = 'From:' . $sender . "\r\n" . 'CC:'.$personal_email;
+
+					if (mail($email, $subject, $message, $headers))
 				//Redirect user to main landing page
 					echo
 		            ("<script LANGUAGE='JavaScript'>
-							window.alert('Password Reset Successfully!\\nPlease login with new password.');
-							window.location.href='simulate_email_send.php?password=".$password."';
+							window.alert('Password Reset Successfully!\\nPlease check email and login with new password.');
+							window.location.href='index.php';
 						</script>");
 				}
 				else{
