@@ -70,6 +70,13 @@
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
+		
+		<script>
+		function closeNav() {
+		  document.getElementById("sidebar-wrapper").style.width = "0";
+		}
+		</script>
+		
 		<style>
 
 			#sidebar-wrapper {
@@ -160,6 +167,14 @@
 				margin-right: 0;
 			}
 			}
+			
+			.sidebar-nav .closebtn {
+			  position: relative;
+			  top: 0;
+			  left: 0px;
+			  font-size: 36px;
+			  margin-left: 50px;
+			}
 
 		</style>
 	</head>
@@ -176,6 +191,11 @@
 				<li class="sidebar-brand">
 				<a href="#"></a>
 				</li>
+				
+				<li>
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+				</li>
+				
 				<li>
 				<a href="#" class='menu' onClick="show_student_options();get_active();">Students</a>
 				</li>
