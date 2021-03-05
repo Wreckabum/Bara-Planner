@@ -197,7 +197,7 @@
 				<hr>
 				<div id='view_student' style='display:none;'>
 					<li>
-					<a href="#" pnClick="get_accounts('students');">All</a>
+					<a href="#" onClick="get_accounts('students');">All</a>
 					</li>
 					<li>
 					<a href="#" onClick="get_accounts('ft');">Full-Time</a>

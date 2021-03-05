@@ -241,7 +241,7 @@
 			}
 			
 			foreach(json_decode($row['members']) as $member_id){
-				$output[$row['id']]['members'][] = new Student ($member_id);
+				$output[$row['id']]['members'][] = new Student($member_id);
 			}
 			
 			$output[$row['id']]['project'] = get_project($row['project'], "proj_id");
