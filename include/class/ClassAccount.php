@@ -99,13 +99,6 @@
 		}
 		
 		/*
-			Get position
-		*/
-		public function get_position(){
-			return $this->position;
-		}
-		
-		/*
 			Checks if the account is a faculty member
 			
 			@return bool
