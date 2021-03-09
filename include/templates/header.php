@@ -10,6 +10,9 @@
 .navbar .dropdown-toggle, .navbar .dropdown-menu a {
     cursor: pointer;
 }
+.navbar{
+	z-index:1;
+}
 
 .navbar .dropdown-item.active, .navbar .dropdown-item:active {
     color: inherit;
@@ -49,55 +52,11 @@
 					<?= $account->get_name() ?>
 				</a>
             </li>
-			<?php
-				if(!$account->is_student()){
-			?>
-					<li class="nav-item">
-						<a class="nav-link" href="view_all.php">View All</a>
-					</li>
-			<?php
-				}
-				
-				if($account->is_student() || $account->is_faculty()){
-					$s = ($account->is_faculty() ? "s" : "");
-			?>
-					<li class="nav-item">
-						<a class="nav-link" href="view_group.php">View Group<?= $s ?></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="list_projects.php">View All Projects</a>
-					</li>
-			<?php
-				}
-				
-				if($account->is_admin()){
-			?>
-					<li class="nav-item">
-						<a class="nav-link" href="add_student.php">Add a new student</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="add_faculty.php">Add a new faculty member</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="add_major.php">Add a new major</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="add_project.php">Add a new project</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="import.php">Import</a>
-					</li>
-			<?php
-				}
-				
-				if($account->is_super()){
-			?>
-					<li class="nav-item">
-						<a class="nav-link" href="add_admin.php">Add an administrator</a>
-					</li>
-			<?php
-				}
-			?>
+
+			<li class="nav-item">
+				<a class="nav-link" href="user_manage.php">User Management</a>
+			</li>
+			
         </ul>
 		<a class="nav-link" href="logout.php">Logout</a>
     </div>

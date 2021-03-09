@@ -78,6 +78,9 @@
 		</script>
 		
 		<style>
+			.container{
+				margin-left: 20% !important;
+			}
 
 			#sidebar-wrapper {
 				margin-top: -105px;
@@ -284,7 +287,7 @@
 					<label><input type='checkbox' id='search_choices' class='search_checkbox' value='10' /> Choices</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -395,7 +398,7 @@
 					<label><input type='checkbox' id='search_majors' class='search_checkbox' value='6' /> Majors</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -481,7 +484,7 @@
 					<label><input type='checkbox' id='search_phone' class='search_checkbox' value='5' /> Phone</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								SIM ID
@@ -560,7 +563,7 @@
 					<label><input type='checkbox' id='search_part_time' class='search_checkbox' value='4' /> Part-Time</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -632,7 +635,7 @@
 					<label><input type='checkbox' id='search_last_name' class='search_description' value='3' /> Description</label>
 					<label><input type='checkbox' id='search_year' class='search_checkbox' value='4' /> Year</label>
 					<label><input type='checkbox' id='search_quarter' class='search_checkbox' value='5' /> Quarter</label>
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -713,7 +716,7 @@
 					<label><input type='checkbox' id='search_deadline' class='search_checkbox' value='6' /> Deadline</label>
 					<br />
 					<br />
-					<table id='filter_table' class='basic_table container'>
+					<table id='filter_table' class='basic_table'>
 						<tr>
 							<td style='text-align:center;'>
 								ID
@@ -799,7 +802,7 @@
 			}
 		?>
 		</div>
-		<table id='no_records' class='basic_table container' style='width:60%; display:none;'>
+		<table id='no_records' class='basic_table' style='width:60%; display:none;'>
 			<tr>
 				<td style="text-align:center; background-color:#C9E0EF;">
 					:: No Matching tickets ::
