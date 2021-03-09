@@ -1,5 +1,5 @@
 <?php
-	require_once("include/funcs/sql_funcs.php");
+	require_once (dirname(__FILE__)."/../funcs/sql_funcs.php");
 	
 	sql_connect();
 	
@@ -16,7 +16,7 @@
 		private	$phone;
 		private	$sim_email;
 		private	$personal_email;
-		protected int $account_type;
+		protected $account_type;
 		
 		protected $majors;
 		

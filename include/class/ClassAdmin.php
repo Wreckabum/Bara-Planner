@@ -1,5 +1,5 @@
 <?php
-	require_once("include/funcs/sql_funcs.php");
+	require_once (dirname(__FILE__)."/../funcs/sql_funcs.php");
 	
 	sql_connect();
 	
@@ -11,7 +11,7 @@
 		/*
 			Constructor
 		*/
-		public function __construct($id){
+		public function __construct($id) {
 			parent::__construct($id);
 			
 			unset($this->raw);

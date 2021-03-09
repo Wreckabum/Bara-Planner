@@ -1,10 +1,10 @@
 <?php
-	require_once("config.php");
-	require_once("include/class/ClassAccount.php");
-	require_once("include/class/ClassAdmin.php");
-	require_once("include/class/ClassFaculty.php");
-	require_once("include/class/ClassStudent.php");
-	require_once("sub_funcs.php");
+	require_once(dirname(__FILE__)."/config.php");
+	require_once(dirname(__FILE__)."/../class/ClassAccount.php");
+	require_once(dirname(__FILE__)."/../class/ClassAdmin.php");
+	require_once(dirname(__FILE__)."/../class/ClassFaculty.php");
+	require_once(dirname(__FILE__)."/../class/ClassStudent.php");
+	require_once(dirname(__FILE__)."/sub_funcs.php");
 	
 	/*
 		Connects to the DB when required
