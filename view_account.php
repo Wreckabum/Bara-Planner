@@ -41,7 +41,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<table id='view_account' class='basic_table' style='width:auto;'>
+		<table id='view_account' class='basic_table container' style='width:auto;'>
 			<tr>
 				<td colspan='2'>
 					<?= $view_account->get_name() ?>'s Profile
@@ -143,26 +143,32 @@
 					}
 				}
 			?>
-		</table>
-		<br />
-		<?php
-			if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->sim_id == $view_account->sim_id){
-				$go_to = "";
-				
-				if($view_account->is_admin()){
-					$go_to = "edit_admin";
-				}elseif($view_account->is_faculty()){
-					$go_to = "edit_faculty";
-				}elseif($view_account->is_student()){
-					$go_to = "edit_student";
+
+			<?php
+				if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->sim_id == $view_account->sim_id){
+					$go_to = "";
+					
+					if($view_account->is_admin()){
+						$go_to = "edit_admin";
+					}elseif($view_account->is_faculty()){
+						$go_to = "edit_faculty";
+					}elseif($view_account->is_student()){
+						$go_to = "edit_student";
+					}
+			?>
+			<tr>
+				<td><a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">Edit Account</a></td>
+				<td>	<a href='home.php'>Back to main page</a></td>
+
+			</tr>
+
+			<?php
 				}
-		?>
-				<a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">Edit Account</a>
-				<br />
-		<?php
-			}
-		?>
-		<a href='home.php'>Back to main page</a>
+			?>
+	
+		</table>
+
+		</div>
 	</body>
 </html>
 <?php
