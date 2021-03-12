@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not super admin
-	if(!$account->is_super()){
+	//If not super admin or not own account
+	if(!$account->is_super() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -55,7 +55,9 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<span style='color:#E22C2C'><?= $err ?></span>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+		</center>
 		<form action='exec_admin.php' method='POST'>
 			<table id='edit_admin' class='basic_table' style='width:30%;'>
 				<tr>
@@ -68,7 +70,17 @@
 						SIM ID
 					</td>
 					<td>
-						<input type='text' name='new_sim_id' maxlength='10' value='<?= $admin->sim_id ?>' style='width:97%;' required />
+						<?php
+							if($account->is_super()){
+						?>
+								<input type='text' name='new_sim_id' maxlength='10' value='<?= $admin->sim_id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $admin->sim_id ?>
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -76,7 +88,17 @@
 						UOW ID
 					</td>
 					<td>
-						<input type='text' name='new_uow_id' maxlength='10' value='<?= $admin->uow_id ?>' style='width:97%;' required />
+						<?php
+							if($account->is_super()){
+						?>
+								<input type='text' name='new_uow_id' maxlength='10' value='<?= $admin->uow_id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $admin->uow_id ?>
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -113,8 +135,18 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_sim_id' value='<?= $admin->sim_id ?>'/>
-						<input type='hidden' name='old_uow_id' value='<?= $admin->uow_id ?>'/>
+						<?php
+							if($account->is_super()){
+						?>
+								<input type='hidden' name='old_sim_id' value='<?= $admin->sim_id ?>'/>
+								<input type='hidden' name='old_uow_id' value='<?= $admin->uow_id ?>'/>
+						<?php
+							}else{
+						?>
+								<input type='hidden' name='id' value='<?= $admin->sim_id ?>'/>
+						<?php
+							}
+						?>
 						<input type='submit' name='edit' value='Edit admnistrator'>
 					</td>
 				</tr>

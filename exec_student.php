@@ -83,20 +83,20 @@
 			$_POST['new_sim_id'] = $_POST['id'];
 		}else{
 			$query = 
-			"UPDATE `accounts` 
-				SET
-					`sim_id` = '{$_POST['new_sim_id']}', 
-					`uow_id` = '{$_POST['new_uow_id']}',
-					`name` = '{$_POST['name']}', 
-					`sim_email` = '{$_POST['sim_email']}', 
-					`personal_email` = '{$_POST['personal_email']}', 
-					`type` = '{$_POST['type']}', 
-					`majors` = '[\"{$_POST['major']}\"]', 
-					`year` = '{$_POST['year']}', 
-					`quarter` = '{$_POST['quarter']}',
-					`phone` = '{$_POST['phone']}'
-				WHERE
-					`sim_id` = '{$_POST['old_sim_id']}';";
+				"UPDATE `accounts` 
+					SET
+						`sim_id` = '{$_POST['new_sim_id']}', 
+						`uow_id` = '{$_POST['new_uow_id']}',
+						`name` = '{$_POST['name']}', 
+						`sim_email` = '{$_POST['sim_email']}', 
+						`personal_email` = '{$_POST['personal_email']}', 
+						`type` = '{$_POST['type']}', 
+						`majors` = '[\"{$_POST['major']}\"]', 
+						`year` = '{$_POST['year']}', 
+						`quarter` = '{$_POST['quarter']}',
+						`phone` = '{$_POST['phone']}'
+					WHERE
+						`sim_id` = '{$_POST['old_sim_id']}';";
 		}
 		
 		if(db_query($query) !== true){

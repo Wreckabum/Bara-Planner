@@ -33,7 +33,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<table id='view_major' class='basic_table' style='width:40%;'>
+		<table id='view_project' class='basic_table' style='width:40%;'>
 			<tr>
 				<td colspan='2'>
 					<?= $project['proj_id'] ?> (<?= $project['id'] ?>)

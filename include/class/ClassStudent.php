@@ -22,8 +22,8 @@
 			}else{
 				$this->majors = json_decode($this->raw['majors'])[0];
 				$this->choices = json_decode($this->raw['choices']);
-				$this->year = json_decode($this->raw['year']);			
-				$this->quarter = json_decode($this->raw['quarter']);
+				$this->year = $this->raw['year'];			
+				$this->quarter = $this->raw['quarter'];
 				
 				unset($this->raw);
 			}
@@ -50,6 +50,13 @@
 		*/
 		public function get_quarter(){
 			return $this->quarter;
+		}
+		
+		/*
+			Get choices
+		*/
+		public function get_choices(){
+			return $this->choices;
 		}
 		
 		/*

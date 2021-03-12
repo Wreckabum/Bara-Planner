@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
+	//If not admin or not own account
+	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -55,7 +55,9 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<span style='color:#E22C2C'><?= $err ?></span>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+		</center>
 		<form action='exec_faculty.php' method='POST'>
 			<table id='edit_faculty' class='basic_table' style='width:auto;'>
 				<tr>
@@ -68,7 +70,17 @@
 						SIM ID
 					</td>
 					<td>
-						<input type='text' name='new_sim_id' maxlength='10' value='<?= $faculty->sim_id ?>' style='width:97%;' required />
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='text' name='new_sim_id' maxlength='10' value='<?= $faculty->sim_id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $faculty->sim_id ?>
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -76,7 +88,17 @@
 						UOW ID
 					</td>
 					<td>
-						<input type='text' name='new_uow_id' maxlength='10' value='<?= $faculty->uow_id ?>' style='width:97%;' required />
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='text' name='new_uow_id' maxlength='10' value='<?= $faculty->uow_id ?>' style='width:97%;' required />
+						<?php
+							}else{
+						?>
+								<?= $faculty->uow_id ?>
+						<?php
+							}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -130,8 +152,18 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_sim_id' value='<?= $faculty->sim_id ?>'/>
-						<input type='hidden' name='old_uow_id' value='<?= $faculty->uow_id ?>'/>
+						<?php
+							if($account->is_admin()){
+						?>
+								<input type='hidden' name='old_sim_id' value='<?= $faculty->sim_id ?>'/>
+								<input type='hidden' name='old_uow_id' value='<?= $faculty->uow_id ?>'/>
+						<?php
+							}else{
+						?>
+								<input type='hidden' name='id' value='<?= $faculty->sim_id ?>'/>
+						<?php
+							}
+						?>
 						<input type='submit' name='edit' value='Edit faculty member'>
 					</td>
 				</tr>

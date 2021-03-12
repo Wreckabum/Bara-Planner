@@ -52,7 +52,17 @@
 					<?= $account->get_name() ?>
 				</a>
             </li>
-
+			<?php
+				if($account->is_student()){
+			?>
+					<li class="nav-item">
+						<a class="nav-link"  href='view_choices.php'>
+							View Choices
+						</a>
+					</li>
+			<?php
+				}
+			?>
 			<li class="nav-item">
 				<a class="nav-link" href="user_manage.php">User Management</a>
 			</li>
