@@ -64,7 +64,7 @@
 				}
 			?>
 			<li class="nav-item">
-				<a class="nav-link" href="user_manage.php">User Management</a>
+				<a class="nav-link" href="management.php">Management</a>
 			</li>
 			
         </ul>

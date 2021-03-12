@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not super admin
-	if(!$account->is_super()){
+	//If not admin
+	if(!$account->is_admin()){
 		header("location: home.php");
 		exit();
 	}

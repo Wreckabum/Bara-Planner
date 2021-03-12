@@ -70,13 +70,11 @@
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
-		
 		<script>
-		function closeNav() {
-		  document.getElementById("sidebar-wrapper").style.width = "0";
-		}
+			function closeNav() {
+				document.getElementById("sidebar-wrapper").style.width = "0";
+			}
 		</script>
-		
 		<style>
 			.container{
 				margin-left: 20% !important;
@@ -336,37 +334,37 @@
 							foreach($rows as $student){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->uow_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_phone() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= ($student->is_part_time() ? "Part-Time" : ($student->is_full_time() ? "Full-Time" : "")) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_majors(true) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_year() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										<?= $student->get_quarter() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $student->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $student->sim_id ?>');">
 										
 									</td>
 									<?php
@@ -435,25 +433,25 @@
 							foreach($rows as $faculty){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->uow_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_phone() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $faculty->sim_id ?>');">
 										<?= $faculty->get_majors(true) ?>
 									</td>
 									<?php
@@ -518,22 +516,22 @@
 							foreach($rows as $admin){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->sim_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->uow_id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_name() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_sim_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_personal_email() ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('account', '<?= $admin->sim_id ?>');">
 										<?= $admin->get_phone() ?>
 									</td>
 									<?php
@@ -594,19 +592,19 @@
 							foreach($rows as $id => $major){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= $id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= $major['name'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= nl2br($major['description']) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= ($major['full_time'] ? "Yes" : "No") ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('major', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= ($major['part_time'] ? "Yes" : "No") ?>
 									</td>
 									<?php
@@ -669,22 +667,22 @@
 							foreach($rows as $id => $project){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['proj_id'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['name'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= nl2br($project['description']) ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['year'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('project', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
 										<?= $project['quarter'] ?>
 									</td>
 									<?php
@@ -753,16 +751,16 @@
 							foreach($rows as $id => $group){
 						?>
 								<tr>
-									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
 										<?= $id ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
 										<?= $group['name'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
 										<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
 										<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
 									</td>
 									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
@@ -778,7 +776,7 @@
 									<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
 										<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
 									</td>
-									<td style='text-align:center;' onClick="go_to('group', '<?= $id ?>');">
+									<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
 										<?= $group['deadline'] ?>
 									</td>
 									<?php

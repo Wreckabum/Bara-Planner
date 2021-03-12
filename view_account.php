@@ -16,8 +16,8 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//For students, only allow viewing of own accounts
-	if($account->is_student() && $account->sim_id != $_GET['a']){
+	//For non-admins, only allow viewing of own accounts
+	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
 		exit();
 	}
@@ -38,6 +38,7 @@
 		<title>View Account - <?= $view_account->get_name() ?></title>
 		<link rel='stylesheet' href='include/css/main.css'>
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
@@ -142,10 +143,11 @@
 			<?php
 					}
 				}
-			?>
-
-			<?php
-				if(($account->is_admin() && !$view_account->is_admin()) || ($account->is_super() && $view_account->is_admin()) || $account->sim_id == $view_account->sim_id){
+				
+				if(
+					($account->is_admin() && !$view_account->is_admin()) || //Admin editing non-admin accounts
+					($account->is_super() && $view_account->is_admin())  //Super admin editing admin accounts
+				){
 					$go_to = "";
 					
 					if($view_account->is_admin()){
@@ -156,20 +158,48 @@
 						$go_to = "edit_student";
 					}
 			?>
-			<tr>
-				<td><a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">Edit Account</a></td>
-				<td>	<a href='home.php'>Back to main page</a></td>
-
-			</tr>
-
+					<tr>
+						<td>
+							<a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">
+								Edit Account
+							</a>
+						</td>
+						<td>
+							<a id='delete_link' href='#' onClick="show_delete();">
+								Delete Account
+							</a>
+							<form id='delete_form' action='delete_account.php' method='POST' style='display:none;'>
+								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $view_account->sim_id ?>' required/>
+								<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
+							</form>
+						</td>
+					</tr>
 			<?php
 				}
 			?>
-	
+			<tr>
+				<td colspan='2'>
+					<a href='home.php'>
+						Back to main page
+					</a>
+				</td>
+			</tr>
 		</table>
-
-		</div>
 	</body>
+	<script>
+		function show_delete(){
+			$("#delete_link").hide();
+			$("#delete_form").show();
+		}
+		
+		$("#confirm_checkbox").change(function(){
+			if($(this).is(":checked")){
+				$("#delete_submit").attr("disabled", false);
+			}else{
+				$("#delete_submit").attr("disabled", true);
+			}
+		});
+	</script>
 </html>
 <?php
 	//Close connection
