@@ -82,16 +82,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						Available for
-					</td>
-					<td>
-						<label><input type='checkbox' name='available_for[]' value='full' /> Full-time Student</label>
-						<br />
-						<label><input type='checkbox' name='available_for[]' value='part' /> Part-time Student</label>
-					</td>
-				</tr>
-				<tr>
 					<td colspan='2'>
 						<input type='submit' name='add' value='Add major'>
 					</td>

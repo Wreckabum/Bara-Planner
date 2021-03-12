@@ -89,16 +89,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						Available for
-					</td>
-					<td>
-						<label><input type='checkbox' name='available_for[]' value='full' <?= ($major['full_time'] == 1 ? "checked" : "") ?>/> Full-time Student</label>
-						<br />
-						<label><input type='checkbox' name='available_for[]' value='part' <?= ($major['part_time'] == 1 ? "checked" : "") ?>/> Part-time Student</label>
-					</td>
-				</tr>
-				<tr>
 					<td colspan='2'>
 						<input type='hidden' name='old_id' value='<?= $major['id'] ?>'/>
 						<input type='submit' name='edit' value='Edit major'>

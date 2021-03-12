@@ -116,8 +116,6 @@
 		while($row = mysqli_fetch_assoc($query)){
 			$output[$row['id']]['name'] = $row['name'];
 			$output[$row['id']]['description'] = $row['description'];
-			$output[$row['id']]['part_time'] = (bool)$row['part_time'];
-			$output[$row['id']]['full_time'] = (bool)$row['full_time'];
 		}
 		
 		return $output;
@@ -143,8 +141,6 @@
 			while($row = mysqli_fetch_assoc($query)){
 				$output[$row['id']]['name'] = $row['name'];
 				$output[$row['id']]['description'] = $row['description'];
-				$output[$row['id']]['part_time'] = (bool)$row['part_time'];
-				$output[$row['id']]['full_time'] = (bool)$row['full_time'];
 			}
 			
 			return $output;

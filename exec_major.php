@@ -28,34 +28,17 @@
 		$value = htmlspecialchars($value);
 	});
 	
-	$pt = 0;
-	$ft = 0;
-	
-	if(isset($_POST['available_for'])){
-		foreach($_POST['available_for'] as $available_for){
-			if($available_for == "full"){
-				$ft = 1;
-			}elseif($available_for == "part"){
-				$pt = 1;
-			}
-		}
-	}
-	
 	if(isset($_POST['add'])){
 		if(db_query(
 			"INSERT INTO
 				`majors`
 					(`id`, 
 					`name`, 
-					`description`, 
-					`part_time`, 
-					`full_time`)
+					`description`)
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
-					'{$_POST['description']}', 
-					'{$pt}', 
-					'{$ft}');"
+					'{$_POST['description']}');"
 			) !== true){
 			//Error when adding
 			header("location: add_major.php?err=1");
@@ -69,9 +52,7 @@
 				SET
 					`id` = '{$_POST['new_id']}', 
 					`name` = '{$_POST['name']}', 
-					`description` = '{$_POST['description']}', 
-					`part_time` = '{$pt}', 
-					`full_time` = '{$ft}'
+					`description` = '{$_POST['description']}'
 				WHERE
 					`id` = '{$_POST['old_id']}';"
 			) !== true){

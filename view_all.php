@@ -557,8 +557,6 @@
 					<label><input type='checkbox' id='search_id' class='search_checkbox' value='0' checked/> ID</label>
 					<label><input type='checkbox' id='search_name' class='search_checkbox' value='1' /> Name</label>
 					<label><input type='checkbox' id='search_description' class='search_checkbox' value='2' /> Description</label>
-					<label><input type='checkbox' id='search_full_time' class='search_checkbox' value='3' /> Full-Time</label>
-					<label><input type='checkbox' id='search_part_time' class='search_checkbox' value='4' /> Part-Time</label>
 					<br />
 					<br />
 					<table id='filter_table' class='basic_table'>
@@ -571,12 +569,6 @@
 							</td>
 							<td style='text-align:center;'>
 								Description
-							</td>
-							<td style='text-align:center;'>
-								Full-Time
-							</td>
-							<td style='text-align:center;'>
-								Part-Time
 							</td>
 							<?php
 								if($account->is_admin()){
@@ -600,12 +592,6 @@
 									</td>
 									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
 										<?= nl2br($major['description']) ?>
-									</td>
-									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
-										<?= ($major['full_time'] ? "Yes" : "No") ?>
-									</td>
-									<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
-										<?= ($major['part_time'] ? "Yes" : "No") ?>
 									</td>
 									<?php
 										if($account->is_admin()){

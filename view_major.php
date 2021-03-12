@@ -55,23 +55,6 @@
 					<?= nl2br($major['description']) ?>
 				</td>
 			</tr>
-			<tr>
-				<td style='width:25%;'>
-					Full Time:
-				</td>
-				<td>
-					<?= ($major['full_time'] ? "Yes" : "No") ?>
-				</td>
-			</tr>
-			<tr>
-				<td style='width:25%;'>
-					Part Time:
-				</td>
-				<td>
-					<?= ($major['part_time'] ? "Yes" : "No") ?>
-				</td>
-			</tr>
-			
 		</table>
 		<br />
 		<a href='home.php'>Back to main page</a>
