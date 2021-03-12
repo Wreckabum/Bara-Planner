@@ -47,7 +47,9 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<span style='color:#E22C2C'><?= $err ?></span>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+		</center>
 		<form action='exec_student.php' method='POST'>
 			<table id='add_student' class='basic_table' style='width:auto;'>
 				<tr>

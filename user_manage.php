@@ -54,7 +54,9 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<span style='color:#E22C2C'><?= $err ?></span>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+		</center>
 		<div class='container'>
 			<div class='row'>
 			<?php

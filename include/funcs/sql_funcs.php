@@ -166,7 +166,7 @@
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
-			$output[$row['id']]['proj_id'] = $row['name'];
+			$output[$row['id']]['proj_id'] = $row['proj_id'];
 			$output[$row['id']]['name'] = $row['name'];
 			$output[$row['id']]['description'] = $row['description'];
 			$output[$row['id']]['year'] = $row['year'];
