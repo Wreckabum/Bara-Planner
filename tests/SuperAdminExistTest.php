@@ -1,16 +1,14 @@
 <?php
 	use PHPUnit\Framework\TestCase;
 
-	require_once(dirname(__FILE__)."/../include/class/ClassAccount.php");
-    require_once(dirname(__FILE__)."/../include/class/ClassFaculty.php");
-
+	require_once(dirname(__FILE__)."/../include/funcs/sql_funcs.php");
+	
 	sql_connect();
 	
 	/*
 		Test if ticket exists as seen from triager
 	*/
-	class ClassFacultyTest extends TestCase{
-		
+	class SuperAdminExistTest extends TestCase{
 		public	$sim_id;
 		public	$uow_id;
 		
@@ -21,26 +19,26 @@
 		protected $account_type;
 		
 		protected $majors;
-
+		
 		/*
 			Tests the constructor
 		*/
 		function test_construct(){
 			//Declare test variables
-			$id = "10293074";
+			$id = "10261688";
 			
 			$query = db_query("SELECT * FROM `accounts` WHERE `sim_id` = '{$id}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
-			$this->assertEquals($result['sim_id'], "10293074");
-			$this->assertEquals($result['uow_id'], "6652584");
-			$this->assertEquals($result['name'], "Malissia Creyke");
-			$this->assertEquals($result['password'], "idZ8AkMH1O");
-			$this->assertEquals($result['phone'], "83987712");
-			$this->assertEquals($result['sim_email'], "malis.creyk@mymail.sim.edu.sg");
-			$this->assertEquals($result['personal_email'], "malis.creyk@gmail.com");
-			$this->assertEquals($result['type'], 0);
-			$this->assertJson($result['majors'], "SG111, SG766, SG122, SG133, SG868, SG144");
+			$this->assertEquals($result['sim_id'], "10261688");
+			$this->assertEquals($result['uow_id'], "6696360");
+			$this->assertEquals($result['name'], "Carver Delahunt");
+			$this->assertEquals($result['password'], "FfI0M2Na");
+			$this->assertEquals($result['phone'], "96118410");
+			$this->assertEquals($result['sim_email'], "carve.delah@mymail.sim.edu.sg");
+			$this->assertEquals($result['personal_email'], "carve.delah@gmail.com");
+			$this->assertEquals($result['type'], 9);
+			$this->assertNull($result['majors']);
 			$this->assertNull($result['choices']);
 			$this->assertNull($result['year']);
 			$this->assertNull($result['quarter']);
@@ -50,8 +48,8 @@
 			Constructor
 		*/
 		public function setUp() : void{
-			$id = "10293074";
-
+			$id = "10261688";
+			
 			$query = db_query("SELECT * FROM `accounts` WHERE `sim_id` = '{$id}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
@@ -65,8 +63,6 @@
 				$this->personal_email = $result['personal_email'];
 				$this->account_type = $result['type'];
 				$this->raw = $result;
-				$this->majors = json_decode($this->raw['majors']);
-
 			}else{
 				throw new Exception("Account not found.");
 			}
@@ -76,35 +72,35 @@
 			Tests the method to get name
 		*/
 		function test_get_name(){
-			return $this->assertEquals($this->name, "Malissia Creyke");
+			return $this->assertEquals($this->name, "Carver Delahunt");
 		}
-        
+		
 		/*
 			Tests the method to get phone number
 		*/
 		public function test_get_phone(){
-			return $this->assertEquals($this->phone, "83987712");
+			return $this->assertEquals($this->phone, "96118410");
 		}
 		
 		/*
 			Tests the method to get SIM E-mail
 		*/
 		public function test_get_sim_email(){
-			return $this->assertEquals($this->sim_email, "malis.creyk@mymail.sim.edu.sg");
+			return $this->assertEquals($this->sim_email, "carve.delah@mymail.sim.edu.sg");
 		}
 		
 		/*
 			Tests the method to get personal E-mail
 		*/
 		public function test_get_personal_email(){
-			return $this->assertEquals($this->personal_email, "malis.creyk@gmail.com");
+			return $this->assertEquals($this->personal_email, "carve.delah@gmail.com");
 		}
 		
 		/*
 			Tests the method to get account type
 		*/
 		public function test_get_account_type(){
-			return $this->assertEquals($this->account_type, 0);
+			return $this->assertEquals($this->account_type, 9);
 		}
 		
 		/*
@@ -113,25 +109,16 @@
 			@return bool
 		*/
 		public function test_is_faculty(){
-			return $this->assertTrue($this->account_type == 0);
+			return $this->assertNotTrue($this->account_type == 0);
 		}
 		
 		/*
-			Checks if the account is a full time student
+			Checks if the account is a student
 			
 			@return bool
 		*/
-		public function test_is_full_time_student(){
-			return $this->assertNotTrue($this->account_type == 1);
-		}
-
-		/*
-			Checks if the account is a part time student
-			
-			@return bool
-		*/
-		public function test_is_part_time_student(){
-			return $this->assertNotTrue($this->account_type == 2);
+		public function test_is_student(){
+			return $this->assertNotTrue($this->account_type == 1 || $this->account_type == 2);
 		}
 		
 		/*
@@ -140,7 +127,7 @@
 			@return bool
 		*/
 		public function test_is_admin(){
-			return $this->assertNotTrue($this->account_type == 8);
+			return $this->assertTrue($this->account_type == 8 || $this->account_type == 9);
 		}
 		
 		/*
@@ -149,16 +136,8 @@
 			@return bool
 		*/
 		public function test_is_super(){
-			return $this->assertNotTrue($this->account_type == 9);
+			return $this->assertTrue($this->account_type == 9);
 		}
-
-        public function test_get_majors_as_String() {
-            return $this->assertEquals(implode(", ", $this->majors), "SG111, SG766, SG122, SG133, SG868, SG144");
-        }
-
-        public function test_get_majors_as_JSON() {
-            return $this->assertJson(json_encode($this->majors), "SG111, SG766, SG122, SG133, SG868, SG144");
-        }
 	}
 	
 	//Close connection
