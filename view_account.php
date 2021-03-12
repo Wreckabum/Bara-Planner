@@ -144,19 +144,31 @@
 					}
 				}
 				
-				if(
+				$go_to = "";
+					
+				if($view_account->is_admin()){
+					$go_to = "edit_admin";
+				}elseif($view_account->is_faculty()){
+					$go_to = "edit_faculty";
+				}elseif($view_account->is_student()){
+					$go_to = "edit_student";
+				}
+				
+				//If own account
+				if($account->sim_id == $view_account->sim_id){
+			?>
+					<tr>
+						<td colspan='2'>
+							<a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">
+								Update
+							</a>
+						</td>
+					</tr>
+			<?php		
+				}elseif(
 					($account->is_admin() && !$view_account->is_admin()) || //Admin editing non-admin accounts
 					($account->is_super() && $view_account->is_admin())  //Super admin editing admin accounts
 				){
-					$go_to = "";
-					
-					if($view_account->is_admin()){
-						$go_to = "edit_admin";
-					}elseif($view_account->is_faculty()){
-						$go_to = "edit_faculty";
-					}elseif($view_account->is_student()){
-						$go_to = "edit_student";
-					}
 			?>
 					<tr>
 						<td>
