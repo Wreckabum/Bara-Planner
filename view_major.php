@@ -55,10 +55,52 @@
 					<?= nl2br($major['description']) ?>
 				</td>
 			</tr>
+			<?php
+				//Ensure acocunt is admin
+				if($account->is_admin()){
+			?>
+					<tr>
+						<td>
+							<a href="edit_major.php?m=<?= $major['id'] ?>">
+								Edit Major
+							</a>
+						</td>
+						<td>
+							<a id='delete_link' href='#' onClick="show_delete();">
+								Delete Major
+							</a>
+							<form id='delete_form' action='delete_major.php' method='POST' style='display:none;'>
+								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $major['id'] ?>' required/>
+								<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
+							</form>
+						</td>
+					</tr>
+			<?php
+				}
+			?>
+			<tr>
+				<td colspan='2'>
+					<a href='home.php'>
+						Back to main page
+					</a>
+				</td>
+			</tr>
 		</table>
-		<br />
-		<a href='home.php'>Back to main page</a>
 	</body>
+	<script>
+		function show_delete(){
+			$("#delete_link").hide();
+			$("#delete_form").show();
+		}
+		
+		$("#confirm_checkbox").change(function(){
+			if($(this).is(":checked")){
+				$("#delete_submit").attr("disabled", false);
+			}else{
+				$("#delete_submit").attr("disabled", true);
+			}
+		});
+	</script>
 </html>
 <?php
 	//Close connection

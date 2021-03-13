@@ -116,6 +116,9 @@
 					<br />
 		<?php
 				}
+		?>
+				<a href='home.php'>Back to main page</a>
+		<?php
 			}else{
 		?>
 				<table id='view_group' class='basic_table' style='width:40%;'>
@@ -180,12 +183,40 @@
 							<?= $group['deadline'] ?>
 						</td>
 					</tr>
+					<?php
+						//Ensure acocunt is admin
+						if($account->is_admin()){
+					?>
+							<tr>
+								<td>
+									<a href="edit_major.php?m=<?= $group['id'] ?>">
+										Edit Group
+									</a>
+								</td>
+								<td>
+									<a id='delete_link' href='#' onClick="show_delete();">
+										Delete Group
+									</a>
+									<form id='delete_form' action='delete_group.php' method='POST' style='display:none;'>
+										<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $group['id'] ?>' required/>
+										<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
+									</form>
+								</td>
+							</tr>
+					<?php
+						}
+					?>
+					<tr>
+						<td colspan='2'>
+							<a href='home.php'>
+								Back to main page
+							</a>
+						</td>
+					</tr>
 				</table>
 		<?php
 			}
 		?>
-		<br />
-		<a href='home.php'>Back to main page</a>
 	</body>
 </html>
 <?php

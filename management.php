@@ -16,12 +16,6 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//If not admin
-	if(!$account->is_admin()){
-		header("location: home.php");
-		exit();
-	}
-	
 	$err = "";
 	
 	if(isset($_GET['err'])){
