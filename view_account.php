@@ -19,6 +19,7 @@
 	//For non-admins, only allow viewing of own accounts
 	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

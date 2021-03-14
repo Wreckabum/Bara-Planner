@@ -19,6 +19,7 @@
 	//If not admin
 	if(!$account->is_admin()){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

@@ -20,6 +20,8 @@
 	//If no such project
 	if(is_null($project)){
 		header("location: view_all.php?t=projects");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
 ?>
 

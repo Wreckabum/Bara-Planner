@@ -48,10 +48,10 @@
 	}
 	
 	/*
-		Returns a 2D array of all accounts (filter optional)
+		Returns an array of all accounts (filter optional)
 		
 		@param	array of ints -> account types (optinal)
-		@return	2D array of Faculty/Student/Admin objects
+		@return	Array of Faculty/Student/Admin objects
 	*/
 	function get_all_accounts($type = []){
 		array_walk($type, function(&$value, $key){
@@ -101,6 +101,70 @@
 		}
 		
 		return false;
+	}
+	
+	/*
+		Returns all students based on a semester
+		
+		@param	int (optional)
+		@param	int (optional)
+		@return	Array of Student objects
+	*/
+	function get_students($year = "*", $quarter = "*"){
+		str_clean($year);
+		str_clean($quarter);
+		
+		$filter = [];
+		$output = []; 
+		
+		if($year != "*"){
+			$filter[] = "`year` = ". (int)$year;
+		}
+
+		if($quarter != "*"){
+			$filter[] = "`quarter` = ". (int)$quarter;
+		}
+		
+		$filter_text = ((count($filter) == 0) ? "" : " AND ". implode(" AND ", $filter));
+		
+		$query = db_query("SELECT * FROM `accounts` WHERE `type` IN (1, 2) {$filter_text};");
+		
+		while($row = mysqli_fetch_assoc($query)){
+			$output[] = new Student($row['sim_id']);
+		}
+		
+		return $output;
+	}
+	
+	/*
+		Returns all available years
+		
+		@return	2D array of [Year => [Quarter]]
+	*/
+	function get_semesters(){
+		$query = db_query(
+			"SELECT 
+				`year`, 
+				`quarter` 
+			FROM 
+				`accounts` 
+			WHERE 
+				`year` IS NOT NULL AND 
+				`quarter` IS NOT NULL 
+			GROUP BY 
+				`year`, 
+				`quarter` 
+			ORDER BY 
+				`year` ASC, 
+				`quarter` ASC;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			$output[$row['year']][] = $row['quarter'];
+		}
+		
+		return $output;
 	}
 	
 	/*

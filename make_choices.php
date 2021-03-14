@@ -19,6 +19,7 @@
 	//If not student
 	if(!$account->is_student()){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
@@ -37,7 +38,6 @@
 			case 2:
 				$err = "Invalid choice made.";
 				break;
-			
 			
 			default:
 				$err = "";
@@ -97,7 +97,7 @@
 			?>
 		</div>
 		<div id='choices_container' style='display:inline-block; width:48%; vertical-align:top;'>
-			<div id='choices_inner_container' style='display:block; width:100%; vertical-align:top;'>
+			<div id='choices_inner_container'>
 				<form action='review_choices.php' method='POST'>
 					<table id='make_choices' class='basic_table' style='width:100%;'>
 						<tr>

@@ -19,6 +19,7 @@
 	//Ensure not student
 	if($account->is_student()){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

@@ -33,6 +33,8 @@
 	//If no such group
 	if(is_null($group) && empty($group_array)){
 		header("location: view_all.php?t=groups");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
 ?>
 

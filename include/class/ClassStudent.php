@@ -56,7 +56,11 @@
 			Get choices
 		*/
 		public function get_choices(){
-			return $this->choices;
+			if(is_null($this->choices)){
+				return [];
+			}else{
+				return $this->choices;
+			}
 		}
 		
 		/*

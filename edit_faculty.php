@@ -19,6 +19,7 @@
 	//If not admin or not own account
 	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

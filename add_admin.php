@@ -19,6 +19,7 @@
 	//If not super admin
 	if(!$account->is_super()){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

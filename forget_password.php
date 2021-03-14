@@ -18,8 +18,6 @@
 	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		
-
 		//Connect to database
 		sql_connect();
 		
@@ -36,8 +34,8 @@
 		if(!empty($email)){
 			$query = db_query("SELECT * FROM `accounts` WHERE `sim_email` = '{$email}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
+			
 			if($result != NULL){
-				
 				//Store data in session variables
 				$id = $result['sim_id'];	
 				$personal_email = $result['personal_email'];					

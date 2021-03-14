@@ -19,6 +19,7 @@
 	//If not super admin or own account
 	if(!$account->is_super() && $account->sim_id != $_POST['id']){
 		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	

@@ -20,6 +20,8 @@
 	//If no such major
 	if(is_null($major)){
 		header("location: view_all.php?t=majors");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
 ?>
 
