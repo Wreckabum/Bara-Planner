@@ -54,7 +54,7 @@
 			header("location: add_project.php?err=1");
 		}else{
 			//Sucessfully added
-			header("location: view_project.php?p=". mysqli_insert_id($GLOBALS['mysql_link']) ."");
+			header("location: view_project.php?p=". mysqli_insert_id($GLOBALS['mysql_link']));
 		}
 	}elseif(isset($_POST['edit'])){
 		if(db_query(

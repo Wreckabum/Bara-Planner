@@ -16,31 +16,22 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	try{
-		$to_delete = get_account($_POST['delete_id']);
-	}catch(Exception $e){
+	//If not admin
+	if(!$account->is_admin()){
 		header("location: home.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
-	//Confirm permissions to delete
-	if(
-		(!$account->is_admin()) || //Not admin
-		($account->is_super() && $to_delete->is_admin())  //Super admin deleting admin accounts
-	){
-		header("location: home.php");
-		@mysqli_close($GLOBALS['mysql_link']);
-		exit();
-	}
+	str_clean($_POST['delete_id']);
 	
 	db_query(
 		"DELETE FROM
-			`accounts`
+			`groups`
 		WHERE
-			`sim_id` = '{$to_delete->sim_id}';");
+			`id` = '{$_POST['delete_id']}';");
 	
-	header("location: view_all.php");
+	header("location: view_all.php?t=groups");
 	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);

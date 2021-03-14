@@ -661,9 +661,6 @@
 									<th style='text-align:center;'>
 										Project
 									</th>
-									<th style='text-align:center;'>
-										Deadline
-									</th>
 									<?php
 										if($account->is_admin()){
 									?>
@@ -704,9 +701,6 @@
 											</td>
 											<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
 												<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
-											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
-												<?= $group['deadline'] ?>
 											</td>
 											<?php
 												if($account->is_admin()){

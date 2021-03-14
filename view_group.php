@@ -15,7 +15,6 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-	
 	$group = null;
 	$group_array = null;
 	
@@ -45,10 +44,13 @@
 		<title>View Group - <?= $group['id'] ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
 		<?php
+			include("include/templates/header.php"); 
+			
+			//$As faculty, show all assigned groups
 			if($account->is_faculty() && !isset($_GET['g'])){
 				foreach($group_array as $id => $group){
 		?>
@@ -106,14 +108,6 @@
 								<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
 							</td>
 						</tr>
-						<tr>
-							<td style='width:25%;'>
-								Deadline:
-							</td>
-							<td>
-								<?= $group['deadline'] ?>
-							</td>
-						</tr>
 					</table>
 					<br />
 		<?php
@@ -122,6 +116,7 @@
 				<a href='home.php'>Back to main page</a>
 		<?php
 			}else{
+				//Viewing single group
 		?>
 				<table id='view_group' class='basic_table' style='width:40%;'>
 					<tr>
@@ -177,21 +172,13 @@
 							<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
 						</td>
 					</tr>
-					<tr>
-						<td style='width:25%;'>
-							Deadline:
-						</td>
-						<td>
-							<?= $group['deadline'] ?>
-						</td>
-					</tr>
 					<?php
 						//Ensure acocunt is admin
 						if($account->is_admin()){
 					?>
 							<tr>
 								<td>
-									<a href="edit_major.php?m=<?= $group['id'] ?>">
+									<a href="edit_group.php?g=<?= $group['id'] ?>">
 										Edit Group
 									</a>
 								</td>
@@ -220,6 +207,20 @@
 			}
 		?>
 	</body>
+	<script>
+		function show_delete(){
+			$("#delete_link").hide();
+			$("#delete_form").show();
+		}
+		
+		$("#confirm_checkbox").change(function(){
+			if($(this).is(":checked")){
+				$("#delete_submit").attr("disabled", false);
+			}else{
+				$("#delete_submit").attr("disabled", true);
+			}
+		});
+	</script>
 </html>
 <?php
 	//Close connection

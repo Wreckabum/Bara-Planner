@@ -295,7 +295,6 @@
 		
 		while($row = mysqli_fetch_assoc($query)){
 			$output[$row['id']]['name'] = $row['name'];
-			$output[$row['id']]['deadline'] = date_format(date_create($row['deadline']),"d M Y");;
 			
 			try{
 				$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
@@ -338,7 +337,6 @@
 			
 			while($row = mysqli_fetch_assoc($query)){
 				$output[$row['id']]['name'] = $row['name'];
-				$output[$row['id']]['deadline'] = date_format(date_create($row['deadline']),"d M Y");;
 				
 				try{
 					$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
@@ -367,7 +365,6 @@
 			
 			$output['id'] = $group['id'];
 			$output['name'] = $group['name'];
-			$output['deadline'] = date_format(date_create($group['deadline']),"d M Y");;
 			
 			try{
 				$output['supervisor'] = new Faculty($group['supervisor']);
@@ -404,7 +401,6 @@
 			
 		$output['id'] = $group['id'];
 		$output['name'] = $group['name'];
-		$output['deadline'] = date_format(date_create($group['deadline']),"d M Y");;
 		
 		try{
 			$output['supervisor'] = new Faculty($group['supervisor']);
@@ -442,7 +438,6 @@
 		
 		while($row = mysqli_fetch_assoc($query)){
 			$output[$row['id']]['name'] = $row['name'];
-			$output[$row['id']]['deadline'] = date_format(date_create($row['deadline']),"d M Y");;
 			
 			try{
 				$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);

@@ -31,6 +31,22 @@
 				$err = "Unexpected error.";
 				break;
 			
+			case 1:
+				$err = "Cannot find selected supervisor.";
+				break;
+			
+			case 2:
+				$err = "Cannot find selected assessor.";
+				break;
+			
+			case 3:
+				$err = "Cannot find selected project.";
+				break;
+			
+			case 4:
+				$err = "Cannot find at least one of the selected students.";
+				break;
+			
 			default:
 				$err = "";
 				break;
@@ -135,7 +151,7 @@
 									$index = 0;
 									$choice = 1;
 							?>
-									<tr style='cursor:move;'>
+									<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
 										<td style='padding-right:0;'>
 											<?= $student->get_name() ?>
 										</td>
@@ -165,7 +181,7 @@
 				</div>
 				<div id='group_container' style='display:inline-block; width:50%; vertical-align:top;'>
 					<div id='group_inner_container'>
-						<form action='exec_group.php' method='POST'>
+						<form id='add_group_form' action='exec_group.php' method='POST'>
 							<table id='add_group' class='basic_table' style='width:100%;'>
 								<tr>
 									<td colspan='2'>
@@ -185,7 +201,7 @@
 										Supervisor:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select name='supervisor' style='width:97%;' required>
+										<select id='supervisor' name='supervisor' style='width:97%;' required>
 											<?php
 												foreach($all_faculty as $supervisor){
 											?>
@@ -200,7 +216,7 @@
 										Assessor:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select name='assessor' style='width:97%;' required>
+										<select id='assessor' name='assessor' style='width:97%;' required>
 											<?php
 												foreach($all_faculty as $assessor){
 											?>
@@ -215,11 +231,11 @@
 										Project:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select name='assessor' style='width:97%;' required>
+										<select id='project' name='project' style='width:97%;' required>
 											<?php
 												foreach($all_projects as $id => $details){
 											?>
-													<option value='<?= $id ?>'>(<?= $id ?>) - <?= $details['name'] ?></option>
+													<option value='<?= $details['proj_id'] ?>'>(<?= $id ?>) - <?= $details['name'] ?></option>
 											<?php
 												}
 											?>
@@ -256,7 +272,8 @@
 								</tr>
 								<tr>
 									<td colspan='2' style='padding:5px;'>
-										<input type='submit' name='add_group' value='Add Group'>
+										<input type='hidden' name='semester' value='<?= $_GET['semester'] ?>'>
+										<input type='submit' name='add' value='Add Group'>
 									</td>
 								</tr>
 							</table>
@@ -292,6 +309,17 @@
 						connectWith: ".connected_sortable"
 					})
 					.disableSelection();
+				
+				$("#add_group_form").submit(function(e){
+					//Check faculty involved
+					if($("#supervisor option:selected").text() == $("#assessor option:selected").text()){
+						alert("Supervisor and Assessor should be different.");
+						e.preventDefault();
+					}
+					
+					$('#hidden_members').remove();
+					$('#add_group_form').attr("action", "exec_group.php?" + $("#group_members").sortable().sortable("serialize"));
+				});
 			</script>
 		</html>
 <?php

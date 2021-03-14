@@ -32,6 +32,7 @@
 		<title>View Major - <?= $project['id'] ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
