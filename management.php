@@ -36,7 +36,7 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title>Add a new faculty member</title>
-		<link rel='stylesheet' href='include/css/main.css'>
+		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 
 		<style>

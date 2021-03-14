@@ -51,7 +51,7 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title>Edit an administrator account</title>
-		<link rel='stylesheet' href='include/css/main.css'>
+		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
 	<body>

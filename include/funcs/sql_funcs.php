@@ -104,13 +104,13 @@
 	}
 	
 	/*
-		Returns all students based on a semester
+		Returns all students based on a semester (currently inefficient for large numbers)
 		
 		@param	int (optional)
 		@param	int (optional)
 		@return	Array of Student objects
 	*/
-	function get_students($year = "*", $quarter = "*"){
+	function get_students($year = "*", $quarter = "*", $check_group = false){
 		str_clean($year);
 		str_clean($quarter);
 		
@@ -130,6 +130,15 @@
 		$query = db_query("SELECT * FROM `accounts` WHERE `type` IN (1, 2) {$filter_text};");
 		
 		while($row = mysqli_fetch_assoc($query)){
+			//If checking if already in group
+			if($check_group){
+				$check_query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$row['sim_id']}\"');");
+				
+				if(mysqli_num_rows($check_query) != 0){
+					continue;
+				}
+			}
+			
 			$output[] = new Student($row['sim_id']);
 		}
 		
@@ -391,7 +400,7 @@
 	function get_group_by_member($id){
 		str_clean($id);
 		
-		$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` where JSON_CONTAINS(`members`, '\"{$id}\"');"));
+		$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id}\"');"));
 			
 		$output['id'] = $group['id'];
 		$output['name'] = $group['name'];

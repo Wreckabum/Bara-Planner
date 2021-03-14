@@ -37,7 +37,7 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title>View Account - <?= $view_account->get_name() ?></title>
-		<link rel='stylesheet' href='include/css/main.css'>
+		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>

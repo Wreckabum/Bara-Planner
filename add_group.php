@@ -45,7 +45,7 @@
 			<head>
 				<meta charset='UTF-8'>
 				<title>Choose the year/quarter</title>
-				<link rel='stylesheet' href='include/css/main.css'>
+				<link rel='stylesheet' href='include/css/main.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 			</head>
 			<body>
@@ -88,7 +88,7 @@
 		//Semester selected
 		list($year, $quarter) = explode("_", $_GET['semester']);	
 		
-		$applicable_students = get_students($year, $quarter);
+		$applicable_students = get_students($year, $quarter, true); //Get all students in semester that is not in a group
 		$all_faculty = get_all_accounts([0]);
 		$all_projects = get_all_projects();
 ?>
@@ -97,66 +97,73 @@
 			<head>
 				<meta charset='UTF-8'>
 				<title>Choose preferred projects</title>
-				<link rel='stylesheet' href='include/css/main.css'>
+				<link rel='stylesheet' href='include/css/main.css' />
+				<link rel='stylesheet' href='include/css/dataTables.min.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 				<script src='include/js/jquery-light-v3.5.1.js'></script>
+				<script src='include/js/jquery-ui.min.js'></script>				
+				<script src='include/js/dataTables.min.js'></script>
 			</head>
 			<body>
 				<?php include("include/templates/header.php"); ?>
 				<center>
 					<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 				</center>
-				<div id='students_container' style='display:inline-block; width:60%; vertical-align:top;'>
-					<table id='students' class='basic_table' style='width:100%;'>
-						<tr>
-							<td>
-								Applicable Students
-							</td>
+				<div id='students_container' style='display:inline-block; width:49%; vertical-align:top;'>
+					<table id='applicable_students' class='display connected_sortable' style='width:100%;'>
+						<thead>
+							<tr>
+								<th style='background-image:none !important;'>
+									Applicable Students
+								</th>
+								<?php
+									for($i = 1; $i <= count($all_projects); $i++){
+										
+								?>
+										<th style='width:30px; padding:0; text-align:center; background-image:none !important;'>
+											<?= $i ?>
+										</th>
+								<?php
+									}
+								?>
+							</tr>
+						</thead>
+						<tbody>
 							<?php
-								for($i = 1; $i <= count($all_projects); $i++){
-									
+								foreach($applicable_students as $student){
+									$selected_choices = $student->get_choices();
+									$index = 0;
+									$choice = 1;
 							?>
-									<td style='width:30px padding:0; text-align:center;'>
-										<?= $i ?>
-									</td>
+									<tr style='cursor:move;'>
+										<td style='padding-right:0;'>
+											<?= $student->get_name() ?>
+										</td>
+										<?php
+											for($i = 1; $i <= count($all_projects); $i++){
+										?>
+												<td style='width:30px; padding:0; text-align:center;'>
+													<?php
+														foreach($selected_choices as $rank => $id){
+															if($id == $i){
+													?>
+																<?= $rank + 1 ?>
+													<?php
+															}
+														}
+													?>
+												</td>
+										<?php
+											}
+										?>
+									</tr>
 							<?php
 								}
 							?>
-						</tr>
-						<?php
-							foreach($applicable_students as $student){
-								$selected_choices = $student->get_choices();
-								$index = 0;
-								$choice = 1;
-						?>
-								<tr>
-									<td style='padding-right:0;'>
-										<?= $student->get_name() ?>
-									</td>
-									<?php
-										for($i = 1; $i <= count($all_projects); $i++){
-									?>
-											<td style='width:30px padding:0; text-align:center;'>
-												<?php
-													foreach($selected_choices as $rank => $id){
-														if($id == $i){
-												?>
-															<?= $rank + 1 ?>
-												<?php
-														}
-													}
-												?>
-											</td>
-									<?php
-										}
-									?>
-								</tr>
-						<?php
-							}
-						?>
+						</tbody>
 					</table>
 				</div>
-				<div id='group_container' style='display:inline-block; width:39%; vertical-align:top;'>
+				<div id='group_container' style='display:inline-block; width:50%; vertical-align:top;'>
 					<div id='group_inner_container'>
 						<form action='exec_group.php' method='POST'>
 							<table id='add_group' class='basic_table' style='width:100%;'>
@@ -218,16 +225,33 @@
 											?>
 										</select>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<td colspan='2' style='width:5%; padding:5px; text-align:center; background-color:#D6EFFB;'>
 										Members:
 									</td>
 								</tr>
 								<tr>
 									<td colspan='2' style='width:95%; padding:5px;'>
-										<table style='width:100%; height:150px;'>
-										
+										<table id='group_members' class='connected_sortable' style='width:100%;'>
+											<tr>
+												<td>
+													Members
+												</td>
+												<?php
+													for($i = 1; $i <= count($all_projects); $i++){
+														
+												?>
+														<td style='width:30px; padding:0; text-align:center;'>
+															<?= $i ?>
+														</td>
+												<?php
+													}
+												?>
+											</tr>
 										</table>
+										<br />
+										<br />
 									</td>
 								</tr>
 								<tr>
@@ -243,7 +267,12 @@
 				<a href='home.php'>Back to main page</a>
 			</body>
 			<script>
-				//Enable choices container scroll
+				$("#applicable_students").DataTable({
+					/* Disable initial sort */
+					"aaSorting": []
+				});
+				
+				//Enable group container scroll
 				var original_height = $('#group_inner_container').offset().top;
 				
 				$(window).scroll(function(){
@@ -253,6 +282,16 @@
 						$('#group_inner_container').css('position', '').css('top', '');
 					}
 				});
+				
+				//Enable drag/drop
+				$(".connected_sortable")
+					.sortable({
+						disabled: false,
+						items: "tr:not(:first, :contains('No data available in table'))",
+						helper: "clone",
+						connectWith: ".connected_sortable"
+					})
+					.disableSelection();
 			</script>
 		</html>
 <?php
