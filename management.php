@@ -72,8 +72,8 @@
 
                     <div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">View Group</h5>
-							<p class="card-text">View Group Member</p>
+							<h5 class="card-title">View Group<?= $s ?></h5>
+							<p class="card-text">View Asigned Group<?= $s ?></p>
 							<a href="view_group.php" class="btn btn-primary">View Group<?= $s ?></a>
 						</div>
 					</div>

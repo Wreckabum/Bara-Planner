@@ -53,6 +53,7 @@
 			//$As faculty, show all assigned groups
 			if($account->is_faculty() && !isset($_GET['g'])){
 				foreach($group_array as $id => $group){
+					$self_background = "background-color:#BCE2BE";
 		?>
 					<table id='view_group' class='basic_table' style='width:40%;'>
 						<tr>
@@ -69,19 +70,19 @@
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td style='<?= (($group['supervisor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
 								Supervisor:
 							</td>
-							<td>
-								<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
+								<td style='<?= (($group['supervisor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
+									<?= $group['supervisor']->get_name() ?> (<?= $group['supervisor']->sim_id ?>)
 							</td>
 						</tr>
 						<tr>
-							<td style='width:25%;'>
+							<td style='<?= (($group['assessor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
 								Assessor:
 							</td>
-							<td>
-								<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
+							<td style='<?= (($group['assessor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
+								<?= $group['assessor']->get_name() ?> (<?= $group['assessor']->sim_id ?>)
 							</td>
 						</tr>
 						
