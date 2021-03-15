@@ -70,7 +70,9 @@
 			//Sucessfully added
 			header("location: view_account.php?a={$_POST['sim_id']}");
 		}
-	}elseif(isset($_POST['edit'])){	
+	}elseif(isset($_POST['edit'])){
+		$_POST['id'] = ((isset($_POST['id'])) ? $_POST['id'] : "");
+		
 		if($account->sim_id == $_POST['id']){
 			$query = 
 				"UPDATE `accounts` 
@@ -105,6 +107,32 @@
 			header("location: edit_student.php?a={$_POST['old_sim_id']}err=1");
 		}else{
 			//Sucessfully edited
+			
+			//If admin doing the update
+			if($account->sim_id != $_POST['id']){
+				$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$_POST['old_sim_id']}\"');"));
+				$group_members = json_decode($group['members']);
+				
+				$replaced = array_replace(
+					$group_members,
+					array_fill_keys(
+						array_keys(
+							$group_members, 
+							$_POST['old_sim_id']),
+						$_POST['new_sim_id']
+					)
+				);
+				
+				//Update groups
+				db_query(
+					"UPDATE `groups` 
+						SET
+							`members` = '". addslashes(json_encode($replaced)) ."'
+						WHERE
+							`id` = '{$group['id']}';"
+				);
+			}
+			
 			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{

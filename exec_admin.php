@@ -56,6 +56,8 @@
 			header("location: view_account.php?a={$_POST['sim_id']}");
 		}
 	}elseif(isset($_POST['edit'])){
+		$_POST['id'] = ((isset($_POST['id'])) ? $_POST['id'] : "");
+		
 		if($account->sim_id == $_POST['id']){
 			$query = 
 				"UPDATE `accounts` 

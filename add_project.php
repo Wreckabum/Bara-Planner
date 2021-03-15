@@ -63,7 +63,7 @@
 						Project ID
 					</td>
 					<td>
-						<input type='text' name='proj_id' placeholder='CSIT-21-S1-01' maxlength='11' style='width:97%;' required />
+						<input type='text' name='proj_id' placeholder='CSIT-21-S1-01' maxlength='24' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>

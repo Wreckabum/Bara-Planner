@@ -62,6 +62,8 @@
 			header("location: view_account.php?a={$_POST['sim_id']}");
 		}
 	}elseif(isset($_POST['edit'])){
+		$_POST['id'] = ((isset($_POST['id'])) ? $_POST['id'] : "");
+		
 		if($account->sim_id == $_POST['id']){
 			$query = 
 				"UPDATE `accounts` 
@@ -95,6 +97,33 @@
 			header("location: edit_faculty.php?a={$_POST['old_sim_id']}err=1");
 		}else{
 			//Sucessfully edited
+			
+			//If admin doing the update
+			if($account->sim_id != $_POST['id']){
+				//Update groups
+				db_query(
+					"UPDATE `groups` 
+						SET
+							`supervisor` = 
+								CASE
+									WHEN `supervisor` = '{$_POST['old_sim_id']}'
+										THEN '{$_POST['new_sim_id']}'
+									ELSE
+										`supervisor`
+								END,
+							`assessor` = 
+								CASE
+									WHEN `assessor` = '{$_POST['old_sim_id']}'
+										THEN '{$_POST['new_sim_id']}'
+									ELSE
+										`assessor`
+								END
+						WHERE
+							`supervisor` = '{$_POST['old_sim_id']}' OR
+							`assessor` = '{$_POST['old_sim_id']}';"
+				);
+			}
+			
 			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{

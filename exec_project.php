@@ -57,6 +57,8 @@
 			header("location: view_project.php?p=". mysqli_insert_id($GLOBALS['mysql_link']));
 		}
 	}elseif(isset($_POST['edit'])){
+		$old_proj_id = mysqli_fetch_assoc(db_query("SELECT `proj_id` FROM `projects` WHERE `id` = '{$_POST['id']}';"))['proj_id'];
+		
 		if(db_query(
 			"UPDATE `projects` 
 				SET
@@ -72,6 +74,22 @@
 			header("location: edit_project.php?p={$_POST['id']}err=1");
 		}else{
 			//Sucessfully edited
+			
+			//Update groups
+			db_query(
+				"UPDATE `groups` 
+					SET
+						`project` = 
+							CASE
+								WHEN `project` = '{$old_proj_id}'
+									THEN '{$_POST['proj_id']}'
+								ELSE
+									`project`
+							END
+					WHERE
+						`project` = '{$old_proj_id}';"
+			);
+			
 			header("location: view_project.php?p={$_POST['id']}");
 		}
 	}else{

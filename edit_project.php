@@ -70,7 +70,7 @@
 						Project ID
 					</td>
 					<td>
-						<input type='text' name='proj_id' maxlength='11' value='<?= $project['proj_id'] ?>' style='width:97%;' required />
+						<input type='text' name='proj_id' maxlength='24' value='<?= $project['proj_id'] ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
