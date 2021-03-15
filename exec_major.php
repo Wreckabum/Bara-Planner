@@ -61,6 +61,32 @@
 			header("location: edit_major.php?m={$_POST['old_id']}&err=1");
 		}else{
 			//Sucessfully edited
+			
+			//Update accounts
+			$query = db_query("SELECT * FROM `accounts` WHERE JSON_CONTAINS(`majors`, '\"{$_POST['old_id']}\"');");
+			
+			while($row = mysqli_fetch_assoc($query)){
+				$majors = json_decode($row['majors']);
+				
+				$replaced = array_replace(
+					$majors,
+					array_fill_keys(
+						array_keys(
+							$majors, 
+							$_POST['old_id']),
+						$_POST['new_id']
+					)
+				);
+				
+				db_query(
+					"UPDATE `accounts` 
+						SET
+							`majors` = '". addslashes(json_encode($replaced)) ."'
+						WHERE
+							`sim_id` = '{$row['sim_id']}';"
+				);
+			}
+			
 			header("location: view_major.php?m={$_POST['new_id']}");
 		}
 	}else{
