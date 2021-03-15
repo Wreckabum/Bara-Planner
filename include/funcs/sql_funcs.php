@@ -460,4 +460,59 @@
 		
 		return $output;
 	}
+	
+	/*
+		Checks if the faculty member is supervising/assessing the group members
+		
+		@param	string
+		@param	string
+		@return bool
+	*/
+	function check_same_group_faculty($id_1, $id_2){
+		str_clean($id_1);
+		str_clean($id_2);
+		
+		$query = db_query(
+			"SELECT * FROM `groups` WHERE 
+				(JSON_CONTAINS(`members`, '\"{$id_1}\"') AND
+					(
+						`supervisor` = '{$id_2}' OR
+						`assessor` = '{$id_2}'
+					)
+				) 
+				OR 
+				(JSON_CONTAINS(`members`, '\"{$id_2}\"') AND
+					(
+						`supervisor` = '{$id_1}' OR
+						`assessor` = '{$id_1}'
+					)
+				)
+				OR
+				(
+					`supervisor` = '{$id_1}' AND
+					`assessor` = '{$id_2}'
+				)
+				OR(
+					`supervisor` = '{$id_2}' AND
+					`assessor` = '{$id_1}'
+				);");
+		
+		return ((mysqli_num_rows($query) <= 0) ? false : true);
+	}
+	
+	/*
+		Checks if the 2 members are in the same group
+		
+		@param	string
+		@param	string
+		@return bool
+	*/
+	function check_same_group_member($id_1, $id_2){
+		str_clean($id_1);
+		str_clean($id_2);
+		
+		$query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id_1}\"') AND JSON_CONTAINS(`members`, '\"{$id_2}\"');");
+		
+		return ((mysqli_num_rows($query) <= 0) ? false : true);
+	}
 ?>

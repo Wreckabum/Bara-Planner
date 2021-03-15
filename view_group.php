@@ -53,7 +53,23 @@
 			//$As faculty, show all assigned groups
 			if($account->is_faculty() && !isset($_GET['g'])){
 				foreach($group_array as $id => $group){
-					$self_background = "background-color:#BCE2BE";
+					$supervisor_background = "";
+					$assessor_background = "";
+					$supervisor_field = "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})";
+					$assessor_field = "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})";
+					
+					if($group['supervisor']->get_name() == $account->get_name()){
+						$supervisor_background = "background-color:#BCE2BE";
+					}else{
+						$supervisor_field = "<a href='view_account?a={$group['supervisor']->sim_id}'>{$supervisor_field}</a>";
+					}
+					
+					if($group['assessor']->get_name() == $account->get_name()){
+						$assessor_background = "background-color:#BCE2BE";
+					}else{
+						$assessor_field = "<a href='view_account?a={$group['assessor']->sim_id}'>{$assessor_field}</a>";
+					}
+					
 		?>
 					<table id='view_group' class='basic_table' style='width:40%;'>
 						<tr>
@@ -70,19 +86,19 @@
 							</td>
 						</tr>
 						<tr>
-							<td style='<?= (($group['supervisor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
+							<td style='<?= $supervisor_background ?>'>
 								Supervisor:
 							</td>
-								<td style='<?= (($group['supervisor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
-									<?= $group['supervisor']->get_name() ?> (<?= $group['supervisor']->sim_id ?>)
+								<td style='<?= $supervisor_background ?>'>
+									<?= $supervisor_field ?>
 							</td>
 						</tr>
 						<tr>
-							<td style='<?= (($group['assessor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
+							<td style='<?= $assessor_background ?>'>
 								Assessor:
 							</td>
-							<td style='<?= (($group['assessor']->get_name() == $account->get_name()) ? $self_background : "") ?>'>
-								<?= $group['assessor']->get_name() ?> (<?= $group['assessor']->sim_id ?>)
+							<td style='<?= $assessor_background ?>'>
+								<?= $assessor_field ?>
 							</td>
 						</tr>
 						
@@ -94,7 +110,9 @@
 								<?php
 									foreach($group['members'] as $member){
 								?>
-										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+										<a href='view_account?a=<?= $member->sim_id ?>'>
+											<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+										</a>
 										<br />
 								<?php
 									}
@@ -138,7 +156,7 @@
 							Supervisor:
 						</td>
 						<td>
-							<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
+							<?= (is_null($group['supervisor']) ? "" : "<a href='view_account?a={$group['supervisor']->sim_id}'>{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})</a>") ?>
 						</td>
 					</tr>
 					<tr>
@@ -146,7 +164,7 @@
 							Assessor:
 						</td>
 						<td>
-							<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
+							<?= (is_null($group['assessor']) ? "" : "<a href='view_account?a={$group['assessor']->sim_id}'>{$group['assessor']->get_name()} ({$group['assessor']->sim_id})</a>") ?>
 						</td>
 					</tr>
 					
@@ -158,7 +176,9 @@
 							<?php
 								foreach($group['members'] as $member){
 							?>
-									<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+									<a href='view_account?a=<?= $member->sim_id ?>'>
+										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+									</a>
 									<br />
 							<?php
 								}

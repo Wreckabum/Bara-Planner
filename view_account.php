@@ -16,8 +16,13 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
-	//For non-admins, only allow viewing of own accounts
-	if(!$account->is_admin() && $account->sim_id != $_GET['a']){
+	//Check permissions
+	if(
+		!$account->is_admin() && //Not admin
+		$account->sim_id != $_GET['a'] && //Not own account
+		!check_same_group_member($account->sim_id, $_GET['a']) && //Not member of same group
+		!check_same_group_faculty($account->sim_id, $_GET['a']) //Not supervisor/assessor of group
+	){
 		header("location: home.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
@@ -47,6 +52,21 @@
 			<tr>
 				<td colspan='2'>
 					<?= $view_account->get_name() ?>'s Profile
+				</td>
+			</tr><tr>
+				<td>
+					SIM ID:
+				</td>
+				<td>
+					<?= ucfirst($view_account->sim_id) ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					UOW ID:
+				</td>
+				<td>
+					<?= $view_account->uow_id ?>
 				</td>
 			</tr>
 			<tr>
