@@ -124,7 +124,9 @@
 								Project:
 							</td>
 							<td>
-								<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+								<a href='view_project?p=<?= $group['project']['id'] ?>'>
+									<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+								</a>
 							</td>
 						</tr>
 					</table>
@@ -190,7 +192,9 @@
 							Project:
 						</td>
 						<td>
-							<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+							<a href='view_project?p=<?= $group['project']['id'] ?>'>
+								<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+							</a>
 						</td>
 					</tr>
 					<?php
