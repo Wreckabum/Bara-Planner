@@ -47,6 +47,10 @@
 				$err = "Cannot find at least one of the selected students.";
 				break;
 			
+			case 5:
+				$err = "Not all students are from the same semester.";
+				break;
+			
 			default:
 				$err = "";
 				break;
@@ -112,7 +116,7 @@
 		<html lang='en'>
 			<head>
 				<meta charset='UTF-8'>
-				<title>Choose preferred projects</title>
+				<title>Create a group</title>
 				<link rel='stylesheet' href='include/css/main.css' />
 				<link rel='stylesheet' href='include/css/dataTables.min.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->

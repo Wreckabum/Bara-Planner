@@ -29,10 +29,20 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	$header_link = "";
+	
+	if(isset($_POST['add'])){
+		$header_link = "{$header_link}";
+	}elseif(isset($_POST['edit'])){
+		$header_link = "edit_group.php?g={$_POST['id']}";
+	}else{
+		$header_link = "home.php";
+	}
+	
 	try{
 		get_account(str_clean($_POST['supervisor']));
 	}catch(Exception $e){
-		header("location: add_group.php?semester={$_POST['semester']}&err=1");
+		header("location: {$header_link}&err=1");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
@@ -40,7 +50,7 @@
 	try{
 		get_account(str_clean($_POST['assessor']));
 	}catch(Exception $e){
-		header("location: add_group.php?semester={$_POST['semester']}&err=2");
+		header("location: {$header_link}&err=2");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
@@ -48,18 +58,34 @@
 	$project = get_project($_POST['project'], 'proj_id');
 	
 	if(is_null($project)){
-		header("location: add_group.php?semester={$_POST['semester']}&err=3");
+		header("location: {$header_link}&err=3");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
+	$check_year = "";
+	$check_quarter = "";
+	
 	foreach($_GET['student'] as $student){
 		try{
-			get_account(str_clean($student));
+			$check_account = get_account(str_clean($student));
 		}catch(Exception $e){
-			header("location: add_group.php?semester={$_POST['semester']}&err=4");
+			header("location: {$header_link}&err=4");
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
+		}
+		
+		//For first student, set initial year/quarter
+		if($check_year == "" && $check_year == ""){
+			$check_year = $check_account->get_year();
+			$check_quarter = $check_account->get_quarter();
+		}else{
+			//Check each subsequent student
+			if($check_year != $check_account->get_year() || $check_quarter != $check_account->get_quarter()){
+				header("location: {$header_link}&err=5");
+				@mysqli_close($GLOBALS['mysql_link']);
+				exit();
+			}
 		}
 	}
 	
@@ -82,7 +108,7 @@
 					'{$_POST['project']}');"
 			) !== true){
 			//Error when adding
-			header("location: add_group.php?semester={$_POST['semester']}&err=0");
+			header("location: {$header_link}&err=0");
 		}else{
 			//Sucessfully added
 			header("location: view_group.php?g=". mysqli_insert_id($GLOBALS['mysql_link']));
@@ -94,13 +120,13 @@
 					`name` = '{$_POST['name']}', 
 					`supervisor` = '{$_POST['supervisor']}', 
 					`assessor` = '{$_POST['assessor']}', 
-					`members` = '{$_POST['members']}', 
+					`members` = '". addslashes(json_encode($_GET['student'])) ."', 
 					`project` = '{$_POST['project']}'
 				WHERE
 					`id` = '{$_POST['id']}';"
 			) !== true){
 			//Error when updating
-			header("location: view_group.php?g={$_POST['id']}&err=1");
+			header("location: {$header_link}&err=1");
 		}else{
 			//Sucessfully edited
 			header("location: view_group.php?g={$_POST['id']}");
