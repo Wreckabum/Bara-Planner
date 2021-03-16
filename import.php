@@ -15,29 +15,70 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
+	
+	//If not admin
+	if(!$account->is_admin()){
+		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	$err = "";
+	
+	if(isset($_GET['err'])){
+		switch($_GET['err']){
+			case 1:
+				$err = "No file detected.";
+				break;
+			
+			case 2:
+				$err = "Please upload a valid file.";
+				break;
+			
+			default:
+				$err = "";
+				break;
+		}
+	}
 ?>
 
 <!DOCTYPE html>
-<html>
-<head>
-	<title>PHP import csv data</title>
-
-	<?php include("include/templates/header.php"); ?>
-</head>
-<body>
-<div class="container">
-	<h1>Upload CSV File</h1>
-	<form method="POST" action="upload_csv.php" enctype="multipart/form-data">
-		<div class="form-group">
-			<label>Choose File</label>
-			<input type="file" name="csv" class="form-control" />
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Import students</title>
+		<link rel='stylesheet' href='include/css/main.css' />
+		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+	</head>
+	<body>
+		<?php include('include/templates/header.php'); ?>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+		</center>
+		<div class='container'>
+			<h1>Upload CSV File</h1>
+			<form method='POST' action='upload_csv.php' enctype='multipart/form-data'>
+				<div class='form-group'>
+					Choose File:
+					<br />
+					<input type='file' name='csv' class='form-control' />
+				</div>
+				<div class='form-group'>
+					Year:
+					<br />
+					<input type='number' name='year' value='<?= ((isset($_GET['y'])) ? $_GET['y'] : date('Y')) ?>' maxlength='4' class='form-control' required />
+				</div>
+				<div class='form-group'>
+					Quarter:
+					<br />
+					<input type='number' name='quarter' value='<?= ((isset($_GET['q'])) ? $_GET['q'] : ceil(date('n') / 3)) ?>' min='1' max='4' class='form-control' required />
+				</div>
+				<div class='form-group'>
+					<button type='submit' class='btn btn-success'>Upload</button>
+				</div>
+			</form>
 		</div>
-		<div class="form-group">
-			<button type="submit" name="submit" class="btn btn-success">Upload</button>
-		</div>
-	</form>
-</div>
-</body>
+	</body>
 </html>
 <?php
 	//Close connection

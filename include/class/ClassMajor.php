@@ -10,6 +10,7 @@
 		public	$id;
 		private	$name;
 		private	$description;
+		private $type;
 		
 		/*
 			Constructor
@@ -25,6 +26,7 @@
 				$this->id = $result['id'];
 				$this->name = $result['name'];
 				$this->description = $result['description'];
+				$this->type = $result['type'];
 			}else{
 				throw new Exception("Major not found.");
 			}			
@@ -42,6 +44,31 @@
 		*/
 		public function get_description(){
 			return $this->description;
+		}
+		
+		/*
+			Get type
+		*/
+		public function get_type(){
+			return $this->type;
+		}
+		
+		/*
+			Checks if the major is for full-time students
+			
+			@return bool
+		*/
+		public function is_full_time(){
+			return $this->type == 1;
+		}
+		
+		/*
+			Checks if the major is for part-time students
+			
+			@return bool
+		*/
+		public function is_part_time(){
+			return $this->type == 0;
 		}
 	}
 	

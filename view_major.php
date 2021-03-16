@@ -58,6 +58,14 @@
 					<?= nl2br($major->get_description()) ?>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					Type:
+				</td>
+				<td>
+					<?= (($major->is_full_time()) ? "Full-time" : "Part-time") ?>
+				</td>
+			</tr>
 			<?php
 				//Ensure acocunt is admin
 				if($account->is_admin()){

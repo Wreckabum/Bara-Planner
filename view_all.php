@@ -520,6 +520,9 @@
 									<th style='text-align:center;'>
 										Description
 									</th>
+									<th style='text-align:center;'>
+										Type
+									</th>
 									<?php
 										if($account->is_admin()){
 									?>
@@ -544,6 +547,9 @@
 											</td>
 											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $major->id ?>');">
 												<?= nl2br($major->get_description()) ?>
+											</td>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $major->id ?>');">
+												<?= (($major->is_full_time()) ? "Full-time" : "Part-time") ?>
 											</td>
 											<?php
 												if($account->is_admin()){
@@ -764,7 +770,6 @@
 			"aaSorting": []
 		});
 	</script>
-	<script src='include/js/view_filter.js'></script>
 </html>
 <?php
 	//Close connection

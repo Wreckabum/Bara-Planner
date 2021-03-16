@@ -29,17 +29,21 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	$_POST['type'] == (bool)$_POST['type'];
+	
 	if(isset($_POST['add'])){
 		if(db_query(
 			"INSERT INTO
 				`majors`
 					(`id`, 
 					`name`, 
-					`description`)
+					`description`, 
+					`type`)
 				VALUES
 					('{$_POST['id']}', 
 					'{$_POST['name']}', 
-					'{$_POST['description']}');"
+					'{$_POST['description']}', 
+					'{$_POST['type']}');"
 			) !== true){
 			//Error when adding
 			header("location: add_major.php?err=1");
@@ -53,7 +57,8 @@
 				SET
 					`id` = '{$_POST['new_id']}', 
 					`name` = '{$_POST['name']}', 
-					`description` = '{$_POST['description']}'
+					`description` = '{$_POST['description']}', 
+					`type` = '{$_POST['type']}'
 				WHERE
 					`id` = '{$_POST['old_id']}';"
 			) !== true){

@@ -15,66 +15,141 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>PHP import Excel data</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<?php include("include/templates/header.php"); ?>
-</head>
-<style>
-
-</style>
-<body>
-<div class="container">
-<?php  
-
-if(isset($_POST['submit'])) {
-	 
-	$csv = array();
-	$tmpName = $_FILES['csv']['tmp_name'];	
-	// check the file is a csv
-	if(($handle = fopen($tmpName, 'r')) !== FALSE) {
-		// necessary if a large csv file
-		set_time_limit(0);
-		$row = 0;
-		while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
-			// number of fields in the csv
-			$col_count = count($data);
-
-			for($i=0;$i<$col_count;$i++){
-				$csv[$row][$i] = $data[$i];
-			}
 	
-			// inc the row
+	//If not admin
+	if(!$account->is_admin()){
+		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	str_clean($_POST['year']);
+	str_clean($_POST['quarter']);
+	
+	//If no file uplaoded (or multiple)
+	if(count($_FILES) != 1 && !isset($_FILES['csv'])){
+		header("location: import.php?y={$_POST['year']}&q={$_POST['quarter']}&err=1");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	$csv = [];
+	$tmpName = $_FILES["csv"]["tmp_name"];	
+	
+	//Ensure file is csv
+	if(($handle = fopen($tmpName, "r")) !== FALSE){
+		//Allow large files
+		set_time_limit(0);
+		
+		$row = 0;
+		
+		while(($data = fgetcsv($handle, 1000, ",")) !== FALSE){
+			$col_count = count($data);
+			
+			for($col = 0; $col < $col_count; $col++){
+				$csv[$row][$col] = $data[$col];
+			}
+			
 			$row++;
 		}
+		
+		unset($row);
+		
 		fclose($handle);
+	}else{
+		//If not CSV
+		header("location: import.php?y={$_POST['year']}&q={$_POST['quarter']}&err=2");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
-
-	// out the data
-	echo 'Sample data to be insert to Database:';
-	echo '<table>';
-	foreach ($csv as $r) {
-		echo "<tr>";
-		for($j=0;$j<$col_count;$j++){
-			echo "<td>" . $r[$j] . "</td>";
-		}
-		echo "</tr>";
-		// SQL insert statement
-	}
-	echo '</table>';
-	
-		
-		
-} else {
-	echo '<span class="msg">Please upload excel file.</span>';
-}
-
 ?>
-</div>
-</body>
+
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Review imported data</title>
+		<link rel='stylesheet' href='include/css/main.css' />
+		<link rel='stylesheet' href='include/css/dataTables.min.css' />
+		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>		
+		<script src='include/js/dataTables.min.js'></script>
+	</head>
+	<body>
+		<?php include('include/templates/header.php'); ?>
+		<h4>
+			Students for: Year <?= $_POST['year'] ?>, Quarter <?= $_POST['quarter'] ?>
+		</h4>
+		<table id='filter_table' class='display'>
+			<thead>
+				<tr>
+					<th>
+						Programme
+					</th>
+					<th>
+						Term
+					</th>
+					<th>
+						ID
+					</th>
+					<th>
+						UOW ID
+					</th>
+					<th>
+						SIM ID
+					</th>
+					<th>
+						Name
+					</th>
+					<th>
+						Mobile Number
+					</th>
+					<th>
+						SIM E-mail
+					</th>
+					<th>
+						Personal E-mail
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					foreach($csv as $row){
+				?>
+						<tr>
+							<?php
+								for($col = 0; $col < $col_count; $col++){
+							?>
+									<td>
+										<?= $row[$col] ?>
+									</td>
+							<?php
+								}
+							?>
+						</tr>
+				<?php
+					}
+				?>
+			</tbody>
+		</table>
+		<br />
+		<br />
+		<form action='import_sudents.php' method='POST'>
+			<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the student details to be imported.</label>
+			<br />
+			<input type='hidden' name='students' value='<?= json_encode($csv) ?>'/>
+			<input type='hidden' name='year' value='<?= $_POST['year'] ?>'/>
+			<input type='hidden' name='quarter' value='<?= $_POST['quarter'] ?>'/>
+			<input type='submit' name='import' value='Import Students'>
+		</form>
+	</body>
+	<script>
+		$("#filter_table").DataTable({
+			/* Disable initial sort */
+			"aaSorting": [],
+			"paging": false
+		});
+	</script>
 </html>
 <?php
 	//Close connection

@@ -83,6 +83,16 @@
 					</td>
 				</tr>
 				<tr>
+					<td>
+						Type
+					</td>
+					<td>
+						<label><input type='radio' name='type' value='1' required /> Full-time</label>
+						<br />
+						<label><input type='radio' name='type' value='0' required /> Part-time</label>
+					</td>
+				</tr>
+				<tr>
 					<td colspan='2'>
 						<input type='submit' name='add' value='Add major'>
 					</td>
