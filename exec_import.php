@@ -68,8 +68,17 @@
 			}
 		}
 		
-		//Do not proceed with SQL insertion if prior error found
-		if(!isset($student->type)){
+		//Do not proceed with SQL insertion if any of the following is missing
+		if(
+			!isset($student->type) ||
+			!isset($student->major) ||
+			!isset($student->uow_id) ||
+			!isset($student->sim_id) ||
+			!isset($student->name) ||
+			!isset($student->phone) ||
+			!isset($student->sim_email) ||
+			!isset($student->personal_email) 
+		){
 			$errors[] = $student;
 			continue;
 		}
