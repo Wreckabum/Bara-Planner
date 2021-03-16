@@ -108,14 +108,35 @@
 		
 		@param	int (optional)
 		@param	int (optional)
+		@param	Array of int (optional)		
+		@param	bool (optional)
 		@return	Array of Student objects
 	*/
-	function get_students($year = "*", $quarter = "*", $check_group = false){
+	function get_students($year = "*", $quarter = "*", $type = [1, 2], $check_group = false){
 		str_clean($year);
 		str_clean($quarter);
 		
 		$filter = [];
-		$output = []; 
+		$output = [];
+		$type_checks = [];
+		
+		if(is_string($type) || is_int($type)){
+			$type = [(int)$type];
+		}
+		
+		if(in_array(1, $type)){
+			$type_checks[] = 1;
+		}
+		
+		if(in_array(2, $type)){
+			$type_checks[] = 2;
+		}
+		
+		if(count($type) == 0){
+			$type_checks = [1, 2];
+		}
+		
+		$filter[] = "`type` IN (". implode(", ", $type_checks) .")";
 		
 		if($year != "*"){
 			$filter[] = "`year` = ". (int)$year;
@@ -125,9 +146,7 @@
 			$filter[] = "`quarter` = ". (int)$quarter;
 		}
 		
-		$filter_text = ((count($filter) == 0) ? "" : " AND ". implode(" AND ", $filter));
-		
-		$query = db_query("SELECT * FROM `accounts` WHERE `type` IN (1, 2) {$filter_text};");
+		$query = db_query("SELECT * FROM `accounts` WHERE ". implode(" AND ", $filter));
 		
 		while($row = mysqli_fetch_assoc($query)){
 			//If checking if already in group

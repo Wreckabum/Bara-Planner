@@ -51,6 +51,10 @@
 				$err = "Not all students are from the same semester.";
 				break;
 			
+			case 6:
+				$err = "Not all students are from the same type (FT/PT).";
+				break;
+			
 			default:
 				$err = "";
 				break;
@@ -64,17 +68,17 @@
 		<html lang='en'>
 			<head>
 				<meta charset='UTF-8'>
-				<title>Choose the year/quarter</title>
+				<title>Choose the year/quarter nad type</title>
 				<link rel='stylesheet' href='include/css/main.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 			</head>
 			<body>
 				<?php include("include/templates/header.php"); ?>
 				<form action='' method='GET'>
-					<table id='choose_semester' class='basic_table' style='width:250px;'>
+					<table id='choose_semester' class='basic_table' style='width:400px;'>
 						<tr>
-							<td>
-								Choose semester
+							<td colspan='2'>
+								Choose semester and type
 							</td>
 						</tr>
 						<tr>
@@ -93,9 +97,15 @@
 									?>
 								</select>
 							</td>
+							<td>
+								<select name='type' style='width:97%;' required>
+									<option value='1'>Full-time</option>
+									<option value='2'>Part-time</option>
+								</select>
+							</td>
 						</tr>
 						<tr>
-							<td>
+							<td colspan='2'>
 								<input type='submit' value='Select'>
 							</td>
 						</tr>
@@ -108,7 +118,7 @@
 		//Semester selected
 		list($year, $quarter) = explode("_", $_GET['semester']);	
 		
-		$applicable_students = get_students($year, $quarter, true); //Get all students in semester that is not in a group
+		$applicable_students = get_students($year, $quarter, $_GET['type'], true); //Get all students in semester that is not in a group
 		$all_faculty = get_all_accounts([0]);
 		$all_projects = get_all_projects();
 ?>
@@ -277,6 +287,7 @@
 								<tr>
 									<td colspan='2' style='padding:5px;'>
 										<input type='hidden' name='semester' value='<?= $_GET['semester'] ?>'>
+										<input type='hidden' name='type' value='<?= $_GET['type'] ?>'>
 										<input type='submit' name='add' value='Add Group'>
 									</td>
 								</tr>

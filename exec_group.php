@@ -32,7 +32,7 @@
 	$header_link = "";
 	
 	if(isset($_POST['add'])){
-		$header_link = "{$header_link}";
+		$header_link = "add_group.php?semester={$_POST['semester']}&type={$_POST['type']}";
 	}elseif(isset($_POST['edit'])){
 		$header_link = "edit_group.php?g={$_POST['id']}";
 	}else{
@@ -65,6 +65,7 @@
 	
 	$check_year = "";
 	$check_quarter = "";
+	$check_type = "";
 	
 	foreach($_GET['student'] as $student){
 		try{
@@ -83,6 +84,18 @@
 			//Check each subsequent student
 			if($check_year != $check_account->get_year() || $check_quarter != $check_account->get_quarter()){
 				header("location: {$header_link}&err=5");
+				@mysqli_close($GLOBALS['mysql_link']);
+				exit();
+			}
+		}
+		
+		//For first student, set initial type
+		if($check_type == ""){
+			$check_type = $check_account->get_account_type();
+		}else{
+			//Check each subsequent student
+			if($check_type != $check_account->get_account_type()){
+				header("location: {$header_link}&err=6");
 				@mysqli_close($GLOBALS['mysql_link']);
 				exit();
 			}

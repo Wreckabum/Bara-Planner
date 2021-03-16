@@ -51,6 +51,10 @@
 				$err = "Not all students are from the same semester.";
 				break;
 			
+			case 6:
+				$err = "Not all students are from the same type (FT/PT).";
+				break;
+			
 			default:
 				$err = "";
 				break;
