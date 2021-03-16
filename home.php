@@ -39,6 +39,9 @@
 			<li>
 				Set deadline for students making choices
 			</li>
+			<li>
+				Archiving
+			</li>
 		</ul>
 	</body>
 </html>
