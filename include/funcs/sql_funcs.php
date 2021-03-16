@@ -77,6 +77,32 @@
 	}
 	
 	/*
+		Returns the account object based on SIM E-Mail
+		
+		@param	int
+		@param	int
+		@return	Faculty/Student/Admin object
+	*/
+	function get_account_by_email($email, $type = ""){
+		str_clean($email);
+		str_clean($type);
+		
+		if($type == ""){
+			$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_email` = '{$email}';"))['type'];
+		}
+		
+		if($type == 1 || $type == 2){
+			return new Student($id);
+		}elseif($type == 8 || $type == 9){
+			return new Admin($id);
+		}elseif($type == 0){
+			return new Faculty($id);
+		}
+		
+		return false;
+	}
+	
+	/*
 		Returns an array of all accounts (filter optional)
 		
 		@param	Array of ints [account types] (optional)

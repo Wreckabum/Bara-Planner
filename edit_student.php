@@ -63,7 +63,12 @@
 			<table id='edit_student' class='basic_table' style='width:30%;'>
 				<tr>
 					<td colspan='2'>
-						Edit a student
+						<span style='float:left;'>
+							<?= (($account->sim_id == $student->sim_id) ? "Edit your account details" : "Edit a student" ) ?>
+						</span>
+						<span style='float:right;'>
+							<?= (($account->sim_id == $student->sim_id) ? "<a href='forget_password.php'>Reset password</a>" : "" ) ?>
+						</span>
 					</td>
 				</tr>
 				<tr>
@@ -244,7 +249,7 @@
 						<?php
 							}
 						?>
-						<input type='submit' name='edit' value='Edit student'>
+						<input type='submit' name='edit' value='<?= (($account->sim_id == $student->sim_id) ? "Edit account" : "Edit student" ) ?>'>
 					</td>
 				</tr>
 			</table>

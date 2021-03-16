@@ -1,5 +1,5 @@
 <?php
-	if(!is_object($account)){
+	if(!is_object($account) || empty($account)){
 		$account = get_account($_SESSION["id"]);
 	}
 ?>
