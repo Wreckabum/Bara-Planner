@@ -31,16 +31,16 @@
 		Items left to do:
 		<ul>
 			<li>
-				Complete importing feature for students
+				Set deadline for students making choices
 			</li>
 			<li>
 				Page for sending emails to students
 			</li>
 			<li>
-				Set deadline for students making choices
+				Archiving
 			</li>
 			<li>
-				Archiving
+				Highlight repeat student based on archives
 			</li>
 		</ul>
 	</body>
