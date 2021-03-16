@@ -48,7 +48,7 @@
 					'{$_POST['personal_email']}', 
 					'8', 
 					'{$_POST['phone']}')"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: add_admin.php?err=1");
 		}else{

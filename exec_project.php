@@ -49,7 +49,7 @@
 					'{$_POST['description']}', 
 					'{$_POST['year']}', 
 					'{$_POST['quarter']}')"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: add_project.php?err=1");
 		}else{
@@ -69,7 +69,7 @@
 					`quarter` = '{$_POST['quarter']}'
 				WHERE
 					`id` = '{$_POST['id']}';"
-			) !== true){
+		) !== true){
 			//Error when updating
 			header("location: edit_project.php?p={$_POST['id']}err=1");
 		}else{

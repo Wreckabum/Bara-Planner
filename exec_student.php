@@ -63,7 +63,7 @@
 					'{$_POST['quarter']}', 
 					'{$_POST['phone']}',
 					'{$password}')"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: add_student.php?err=1");
 		}else{

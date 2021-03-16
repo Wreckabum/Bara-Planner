@@ -44,7 +44,7 @@
 					'{$_POST['name']}', 
 					'{$_POST['description']}', 
 					'{$_POST['type']}');"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: add_major.php?err=1");
 		}else{
@@ -61,7 +61,7 @@
 					`type` = '{$_POST['type']}'
 				WHERE
 					`id` = '{$_POST['old_id']}';"
-			) !== true){
+		) !== true){
 			//Error when updating
 			header("location: edit_major.php?m={$_POST['old_id']}&err=1");
 		}else{

@@ -57,7 +57,7 @@
 		</center>
 		<div class='container'>
 			<h1>Upload CSV File</h1>
-			<form method='POST' action='upload_csv.php' enctype='multipart/form-data'>
+			<form method='POST' action='import_review.php' enctype='multipart/form-data'>
 				<div class='form-group'>
 					Choose File:
 					<br />
@@ -78,6 +78,8 @@
 				</div>
 			</form>
 		</div>
+		<br />
+		<a href='home.php'>Back to main page</a>
 	</body>
 </html>
 <?php

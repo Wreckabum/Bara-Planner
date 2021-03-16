@@ -119,7 +119,7 @@
 					'{$_POST['assessor']}', 
 					'". addslashes(json_encode($_GET['student'])) ."', 
 					'{$_POST['project']}');"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: {$header_link}&err=0");
 		}else{
@@ -137,7 +137,7 @@
 					`project` = '{$_POST['project']}'
 				WHERE
 					`id` = '{$_POST['id']}';"
-			) !== true){
+		) !== true){
 			//Error when updating
 			header("location: {$header_link}&err=1");
 		}else{

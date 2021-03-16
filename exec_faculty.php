@@ -54,7 +54,7 @@
 					'". addslashes(json_encode($_POST['majors'])) ."', 
 					'{$_POST['phone']}',
 					'{$password}')"
-			) !== true){
+		) !== true){
 			//Error when adding
 			header("location: add_faculty.php?err=1");
 		}else{

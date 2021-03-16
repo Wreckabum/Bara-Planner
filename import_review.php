@@ -33,7 +33,8 @@
 		exit();
 	}
 	
-	$csv = [];
+	$headers = [];
+	$students = [];
 	$tmpName = $_FILES["csv"]["tmp_name"];	
 	
 	//Ensure file is csv
@@ -47,7 +48,11 @@
 			$col_count = count($data);
 			
 			for($col = 0; $col < $col_count; $col++){
-				$csv[$row][$col] = $data[$col];
+				if($row == 0){
+					$headers[] = $data[$col];
+				}else{
+					$students[$row][$headers[$col]] = $data[$col];
+				}
 			}
 			
 			$row++;
@@ -83,45 +88,28 @@
 		<table id='filter_table' class='display'>
 			<thead>
 				<tr>
-					<th>
-						Programme
-					</th>
-					<th>
-						Term
-					</th>
-					<th>
-						ID
-					</th>
-					<th>
-						UOW ID
-					</th>
-					<th>
-						SIM ID
-					</th>
-					<th>
-						Name
-					</th>
-					<th>
-						Mobile Number
-					</th>
-					<th>
-						SIM E-mail
-					</th>
-					<th>
-						Personal E-mail
-					</th>
+					<?php
+						foreach($headers as $header){
+					?>
+							
+							<th>
+								<?= $header ?>
+							</th>
+					<?php
+						}
+					?>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-					foreach($csv as $row){
+					foreach($students as $student){
 				?>
 						<tr>
 							<?php
-								for($col = 0; $col < $col_count; $col++){
+								foreach($headers as $header){
 							?>
 									<td>
-										<?= $row[$col] ?>
+										<?= $student[$header] ?>
 									</td>
 							<?php
 								}
@@ -134,10 +122,10 @@
 		</table>
 		<br />
 		<br />
-		<form action='import_sudents.php' method='POST'>
+		<form action='exec_import.php' method='POST'>
 			<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the student details to be imported.</label>
 			<br />
-			<input type='hidden' name='students' value='<?= json_encode($csv) ?>'/>
+			<input type='hidden' name='students' value='<?= json_encode($students) ?>'/>
 			<input type='hidden' name='year' value='<?= $_POST['year'] ?>'/>
 			<input type='hidden' name='quarter' value='<?= $_POST['quarter'] ?>'/>
 			<input type='submit' name='import' value='Import Students'>
