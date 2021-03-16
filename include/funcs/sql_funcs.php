@@ -4,6 +4,9 @@
 	require_once(dirname(__FILE__)."/../class/ClassAdmin.php");
 	require_once(dirname(__FILE__)."/../class/ClassFaculty.php");
 	require_once(dirname(__FILE__)."/../class/ClassStudent.php");
+	require_once(dirname(__FILE__)."/../class/ClassGroup.php");
+	require_once(dirname(__FILE__)."/../class/ClassProject.php");
+	require_once(dirname(__FILE__)."/../class/ClassMajor.php");
 	require_once(dirname(__FILE__)."/sub_funcs.php");
 	
 	/*
@@ -48,9 +51,35 @@
 	}
 	
 	/*
+		Returns the account object based on SIM ID
+		
+		@param	int
+		@param	int
+		@return	Faculty/Student/Admin object
+	*/
+	function get_account($id, $type = ""){
+		str_clean($id);
+		str_clean($type);
+		
+		if($type == ""){
+			$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_id` = '{$id}';"))['type'];
+		}
+		
+		if($type == 1 || $type == 2){
+			return new Student($id);
+		}elseif($type == 8 || $type == 9){
+			return new Admin($id);
+		}elseif($type == 0){
+			return new Faculty($id);
+		}
+		
+		return false;
+	}
+	
+	/*
 		Returns an array of all accounts (filter optional)
 		
-		@param	array of ints -> account types (optinal)
+		@param	Array of ints [account types] (optional)
 		@return	Array of Faculty/Student/Admin objects
 	*/
 	function get_all_accounts($type = []){
@@ -64,43 +93,15 @@
 			$where = "WHERE `type` in ('". implode("', '", $type) ."')";
 		}
 		
-		$query = db_query("SELECT * FROM `accounts` {$where} ORDER BY `sim_id` ASC;");
+		$query = db_query("SELECT `sim_id`, `type` FROM `accounts` {$where} ORDER BY `sim_id` ASC;");
 		
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
-			if($row['type'] == 1 || $row['type'] == 2){
-				$output[] = new Student($row['sim_id']);
-			}elseif($row['type'] == 8 || $row['type'] == 9){
-				$output[] = new Admin($row['sim_id']);
-			}elseif($row['type'] == 0){
-				$output[] = new Faculty($row['sim_id']);
-			}
+			$output[] = get_account($row['sim_id'], $row['type']);
 		}
 		
 		return $output;
-	}
-	
-	/*
-		Returns the account object based on SIM ID
-		
-		@param	int
-		@return	Faculty/Student/Admin object
-	*/
-	function get_account($id){
-		str_clean($id);
-		
-		$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_id` = '{$id}';"))['type'];
-		
-		if($type == 1 || $type == 2){
-			return new Student($id);
-		}elseif($type == 8 || $type == 9){
-			return new Admin($id);
-		}elseif($type == 0){
-			return new Faculty($id);
-		}
-		
-		return false;
 	}
 	
 	/*
@@ -146,19 +147,19 @@
 			$filter[] = "`quarter` = ". (int)$quarter;
 		}
 		
-		$query = db_query("SELECT * FROM `accounts` WHERE ". implode(" AND ", $filter));
+		$query = db_query("SELECT `sim_id`, `type` FROM `accounts` WHERE ". implode(" AND ", $filter));
 		
 		while($row = mysqli_fetch_assoc($query)){
 			//If checking if already in group
 			if($check_group){
-				$check_query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$row['sim_id']}\"');");
+				$check_query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$row['sim_id']}\"');");
 				
 				if(mysqli_num_rows($check_query) != 0){
 					continue;
 				}
 			}
 			
-			$output[] = new Student($row['sim_id']);
+			$output[] = get_account($row['sim_id'], $row['type']);
 		}
 		
 		return $output;
@@ -196,28 +197,10 @@
 	}
 	
 	/*
-		Returns a 2D array of all majors
-		
-		@return	2D array
-	*/
-	function get_all_majors(){
-		$query = db_query("SELECT * FROM `majors` ORDER BY `id` ASC;");
-		
-		$output = [];
-		
-		while($row = mysqli_fetch_assoc($query)){
-			$output[$row['id']]['name'] = $row['name'];
-			$output[$row['id']]['description'] = $row['description'];
-		}
-		
-		return $output;
-	}
-	
-	/*
-		Returns an array for a major
+		Returns a Major Object / an Array of Major Objects
 		
 		@param	string/array
-		@return array
+		@return Major Object / Array of Major Objects
 	*/
 	function get_major($id){
 		if(is_array($id)){
@@ -225,51 +208,52 @@
 				str_clean($value);
 				$value = htmlspecialchars($value);
 			});
-			
-			$query = db_query("SELECT * FROM `majors` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
 			while($row = mysqli_fetch_assoc($query)){
-				$output[$row['id']]['name'] = $row['name'];
-				$output[$row['id']]['description'] = $row['description'];
+				try{
+					$output[] = get_major($row['id']);
+				}catch(Exception $e){
+					continue;
+				}
 			}
 			
 			return $output;
 		}else{
 			str_clean($id);
 			
-			return mysqli_fetch_assoc(db_query("SELECT * FROM `majors` WHERE `id` = '{$id}';"));
+			return new Major($id);
 		}
 	}
 	
 	/*
-		Returns a 2D array of all projects
+		Returns an Array of Major Objects
 		
-		@return	2D array
+		@return	Array of Major Objects
 	*/
-	function get_all_projects(){
-		$query = db_query("SELECT * FROM `projects` ORDER BY `id` ASC;");
+	function get_all_majors(){
+		$query = db_query("SELECT * FROM `majors` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
-			$output[$row['id']]['proj_id'] = $row['proj_id'];
-			$output[$row['id']]['name'] = $row['name'];
-			$output[$row['id']]['description'] = $row['description'];
-			$output[$row['id']]['year'] = $row['year'];
-			$output[$row['id']]['quarter'] = $row['quarter'];
+			try{
+				$output[] = get_major($row['id']);
+			}catch(Exception $e){
+				continue;
+			}
 		}
 		
 		return $output;
 	}
 	
 	/*
-		Returns an array for a project
+		Returns a Project Object / an Array of Project Objects
 		
 		@param	int/array
 		@param	string (optional)
-		@return array
+		@return Project Object / Array of Project Objects
 	*/
 	function get_project($id, $from = "id"){
 		if($from != "proj_id"){
@@ -282,66 +266,50 @@
 				$value = htmlspecialchars($value);
 			});
 			
-			$query = db_query("SELECT * FROM `projects` WHERE `{$from}` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
-		
 			$output = [];
 			
-			while($row = mysqli_fetch_assoc($query)){
-				$output[$row['id']]['proj_id'] = $row['proj_id'];
-				$output[$row['id']]['name'] = $row['name'];
-				$output[$row['id']]['description'] = $row['description'];
-				$output[$row['id']]['year'] = $row['year'];
-				$output[$row['id']]['quarter'] = $row['quarter'];
+			foreach($id as $i){
+				try{
+					$output[] = get_project($i, $from);
+				}catch(Exception $e){
+					continue;
+				}
 			}
 			
 			return $output;
 		}else{
 			str_clean($id);
 			
-			return mysqli_fetch_assoc(db_query("SELECT * FROM `projects` WHERE `{$from}` = '{$id}';"));
+			return new Project($id, $from);
 		}
 	}
 	
 	/*
-		Returns a 2D array of all groups
+		Returns an array of Project Objects
 		
-		@return	2D array
+		@return	Array of Project Objects
 	*/
-	function get_all_groups(){
-		$query = db_query("SELECT * FROM `groups` ORDER BY `id` ASC;");
+	function get_all_projects(){
+		$query = db_query("SELECT `id` FROM `projects` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
-			$output[$row['id']]['name'] = $row['name'];
-			
 			try{
-				$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
+				$output[] = get_project($row['id']);
 			}catch(Exception $e){
-				$output[$row['id']]['supervisor'] = null;
+				continue;
 			}
-			
-			try{
-				$output[$row['id']]['assessor'] = new Faculty($row['assessor']);
-			}catch(Exception $e){
-				$output[$row['id']]['assessor'] = null;
-			}
-			
-			foreach(json_decode($row['members']) as $member_id){
-				$output[$row['id']]['members'][] = new Student($member_id);
-			}
-			
-			$output[$row['id']]['project'] = get_project($row['project'], "proj_id");
 		}
 		
 		return $output;
 	}
 	
 	/*
-		Returns an array for a group
+		Returns a Group Objects / an Array of Group Objects
 		
 		@param	int/array
-		@return array
+		@return Group Object / Array of Group Objects
 	*/
 	function get_group($id){		
 		if(is_array($id)){
@@ -349,132 +317,75 @@
 				str_clean($value);
 				$value = htmlspecialchars($value);
 			});
-			
-			$query = db_query("SELECT * FROM `groups` WHERE `id` IN ('". implode("', '", $id) ."') ORDER BY `id` ASC;");
 		
 			$output = [];
 			
-			while($row = mysqli_fetch_assoc($query)){
-				$output[$row['id']]['name'] = $row['name'];
-				
+			foreach($id as $i){
 				try{
-					$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
+					$output[] = get_group($i);
 				}catch(Exception $e){
-					$output[$row['id']]['supervisor'] = null;
+					continue;
 				}
-				
-				try{
-					$output[$row['id']]['assessor'] = new Faculty($row['assessor']);
-				}catch(Exception $e){
-					$output[$row['id']]['assessor'] = null;
-				}
-				
-				foreach(json_decode($row['members']) as $member_id){
-					$output[$row['id']]['members'][] = new Student ($member_id);
-				}
-				
-				$output[$row['id']]['project'] = get_project($row['project'], "proj_id");
 			}
 			
 			return $output;
 		}else{
 			str_clean($id);
 			
-			$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE `id` = '{$id}';"));
-			
-			$output['id'] = $group['id'];
-			$output['name'] = $group['name'];
-			
-			try{
-				$output['supervisor'] = new Faculty($group['supervisor']);
-			}catch(Exception $e){
-				$output['supervisor'] = null;
-			}
-			
-			try{
-				$output['assessor'] = new Faculty($group['assessor']);
-			}catch(Exception $e){
-				$output['assessor'] = null;
-			}
-			
-			foreach(json_decode($group['members']) as $member_id){
-				$output['members'][] = new Student ($member_id);
-			}
-			
-			$output['project'] = get_project($group['project'], "proj_id");
-			
-			return $output;
+			return new Group($id);
 		}
 	}
 	
 	/*
-		Returns an array for a group based on membership
+		Returns an Array of Group Objects
 		
-		@param	string
-		@return array
+		@return	Array of Group Objects
 	*/
-	function get_group_by_member($id){
-		str_clean($id);
+	function get_all_groups(){
+		$query = db_query("SELECT `id` FROM `groups` ORDER BY `id` ASC;");
 		
-		$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id}\"');"));
-			
-		$output['id'] = $group['id'];
-		$output['name'] = $group['name'];
+		$output = [];
 		
-		try{
-			$output['supervisor'] = new Faculty($group['supervisor']);
-		}catch(Exception $e){
-			$output['supervisor'] = null;
+		while($row = mysqli_fetch_assoc($query)){
+			try{
+				$output[] = get_group($row['id']);
+			}catch(Exception $e){
+				continue;
+			}
 		}
-		
-		try{
-			$output['assessor'] = new Faculty($group['assessor']);
-		}catch(Exception $e){
-			$output['assessor'] = null;
-		}
-		
-		foreach(json_decode($group['members']) as $member_id){
-			$output['members'][] = new Student ($member_id);
-		}
-		
-		$output['project'] = get_project($group['project'], "proj_id");
 		
 		return $output;
 	}
 	
 	/*
-		Returns an array for a group based on membership
+		Returns a Group Object
 		
 		@param	string
-		@return 2D array
+		@return Group Object
+	*/
+	function get_group_by_member($member_id){
+		str_clean($member_id);
+		
+		$group = mysqli_fetch_assoc(db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$member_id}\"');"));
+			
+		return get_group($group['id']);
+	}
+	
+	/*
+		Returns an Array of Group Objects
+		
+		@param	string
+		@return Array of Group Objects
 	*/
 	function get_group_by_faculty($id){
 		str_clean($id);
 		
-		$query = db_query("SELECT * FROM `groups` WHERE `supervisor` = '{$id}' OR `assessor` = '{$id}';");
+		$query = db_query("SELECT `id` FROM `groups` WHERE `supervisor` = '{$id}' OR `assessor` = '{$id}';");
 			
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
-			$output[$row['id']]['name'] = $row['name'];
-			
-			try{
-				$output[$row['id']]['supervisor'] = new Faculty($row['supervisor']);
-			}catch(Exception $e){
-				$output[$row['id']]['supervisor'] = null;
-			}
-			
-			try{
-				$output[$row['id']]['assessor'] = new Faculty($row['assessor']);
-			}catch(Exception $e){
-				$output[$row['id']]['assessor'] = null;
-			}
-			
-			foreach(json_decode($row['members']) as $member_id){
-				$output[$row['id']]['members'][] = new Student ($member_id);
-			}
-			
-			$output[$row['id']]['project'] = get_project($row['project'], "proj_id");
+			$output[] = get_group($row['id']);
 		}
 		
 		return $output;
@@ -492,7 +403,7 @@
 		str_clean($id_2);
 		
 		$query = db_query(
-			"SELECT * FROM `groups` WHERE 
+			"SELECT `id` FROM `groups` WHERE 
 				(JSON_CONTAINS(`members`, '\"{$id_1}\"') AND
 					(
 						`supervisor` = '{$id_2}' OR
@@ -530,7 +441,7 @@
 		str_clean($id_1);
 		str_clean($id_2);
 		
-		$query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id_1}\"') AND JSON_CONTAINS(`members`, '\"{$id_2}\"');");
+		$query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id_1}\"') AND JSON_CONTAINS(`members`, '\"{$id_2}\"');");
 		
 		return ((mysqli_num_rows($query) <= 0) ? false : true);
 	}

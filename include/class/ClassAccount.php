@@ -73,6 +73,13 @@
 		}
 		
 		/*
+			Get account type int
+		*/
+		public function get_type_int(){
+			return $this->account_type;
+		}
+		
+		/*
 			Get account type
 		*/
 		public function get_account_type(){

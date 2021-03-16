@@ -38,7 +38,7 @@
 		<?php
 			include("include/templates/header.php");
 			
-			if(is_null($projects)){
+			if(empty($projects)){
 		?>
 				<a href='make_choices.php'>Make Choices</a>
 				<br />
@@ -47,7 +47,7 @@
 			}else{
 				$choice = 1;
 				
-				foreach($projects as $id => $project){
+				foreach($projects as $project){
 		?>
 					<table id='choice_<?= $choice ?>' class='basic_table' style='width:40%;'>
 						<tr>
@@ -60,7 +60,7 @@
 								Project ID:
 							</td>
 							<td>
-								<?= $project['proj_id'] ?>
+								<?= $project->proj_id ?>
 							</td>
 						</tr>
 						<tr>
@@ -68,7 +68,7 @@
 								Name:
 							</td>
 							<td>
-								<?= $project['name'] ?>
+								<?= $project->get_name() ?>
 							</td>
 						</tr>
 						<tr>
@@ -76,7 +76,7 @@
 								Description:
 							</td>
 							<td>
-								<?= nl2br($project['description']) ?>
+								<?= nl2br($project->get_description()) ?>
 							</td>
 						</tr>
 					</table>

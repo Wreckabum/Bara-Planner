@@ -114,9 +114,9 @@
 						<?php
 							$all_majors = get_all_majors();
 							
-							foreach($all_majors as $id => $details){
+							foreach($all_majors as $major){
 						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' /><?= $id ?> - <?= $details['name'] ?></label>
+								<label><input type='checkbox' name='majors[]' value='<?= $major->id ?>' /> <?= $major->id ?> - <?= $major->get_name() ?></label>
 								<br />
 						<?php
 							}

@@ -125,9 +125,9 @@
 							<?php
 								$all_majors = get_all_majors();
 								
-								foreach($all_majors as $id => $details){
+								foreach($all_majors as $major){
 							?>
-									<option value='<?= $id ?>'><?= $id ?> - <?= $details['name'] ?></option>
+									<option value='<?= $major->id ?>'> <?= $major->id ?> - <?= $major->get_name() ?></option>
 							<?php
 								}
 							?>

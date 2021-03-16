@@ -1,0 +1,85 @@
+<?php
+	require_once (dirname(__FILE__)."/../funcs/sql_funcs.php");
+	
+	sql_connect();
+	
+	/*
+		Class for groups
+	*/
+	class Group{
+		public	$id;
+		
+		private	$name;
+		
+		private	$project;
+		private	$supervisor;
+		private	$assessor;
+		
+		private	$members = [];
+		
+		/*
+			Constructor
+		*/
+		public function __construct($id){
+			$id = str_clean($id);
+			
+			$query = db_query("SELECT * FROM `groups` WHERE `id` = '{$id}' LIMIT 1;");
+			$result = mysqli_fetch_assoc($query);
+			
+			//If the poject exists
+			if(mysqli_num_rows($query) == 1){
+				$this->id = $result['id'];
+				
+				$this->name = $result['name'];
+				
+				$this->project = get_project($result['project'], "proj_id");
+				$this->supervisor = get_account($result['supervisor']);
+				$this->assessor = get_account($result['assessor']);
+				
+				foreach(json_decode($result['members']) as $member){
+					$this->members[] = get_account($member);
+				}
+			}else{
+				throw new Exception("Group not found.");
+			}	
+		}
+		
+		/*
+			Get name
+		*/
+		public function get_name(){
+			return $this->name;
+		}
+		
+		/*
+			Get project ID
+		*/
+		public function get_project(){
+			return $this->project;
+		}
+		
+		/*
+			Get supervisor object
+		*/
+		public function get_supervisor(){
+			return $this->supervisor;
+		}
+		
+		/*
+			Get assessor object
+		*/
+		public function get_assessor(){
+			return $this->assessor;
+		}
+		
+		/*
+			Get members
+		*/
+		public function get_members(){
+			return $this->members;
+		}
+	}
+	
+	//Close connection
+	@mysqli_close($GLOBALS['mysql_link']);
+?>

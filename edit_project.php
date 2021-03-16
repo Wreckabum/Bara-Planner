@@ -37,7 +37,7 @@
 		}
 	}
 	
-	$project = get_project(str_clean($_GET['p']));
+	$project = get_project($_GET['p']);
 	
 	//If no such project
 	if(is_null($project)){
@@ -59,18 +59,18 @@
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_project.php' method='POST'>
-			<table id='edit_project' class='basic_table' style='width:30%;'>
+			<table id='edit_project' class='basic_table' style='width:40%;'>
 				<tr>
 					<td colspan='2'>
 						Edit a project
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style='width:25%;'>
 						Project ID
 					</td>
 					<td>
-						<input type='text' name='proj_id' maxlength='24' value='<?= $project['proj_id'] ?>' style='width:97%;' required />
+						<input type='text' name='proj_id' maxlength='24' value='<?= $project->proj_id ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -78,7 +78,7 @@
 						Name
 					</td>
 					<td>
-						<input type='text' name='name' maxlength='24' value='<?= $project['name'] ?>'  style='width:97%;' required />
+						<input type='text' name='name' maxlength='24' value='<?= $project->get_name() ?>'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -86,7 +86,7 @@
 						Description
 					</td>
 					<td>
-						<textarea name='description' rows='10' style='width:97%;' required><?= $project['description'] ?></textarea>
+						<textarea name='description' rows='10' style='width:97%;' required><?= $project->get_description() ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -94,7 +94,7 @@
 						Year
 					</td>
 					<td>
-						<input type='number' name='year' value='<?= $project['year'] ?>' maxlength='4'  style='width:97%;' required />
+						<input type='number' name='year' value='<?= $project->get_year() ?>' maxlength='4'  style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -102,12 +102,12 @@
 						Quarter
 					</td>
 					<td>
-						<input type='number' name='quarter' value='<?= $project['quarter'] ?>' min='1' max='4' style='width:97%;' required />
+						<input type='number' name='quarter' value='<?= $project->get_quarter() ?>' min='1' max='4' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='id' value='<?= $project['id'] ?>'/>
+						<input type='hidden' name='id' value='<?= $project->id ?>'/>
 						<input type='submit' name='edit' value='Edit project'>
 					</td>
 				</tr>

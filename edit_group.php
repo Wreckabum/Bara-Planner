@@ -63,10 +63,12 @@
 	
 	$group = get_group($_GET['g']);
 	
-	$year = $group['members'][0]->get_year();
-	$quarter = $group['members'][0]->get_quarter();
+	$year = $group->get_members()[0]->get_year();
+	$quarter = $group->get_members()[0]->get_quarter();
+	$quarter = $group->get_members()[0]->get_quarter();
+	$type = $group->get_members()[0]->get_type_int();
 	
-	$applicable_students = get_students($year, $quarter, true); //Get all students in semester that is not in a group
+	$applicable_students = get_students($year, $quarter, $type, true); //Get all students in semester that is not in a group
 	$all_faculty = get_all_accounts([0]);
 	$all_projects = get_all_projects();
 ?>
@@ -156,7 +158,7 @@
 								Name:
 							</td>
 							<td style='width:95%; padding:5px;'>
-								<input type='text' name='name' value='<?= $group['name'] ?>' maxlength='32' style='width:97%;' required />
+								<input type='text' name='name' value='<?= $group->get_name() ?>' maxlength='32' style='width:97%;' required />
 							</td>
 						</tr>
 						<tr>
@@ -167,7 +169,7 @@
 								<select id='supervisor' name='supervisor' style='width:97%;' required>
 									<?php
 										foreach($all_faculty as $supervisor){
-											$selected = (($group['supervisor']->sim_id == $supervisor->sim_id) ? "selected" : "");
+											$selected = (($group->get_supervisor()->sim_id == $supervisor->sim_id) ? "selected" : "");
 									?>
 											<option value='<?= $supervisor->sim_id ?>' <?= $selected ?>><?= $supervisor->get_name() ?></option>
 									<?php
@@ -183,7 +185,7 @@
 								<select id='assessor' name='assessor' style='width:97%;' required>
 									<?php
 										foreach($all_faculty as $assessor){
-											$selected = (($group['assessor']->sim_id == $assessor->sim_id) ? "selected" : "");
+											$selected = (($group->get_assessor()->sim_id == $assessor->sim_id) ? "selected" : "");
 									?>
 											<option value='<?= $assessor->sim_id ?>' <?= $selected ?>><?= $assessor->get_name() ?></option>
 									<?php
@@ -198,10 +200,10 @@
 							<td style='width:95%; padding:5px;'>
 								<select id='project' name='project' style='width:97%;' required>
 									<?php
-										foreach($all_projects as $id => $details){
-											$selected = (($group['project']['id'] == $id) ? "selected" : "");
+										foreach($all_projects as $project){
+											$selected = (($group->get_project()->id == $project->id) ? "selected" : "");
 									?>
-											<option value='<?= $details['proj_id'] ?>' <?= $selected ?>>(<?= $id ?>) - <?= $details['name'] ?></option>
+											<option value='<?= $project->proj_id ?>' <?= $selected ?>>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 									<?php
 										}
 									?>
@@ -232,7 +234,7 @@
 										?>
 									</tr>
 									<?php
-										foreach($group['members'] as $member){
+										foreach($group->get_members() as $member){
 											$selected_choices = $member->get_choices();
 											$index = 0;
 											$choice = 1;
@@ -270,7 +272,7 @@
 						<tr>
 							<td colspan='2' style='padding:5px;'>
 								<input type='hidden' name='semester' value='<?= $year ?>_<?= $quarter ?>'>
-								<input type='hidden' name='id' value='<?= $group['id'] ?>'>
+								<input type='hidden' name='id' value='<?= $group->id ?>'>
 								<input type='submit' name='edit' value='Edit Group'>
 							</td>
 						</tr>

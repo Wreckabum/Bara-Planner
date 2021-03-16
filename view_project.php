@@ -29,7 +29,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>View Major - <?= $project['id'] ?></title>
+		<title>View Project - <?= $project->id ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
@@ -39,7 +39,7 @@
 		<table id='view_project' class='basic_table' style='width:40%;'>
 			<tr>
 				<td colspan='2'>
-					<?= $project['proj_id'] ?> (<?= $project['id'] ?>)
+					<?= $project->proj_id ?> (<?= $project->id ?>)
 				</td>
 			</tr>
 			<tr>
@@ -47,7 +47,7 @@
 					Name:
 				</td>
 				<td>
-					<?= $project['name'] ?>
+					<?= $project->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -55,7 +55,7 @@
 					Description:
 				</td>
 				<td>
-					<?= nl2br($project['description']) ?>
+					<?= nl2br($project->get_description()) ?>
 				</td>
 			</tr>
 			<tr>
@@ -63,7 +63,7 @@
 					Year:
 				</td>
 				<td>
-					<?= $project['year'] ?>
+					<?= $project->get_year() ?>
 				</td>
 			</tr>
 			<tr>
@@ -71,7 +71,7 @@
 					Quarter:
 				</td>
 				<td>
-					<?= $project['quarter'] ?>
+					<?= $project->get_quarter() ?>
 				</td>
 			</tr>
 			<?php
@@ -80,7 +80,7 @@
 			?>
 					<tr>
 						<td>
-							<a href="edit_project.php?p=<?= $project['id'] ?>">
+							<a href="edit_project.php?p=<?= $project->id ?>">
 								Edit Project
 							</a>
 						</td>
@@ -89,7 +89,7 @@
 								Delete Project
 							</a>
 							<form id='delete_form' action='delete_project.php' method='POST' style='display:none;'>
-								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $project['id'] ?>' required/>
+								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $project->id ?>' required/>
 								<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
 							</form>
 						</td>

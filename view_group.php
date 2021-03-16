@@ -17,16 +17,20 @@
 	$account = get_account($_SESSION["id"]);
 	$group = null;
 	$group_array = null;
+	$title_extra = "";
 	
 	if($account->is_student()){
 		//For students, only allow viewing of own group
 		$group = get_group_by_member($account->sim_id);
+		$title_extra = " (". $group->id .")";
 	}elseif(isset($_GET['g'])){
 		//Non-students viewing specific group	
 		$group = get_group($_GET['g']);
+		$title_extra = " (". $group->id .")";
 	}elseif($account->is_faculty()){
 		//Faculty viewing their assigned groups
 		$group_array = get_group_by_faculty($account->sim_id);
+		$title_extra = "s";
 	}
 	
 	//If no such group
@@ -41,7 +45,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>View Group - <?= $group['id'] ?></title>
+		<title>View Group<?= $title_extra ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
@@ -52,29 +56,29 @@
 			
 			//$As faculty, show all assigned groups
 			if($account->is_faculty() && !isset($_GET['g'])){
-				foreach($group_array as $id => $group){
+				foreach($group_array as $group){
 					$supervisor_background = "";
 					$assessor_background = "";
-					$supervisor_field = "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})";
-					$assessor_field = "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})";
+					$supervisor_field = "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})";
+					$assessor_field = "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})";
 					
-					if($group['supervisor']->get_name() == $account->get_name()){
+					if($group->get_supervisor()->get_name() == $account->get_name()){
 						$supervisor_background = "background-color:#BCE2BE";
 					}else{
-						$supervisor_field = "<a href='view_account?a={$group['supervisor']->sim_id}'>{$supervisor_field}</a>";
+						$supervisor_field = "<a href='view_account?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
 					}
 					
-					if($group['assessor']->get_name() == $account->get_name()){
+					if($group->get_assessor()->get_name() == $account->get_name()){
 						$assessor_background = "background-color:#BCE2BE";
 					}else{
-						$assessor_field = "<a href='view_account?a={$group['assessor']->sim_id}'>{$assessor_field}</a>";
+						$assessor_field = "<a href='view_account?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
 					}
 					
 		?>
 					<table id='view_group' class='basic_table' style='width:40%;'>
 						<tr>
 							<td colspan='2'>
-								Group #<?= $id ?>
+								Group #<?= $group->id ?>
 							</td>
 						</tr>
 						<tr>
@@ -82,7 +86,7 @@
 								Name:
 							</td>
 							<td>
-								<?= $group['name'] ?>
+								<?= $group->get_name() ?>
 							</td>
 						</tr>
 						<tr>
@@ -108,7 +112,7 @@
 							</td>
 							<td>
 								<?php
-									foreach($group['members'] as $member){
+									foreach($group->get_members() as $member){
 								?>
 										<a href='view_account?a=<?= $member->sim_id ?>'>
 											<?= $member->get_name() ?> (<?= $member->sim_id ?>)
@@ -124,8 +128,8 @@
 								Project:
 							</td>
 							<td>
-								<a href='view_project?p=<?= $group['project']['id'] ?>'>
-									<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+								<a href='view_project?p=<?= $group->get_project()->id ?>'>
+									<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 								</a>
 							</td>
 						</tr>
@@ -142,7 +146,7 @@
 				<table id='view_group' class='basic_table' style='width:40%;'>
 					<tr>
 						<td colspan='2'>
-							Group #<?= $group['id'] ?>
+							Group #<?= $group->id ?>
 						</td>
 					</tr>
 					<tr>
@@ -150,7 +154,7 @@
 							Name:
 						</td>
 						<td>
-							<?= $group['name'] ?>
+							<?= $group->get_name() ?>
 						</td>
 					</tr>
 					<tr>
@@ -158,7 +162,7 @@
 							Supervisor:
 						</td>
 						<td>
-							<?= (is_null($group['supervisor']) ? "" : "<a href='view_account?a={$group['supervisor']->sim_id}'>{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})</a>") ?>
+							<?= (is_null($group->get_supervisor()) ? "" : "<a href='view_account?a={$group->get_supervisor()->sim_id}'>{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})</a>") ?>
 						</td>
 					</tr>
 					<tr>
@@ -166,7 +170,7 @@
 							Assessor:
 						</td>
 						<td>
-							<?= (is_null($group['assessor']) ? "" : "<a href='view_account?a={$group['assessor']->sim_id}'>{$group['assessor']->get_name()} ({$group['assessor']->sim_id})</a>") ?>
+							<?= (is_null($group->get_assessor()) ? "" : "<a href='view_account?a={$group->get_assessor()->sim_id}'>{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})</a>") ?>
 						</td>
 					</tr>
 					
@@ -176,7 +180,7 @@
 						</td>
 						<td>
 							<?php
-								foreach($group['members'] as $member){
+								foreach($group->get_members() as $member){
 							?>
 									<a href='view_account?a=<?= $member->sim_id ?>'>
 										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
@@ -192,8 +196,8 @@
 							Project:
 						</td>
 						<td>
-							<a href='view_project?p=<?= $group['project']['id'] ?>'>
-								<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+							<a href='view_project?p=<?= $group->get_project()->id ?>'>
+								<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 							</a>
 						</td>
 					</tr>
@@ -203,7 +207,7 @@
 					?>
 							<tr>
 								<td>
-									<a href="edit_group.php?g=<?= $group['id'] ?>">
+									<a href="edit_group.php?g=<?= $group->id ?>">
 										Edit Group
 									</a>
 								</td>
@@ -212,7 +216,7 @@
 										Delete Group
 									</a>
 									<form id='delete_form' action='delete_group.php' method='POST' style='display:none;'>
-										<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $group['id'] ?>' required/>
+										<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $group->id ?>' required/>
 										<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
 									</form>
 								</td>

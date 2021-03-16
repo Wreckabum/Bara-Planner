@@ -37,11 +37,12 @@
 		}
 	}
 	
-	$major = get_major(str_clean($_GET['m']));
-	
-	//If no such major
-	if(is_null($major)){
+	try{
+		$major = get_major($_GET['m']);
+	}catch(Exception $e){
 		header("location: view_all.php?t=majors");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
 ?>
 
@@ -59,18 +60,18 @@
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_major.php' method='POST'>
-			<table id='edit_major' class='basic_table' style='width:30%;'>
+			<table id='edit_major' class='basic_table' style='width:40%;'>
 				<tr>
 					<td colspan='2'>
 						Edit a major
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style='width:25%;'>
 						ID
 					</td>
 					<td>
-						<input type='text' name='new_id' maxlength='8' value='<?= $major['id'] ?>' style='width:97%;' required />
+						<input type='text' name='new_id' maxlength='8' value='<?= $major->id ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -78,7 +79,7 @@
 						Name
 					</td>
 					<td>
-						<input type='text' name='name' maxlength='64'  value='<?= $major['name'] ?>' style='width:97%;' required />
+						<input type='text' name='name' maxlength='64'  value='<?= $major->get_name() ?>' style='width:97%;' required />
 					</td>
 				</tr>
 				<tr>
@@ -86,12 +87,12 @@
 						Description
 					</td>
 					<td>
-						<textarea name='description' rows='10' style='width:97%;' required><?= $major['description'] ?></textarea>
+						<textarea name='description' rows='10' style='width:97%;' required><?= $major->get_description() ?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<input type='hidden' name='old_id' value='<?= $major['id'] ?>'/>
+						<input type='hidden' name='old_id' value='<?= $major->id ?>'/>
 						<input type='submit' name='edit' value='Edit major'>
 					</td>
 				</tr>

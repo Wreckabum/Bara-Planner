@@ -15,10 +15,10 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-	$major = get_major($_GET['m']);
 	
-	//If no such major
-	if(is_null($major)){
+	try{
+		$major = get_major($_GET['m']);
+	}catch(Exception $e){
 		header("location: view_all.php?t=majors");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
@@ -29,7 +29,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>View Major - <?= $major['id'] ?></title>
+		<title>View Major - <?= $major->id ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
@@ -39,7 +39,7 @@
 		<table id='view_major' class='basic_table' style='width:30%;'>
 			<tr>
 				<td colspan='2'>
-					<?= $major['id'] ?>
+					<?= $major->id ?>
 				</td>
 			</tr>
 			<tr>
@@ -47,7 +47,7 @@
 					Name:
 				</td>
 				<td>
-					<?= $major['name'] ?>
+					<?= $major->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -55,7 +55,7 @@
 					Description:
 				</td>
 				<td>
-					<?= nl2br($major['description']) ?>
+					<?= nl2br($major->get_description()) ?>
 				</td>
 			</tr>
 			<?php
@@ -64,7 +64,7 @@
 			?>
 					<tr>
 						<td>
-							<a href="edit_major.php?m=<?= $major['id'] ?>">
+							<a href="edit_major.php?m=<?= $major->id ?>">
 								Edit Major
 							</a>
 						</td>
@@ -73,7 +73,7 @@
 								Delete Major
 							</a>
 							<form id='delete_form' action='delete_major.php' method='POST' style='display:none;'>
-								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $major['id'] ?>' required/>
+								<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $major->id ?>' required/>
 								<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
 							</form>
 						</td>

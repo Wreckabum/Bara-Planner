@@ -122,7 +122,7 @@
 								<?php						
 									$major = get_major($view_account->get_majors());
 								?>
-								<?= $major['id'] ?> - <?= $major['name'] ?>
+								<?= $major->id ?> - <?= $major->get_name() ?>
 							</td>
 						</tr>
 						<tr>
@@ -152,9 +152,9 @@
 								<?php						
 									$majors = get_major($view_account->get_majors());
 									
-									foreach($majors as $id => $major){
+									foreach($majors as $major){
 								?>
-										<?= $id ?> - <?= $major['name'] ?>
+										<?= $major->id ?> - <?= $major->get_name() ?>
 										<br />
 								<?php
 									}

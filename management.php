@@ -35,10 +35,9 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Add a new faculty member</title>
+		<title>Management</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
-
 		<style>
 
 			.card{
@@ -149,13 +148,9 @@
 			<?php
 				}
 			?>
-
-			
-	
 		</div>
 		<div class='row'>
-
-		<br />
+			<br />
 			<a href='home.php'>Back to main page</a>
 		</div>
 	</div>

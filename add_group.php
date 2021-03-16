@@ -247,9 +247,9 @@
 									<td style='width:95%; padding:5px;'>
 										<select id='project' name='project' style='width:97%;' required>
 											<?php
-												foreach($all_projects as $id => $details){
+												foreach($all_projects as $project){
 											?>
-													<option value='<?= $details['proj_id'] ?>'>(<?= $id ?>) - <?= $details['name'] ?></option>
+													<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 											<?php
 												}
 											?>

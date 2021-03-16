@@ -52,14 +52,14 @@
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_major.php' method='POST'>
-			<table id='add_major' class='basic_table' style='width:30%;'>
+			<table id='add_major' class='basic_table' style='width:40%;'>
 				<tr>
 					<td colspan='2'>
 						Add a new major
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td style='width:25%;'>
 						ID
 					</td>
 					<td>

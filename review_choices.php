@@ -120,7 +120,7 @@
 					Major:
 				</td>
 				<td>
-					<?= get_major($account->get_majors())['name'] ?>
+					<?= get_major($account->get_majors())->get_name() ?>
 				</td>
 			</tr>
 			<tr>
@@ -136,7 +136,7 @@
 		<?php
 			$choice = 1;
 			
-			foreach($projects as $id => $project){
+			foreach($projects as $project){
 		?>
 				<table id='choice_<?= $choice ?>' class='basic_table' style='width:40%;'>
 					<tr>
@@ -149,7 +149,7 @@
 							Project ID:
 						</td>
 						<td>
-							<?= $project['proj_id'] ?>
+							<?= $project->proj_id ?>
 						</td>
 					</tr>
 					<tr>
@@ -157,7 +157,7 @@
 							Name:
 						</td>
 						<td>
-							<?= $project['name'] ?>
+							<?= $project->get_name() ?>
 						</td>
 					</tr>
 					<tr>
@@ -165,7 +165,7 @@
 							Description:
 						</td>
 						<td>
-							<?= nl2br($project['description']) ?>
+							<?= nl2br($project->get_description()) ?>
 						</td>
 					</tr>
 				</table>

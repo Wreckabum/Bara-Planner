@@ -38,7 +38,7 @@
 	}
 	
 	try{
-		$admin = get_account(str_clean($_GET['a']));
+		$admin = get_account($_GET['a']);
 	}catch(Exception $e){
 		header("location: view_all.php?t=admin");
 		@mysqli_close($GLOBALS['mysql_link']);

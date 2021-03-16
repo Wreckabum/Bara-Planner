@@ -38,7 +38,7 @@
 	}
 	
 	try{
-		$faculty = get_account(str_clean($_GET['a']));
+		$faculty = get_account($_GET['a']);
 	}catch(Exception $e){
 		header("location: view_all.php?t=faculty");
 		@mysqli_close($GLOBALS['mysql_link']);

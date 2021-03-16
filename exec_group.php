@@ -40,7 +40,7 @@
 	}
 	
 	try{
-		get_account(str_clean($_POST['supervisor']));
+		get_account($_POST['supervisor']);
 	}catch(Exception $e){
 		header("location: {$header_link}&err=1");
 		@mysqli_close($GLOBALS['mysql_link']);
@@ -48,7 +48,7 @@
 	}
 	
 	try{
-		get_account(str_clean($_POST['assessor']));
+		get_account($_POST['assessor']);
 	}catch(Exception $e){
 		header("location: {$header_link}&err=2");
 		@mysqli_close($GLOBALS['mysql_link']);
@@ -69,7 +69,7 @@
 	
 	foreach($_GET['student'] as $student){
 		try{
-			$check_account = get_account(str_clean($student));
+			$check_account = get_account($student);
 		}catch(Exception $e){
 			header("location: {$header_link}&err=4");
 			@mysqli_close($GLOBALS['mysql_link']);

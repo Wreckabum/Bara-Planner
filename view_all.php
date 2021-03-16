@@ -533,23 +533,23 @@
 							</thead>
 							<tbody>
 								<?php
-									foreach($rows as $id => $major){
+									foreach($rows as $major){
 								?>
 										<tr>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
-												<?= $id ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $major->id ?>');">
+												<?= $major->id ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
-												<?= $major['name'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $major->id ?>');">
+												<?= $major->get_name() ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $id ?>');">
-												<?= nl2br($major['description']) ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('major', '<?= $major->id ?>');">
+												<?= nl2br($major->get_description()) ?>
 											</td>
 											<?php
 												if($account->is_admin()){
 											?>
 													<td style='text-align:center;'>
-														<a href='edit_major.php?m=<?= $id ?>'>
+														<a href='edit_major.php?m=<?= $major->id ?>'>
 															[ Edit ]
 														</a>
 													</td>
@@ -599,32 +599,32 @@
 							</thead>
 							<tbody>
 								<?php
-									foreach($rows as $id => $project){
+									foreach($rows as $project){
 								?>
 										<tr>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= $id ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= $project->id ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= $project['proj_id'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= $project->proj_id ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= $project['name'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= $project->get_name() ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= nl2br($project['description']) ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= nl2br($project->get_description()) ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= $project['year'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= $project->get_year() ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $id ?>');">
-												<?= $project['quarter'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('project', '<?= $project->id ?>');">
+												<?= $project->get_quarter() ?>
 											</td>
 											<?php
 												if($account->is_admin()){
 											?>
 													<td style='text-align:center;'>
-														<a href='edit_project.php?p=<?= $id ?>'>
+														<a href='edit_project.php?p=<?= $project->id ?>'>
 															[ Edit ]
 														</a>
 													</td>
@@ -674,24 +674,24 @@
 							</thead>
 							<tbody>
 								<?php
-									foreach($rows as $id => $group){
+									foreach($rows as $group){
 								?>
 										<tr>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
-												<?= $id ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
+												<?= $group->id ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
-												<?= $group['name'] ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
+												<?= $group->get_name() ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
-												<?= (is_null($group['supervisor']) ? "" : "{$group['supervisor']->get_name()} ({$group['supervisor']->sim_id})") ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
+												<?= (is_null($group->get_supervisor()) ? "" : "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})") ?>
 											</td>
-											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $id ?>');">
-												<?= (is_null($group['assessor']) ? "" : "{$group['assessor']->get_name()} ({$group['assessor']->sim_id})") ?>
+											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
+												<?= (is_null($group->get_assessor()) ? "" : "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})") ?>
 											</td>
-											<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
+											<td style='text-align:left;' onClick="go_to('group', '<?= $group->id ?>');">
 												<?php
-													foreach($group['members'] as $member){
+													foreach($group->get_members() as $member){
 												?>
 														<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 														<br />
@@ -699,14 +699,14 @@
 													}
 												?>
 											</td>
-											<td style='text-align:left;' onClick="go_to('group', '<?= $id ?>');">
-												<?= $group['project']['id'] ?> - <?= $group['project']['name'] ?>
+											<td style='text-align:left;' onClick="go_to('group', '<?= $group->id ?>');">
+												<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 											</td>
 											<?php
 												if($account->is_admin()){
 											?>
 													<td style='text-align:center;'>
-														<a href='edit_group.php?g=<?= $id ?>'>
+														<a href='edit_group.php?g=<?= $group->id ?>'>
 															[ Edit ]
 														</a>
 													</td>
