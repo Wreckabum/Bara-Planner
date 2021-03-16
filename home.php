@@ -20,7 +20,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Test</title>
+		<title>Home Dashboard</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 	</head>
 	<body>

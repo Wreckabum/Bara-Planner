@@ -42,7 +42,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Add a new student</title>
+		<title>Add a new project</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
