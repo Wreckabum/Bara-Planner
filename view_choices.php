@@ -39,16 +39,20 @@
 			include("include/templates/header.php");
 			
 			if(empty($projects)){
+				if($account->can_make_choice()){
 		?>
-				<a href='make_choices.php'>Make Choices</a>
-				<br />
-				<a href='home.php'>Back to main page</a>
+					<a href='make_choices.php'>Make Choices</a>
 		<?php
+				}else{
+		?>
+					Deadline of <?= date("d M Y", strtotime($account->get_choices_deadline())) ?> has passed.
+		<?php
+				}
 			}else{
 				$choice = 1;
 				
 				foreach($projects as $project){
-		?>
+	?>
 					<table id='choice_<?= $choice ?>' class='basic_table' style='width:40%;'>
 						<tr>
 							<td colspan='2'>
@@ -83,13 +87,20 @@
 					<br />
 		<?php
 				}
+				
+				if($account->can_make_choice()){
 		?>
-				<a href='make_choices.php'>Update Choices</a>
-				<br />
-				<a href='home.php'>Back to main page</a>
+					<a href='make_choices.php'>Update Choices</a>
 		<?php
+				}else{
+		?>
+					Deadline of <?= date("d M Y", strtotime($account->get_choices_deadline())) ?> has passed.
+		<?php
+				}
 			}
 		?>
+		<br />
+		<a href='home.php'>Back to main page</a>
 		</div>
 	</body>
 </html>

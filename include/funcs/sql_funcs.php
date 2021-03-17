@@ -471,4 +471,77 @@
 		
 		return ((mysqli_num_rows($query) <= 0) ? false : true);
 	}
+	
+	/*
+		Returns the deadline for a semester
+		
+		@param	int
+		@param	int
+		@return Null / Date Object
+	*/
+	function get_deadline($year, $quarter){
+		str_clean($year);
+		str_clean($quarter);
+		
+		$query = db_query("SELECT `deadline` FROM `choice_deadlines` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';");
+		
+		if(mysqli_num_rows($query) <= 0){
+			return NULL;
+		}else{
+			return mysqli_fetch_assoc($query)['deadline'];
+		}
+		
+	}
+	
+	/*
+		Returns the deadline for all semesters
+		
+		@param	int
+		@param	int
+		@return Null / Date Object
+	*/
+	function get_all_deadlines(){		
+		$query = db_query("SELECT * FROM `choice_deadlines` ORDER BY `year` DESC, `quarter` DESC;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_object($query)){
+			$output[] = $row;
+		}
+		
+		return $output;
+	}
+	
+	/*
+		Checks for existing semesters with no deadline, and updates the table accordingly
+	*/
+	function add_missing_deadlines(){		
+		$all_deadlines = get_all_deadlines();	
+		$available_semesters = get_semesters();
+		
+		foreach($available_semesters as $year => $quarters){
+			foreach($quarters as $quarter){
+				$found = false;
+			
+				foreach($all_deadlines as $deadline){
+					if($deadline->year == $year && $deadline->quarter == $quarter){
+						$found = true;
+						break;
+					}
+				}
+				
+				if(!$found){
+					db_query(
+						"INSERT INTO
+							`choice_deadlines`
+								(`year`,
+								`quarter`)
+							VALUES
+								('{$year}', 
+								'{$quarter}');"
+					);
+				}
+			}
+		}
+	}
 ?>

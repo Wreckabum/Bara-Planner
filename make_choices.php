@@ -23,6 +23,13 @@
 		exit();
 	}
 	
+	//If deadline has passed
+	if(!$account->can_make_choice()){
+		header("location: view_choices.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	$err = "";
 	
 	if(isset($_GET['err'])){

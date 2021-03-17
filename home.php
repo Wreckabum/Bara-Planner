@@ -31,9 +31,6 @@
 		Items left to do:
 		<ul>
 			<li>
-				Set deadline for students making choices
-			</li>
-			<li>
 				Page for sending emails to students
 			</li>
 			<li>
@@ -47,9 +44,6 @@
 			</li>
 			<li>
 				Score for students (viewable by supervisor/assessor/self) (convert int to grade)
-			</li>
-			<li>
-				Hide phone number/personal email by default (option to share)
 			</li>
 			<li>
 				Import faculty

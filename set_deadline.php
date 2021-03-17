@@ -1,0 +1,157 @@
+<?php
+	// Initialize the session
+	session_start();
+	
+	//If there is no session
+	if(!isset($_SESSION["loggedin"])){
+		header("location: index.php");
+		exit();
+	}
+	
+	//Include main functions
+	require_once("include/funcs/sql_funcs.php");
+	
+	//Connect to database
+	sql_connect();
+	
+	$account = get_account($_SESSION["id"]);
+	
+	//If not admin
+	if(!$account->is_admin()){
+		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	$err = "";
+	
+	if(isset($_GET['err'])){
+		switch($_GET['err']){
+			case 0:
+				$err = "Unexpected error.";
+				break;
+			
+			case 1:
+				$err = "Deadline is not yet set.";
+				break;
+			
+			case 2:
+				$err = "Date has passed.";
+				break;
+			
+			case 3:
+				$err = "Invalid date.";
+				break;
+			
+			case 9:
+				$err = "Successfully updated.";
+				break;
+			
+			default:
+				$err = "";
+				break;
+		}
+	}
+	
+	//Update any potentially missing deadlines
+	add_missing_deadlines();
+	
+	$all_deadlines = get_all_deadlines();
+?>
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Set deadlines for student choices</title>
+		<link rel='stylesheet' href='include/css/main.css' />
+		<link rel='stylesheet' href='include/css/dataTables.min.css' />
+		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>		
+		<script src='include/js/dataTables.min.js'></script>
+	</head>
+	<body>
+		<?php include("include/templates/header.php"); ?>
+		<center>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] == 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
+		</center>
+		<div style='width:40%;'>
+			<table id='filter_table' class='display'>
+				<thead>
+					<tr>
+						<th style='text-align:center;'>
+							Year
+						</th>
+						<th style='text-align:center;'>
+							Quarter
+						</th>
+						<th style='text-align:center;'>
+							Deadline
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						foreach($all_deadlines as $semester){
+					?>
+							<tr>
+								<td style='text-align:center;'>
+									<?= $semester->year ?>
+									<input type='hidden' name='year' value='<?= $semester->year ?>' />
+								</td>
+								<td style='text-align:center;'>
+									<?= $semester->quarter ?>
+									<input type='hidden' name='quarter' value='<?= $semester->quarter ?>' />
+								</td>
+								<td>
+									<input type='date' name='deadline' <?= ((is_null($semester->deadline)) ? "" : "value='{$semester->deadline}'") ?> style='width:97%;' required />
+								</td>
+							</tr>
+					<?php
+						}
+					?>
+				</tbody>
+			</table>
+		</div>
+		<input type='button' id='update' name='update' value='Update' />
+	</body>
+	<script>
+		var dt = $("#filter_table").DataTable({
+			/* Disable initial sort */
+			"aaSorting": [],
+			"paging": false
+		});
+		
+		$("#update").click(function(){
+			let all_rows = [];
+			
+			dt.rows().nodes().each(function(row){
+				let row_inputs = ($(row).find(":input").serialize());
+				all_rows.push(row_inputs)
+			});
+			
+			$.ajax({
+				url: "exec_deadlines.php",
+				type: "POST",
+				data: {
+					all_rows: all_rows
+				},
+				success: function(data){
+					window.location.href = "set_deadline.php?err=" + data;
+				},
+				error: function(jqXHR,textStatus,errorThrown){
+					console.log("Error with AJAX request.");
+					//console.log(jqXHR); console.log(textStatus); console.log(errorThrown); //For testing
+				}
+			});
+		});
+	</script>
+</html>
+<?php
+	//Close connection
+	@mysqli_close($GLOBALS['mysql_link']);
+?>
+<script>
+	if(window.history.replaceState){
+		window.history.replaceState(null, null, window.location.href);
+	}
+</script>

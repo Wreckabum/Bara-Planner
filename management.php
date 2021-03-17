@@ -58,7 +58,7 @@
 						<div class="card-body">
 							<h5 class="card-title">View All</h5>
 							<p class="card-text">Display All student list</p>
-							<a href="view_all.php" class="btn btn-primary">ADD</a>
+							<a href="view_all.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
 			<?php
@@ -72,7 +72,7 @@
 						<div class="card-body">
 							<h5 class="card-title">View Group<?= $s ?></h5>
 							<p class="card-text">View your assigned group<?= $s ?></p>
-							<a href="view_group.php" class="btn btn-primary">View<?= $s ?></a>
+							<a href="view_group.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">
@@ -152,6 +152,13 @@
 							<h5 class="card-title">Import</h5>
 							<p class="card-text">Import student via CSV</p>
 							<a href="import.php" class="btn btn-primary">Import</a>
+						</div>
+					</div>
+					<div class="card" style="width: 33%;">
+						<div class="card-body">
+							<h5 class="card-title">Set Deadline For Choices</h5>
+							<p class="card-text">Set deadline for students making their choices</p>
+							<a href="set_deadline.php" class="btn btn-primary">Set</a>
 						</div>
 					</div>
 			<?php

@@ -68,7 +68,7 @@
 		<html lang='en'>
 			<head>
 				<meta charset='UTF-8'>
-				<title>Choose the year/quarter nad type</title>
+				<title>Choose the year/quarter and type</title>
 				<link rel='stylesheet' href='include/css/main.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 			</head>

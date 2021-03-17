@@ -188,9 +188,9 @@
 								<?php
 									$all_majors = get_all_majors();
 									
-									foreach($all_majors as $id => $details){
+									foreach($all_majors as $majors){
 								?>
-										<option value='<?= $id ?>' <?= ($id == $student->get_majors() ? "selected" : "") ?>><?= $id ?> - <?= $details['name'] ?></option>
+										<option value='<?= $majors->id ?>' <?= ($majors->id == $student->get_majors() ? "selected" : "") ?>><?= $majors->id ?> - <?= $majors->get_name() ?></option>
 								<?php
 									}
 								?>

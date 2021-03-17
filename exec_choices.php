@@ -23,6 +23,13 @@
 		exit();
 	}
 	
+	//If deadline has passed
+	if(!$account->can_make_choice()){
+		header("location: view_choices.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	//Prepare the strings for SQL insertion
 	array_walk_recursive($_POST, function(&$value, $key){
 		str_clean($value);

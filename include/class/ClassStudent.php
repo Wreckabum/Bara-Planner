@@ -64,6 +64,22 @@
 		}
 		
 		/*
+			Get deadline date
+		*/
+		public function get_choices_deadline(){
+			return get_deadline($this->get_year(), $this->get_quarter());
+		}
+		
+		/*
+			Check if the student can still make a chocie based on the deadline
+			
+			@return bool
+		*/
+		public function can_make_choice(){
+			return (strtotime(date("Y-m-d")) - strtotime($this->get_choices_deadline()) <= 0);
+		}
+		
+		/*
 			Checks if the account is a full-time student
 			
 			@return bool
