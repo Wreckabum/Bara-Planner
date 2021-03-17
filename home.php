@@ -42,6 +42,9 @@
 			<li>
 				Highlight repeat student based on archives
 			</li>
+			<li>
+				Use classes for setters for updating
+			</li>
 		</ul>
 	</body>
 </html>

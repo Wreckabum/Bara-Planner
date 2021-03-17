@@ -39,7 +39,6 @@
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<style>
-
 			.card{
 				float:left;
 			}
@@ -72,15 +71,27 @@
                     <div class="card" style="width: 33%;">
 						<div class="card-body">
 							<h5 class="card-title">View Group<?= $s ?></h5>
-							<p class="card-text">View Asigned Group<?= $s ?></p>
-							<a href="view_group.php" class="btn btn-primary">View Group<?= $s ?></a>
+							<p class="card-text">View your assigned group<?= $s ?></p>
+							<a href="view_group.php" class="btn btn-primary">View<?= $s ?></a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
 							<h5 class="card-title">View All Projects</h5>
-							<p class="card-text">View All Projects</p>
+							<p class="card-text">View all available projects</p>
 							<a href="list_projects.php" class="btn btn-primary">View</a>
+						</div>
+					</div>
+			<?php
+				}
+				
+				if($account->is_student()){
+			?>
+					<div class="card" style="width: 33%;">
+						<div class="card-body">
+							<h5 class="card-title">View Your Choices</h5>
+							<p class="card-text">View your choices</p>
+							<a href="view_choices.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
 			<?php
@@ -88,61 +99,59 @@
 				
 				if($account->is_admin()){
 			?>
-
                     <div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add a new student</h5>
+							<h5 class="card-title">Add Student</h5>
 							<p class="card-text">Add a new student</p>
 							<a href="add_student.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add a faculty member</h5>
-							<p class="card-text">Add a faculty member</p>
+							<h5 class="card-title">Add Faculty</h5>
+							<p class="card-text">Add a new faculty member</p>
 							<a href="add_faculty.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add a new major</h5>
+							<h5 class="card-title">Add Major</h5>
 							<p class="card-text">Add a new major</p>
 							<a href="add_major.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
-
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add a new project</h5>
+							<h5 class="card-title">Add Project</h5>
 							<p class="card-text">Add a new project</p>
 							<a href="add_project.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Import</h5>
-							<p class="card-text">Import student CSV</p>
-							<a href="import.php" class="btn btn-primary">Import</a>
-						</div>
-					</div>
-					<div class="card" style="width: 33%;">
-						<div class="card-body">
 							<h5 class="card-title">Add Group</h5>
-							<p class="card-text">Add group for existing students</p>
+							<p class="card-text">Add a new group for existing students</p>
 							<a href="add_group.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
-			<?php
-				}
-				
-				if($account->is_super()){
-			?>
-
-                    <div class="card" style="width: 33%;">
+					<?php
+						if($account->is_super()){
+					?>
+							<div class="card" style="width: 33%;">
+								<div class="card-body">
+									<h5 class="card-title">Add Administrator</h5>
+									<p class="card-text">Add an administrator</p>
+									<a href="add_admin.php" class="btn btn-primary">Add</a>
+								</div>
+							</div>
+					<?php
+						}
+					?>
+					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add an administrator</h5>
-							<p class="card-text">Add an administrator</p>
-							<a href="add_admin.php" class="btn btn-primary">Add</a>
+							<h5 class="card-title">Import</h5>
+							<p class="card-text">Import student via CSV</p>
+							<a href="import.php" class="btn btn-primary">Import</a>
 						</div>
 					</div>
 			<?php

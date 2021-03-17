@@ -50,21 +50,9 @@
 					<?= $account->get_name() ?>
 				</a>
             </li>
-			<?php
-				if($account->is_student()){
-			?>
-					<li class="nav-item">
-						<a class="nav-link"  href='view_choices.php'>
-							View Choices
-						</a>
-					</li>
-			<?php
-				}
-			?>
 			<li class="nav-item">
 				<a class="nav-link" href="management.php">Management</a>
 			</li>
-			
         </ul>
 		<a class="nav-link" href="logout.php">Logout</a>
     </div>
