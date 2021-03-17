@@ -45,6 +45,18 @@
 			<li>
 				Use classes for setters for updating
 			</li>
+			<li>
+				Score for students (viewable by supervisor/assessor/self) (convert int to grade)
+			</li>
+			<li>
+				Hide phone number/personal email by default (option to share)
+			</li>
+			<li>
+				Import faculty
+			</li>
+			<li>
+				Retry failed imports
+			</li>
 		</ul>
 	</body>
 </html>

@@ -50,7 +50,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Edit a student</title>
+		<title><?= (($account->sim_id == $student->sim_id) ? "Edit your account details" : "Edit a student") ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
@@ -62,12 +62,12 @@
 		<form action='exec_student.php' method='POST'>
 			<table id='edit_student' class='basic_table' style='width:30%;'>
 				<tr>
-					<td colspan='2'>
+					<td colspan='3'>
 						<span style='float:left;'>
 							<?= (($account->sim_id == $student->sim_id) ? "Edit your account details" : "Edit a student" ) ?>
 						</span>
 						<span style='float:right;'>
-							<?= (($account->sim_id == $student->sim_id) ? "<a href='forget_password.php'>Reset password</a>" : "" ) ?>
+							<?= (($account->sim_id == $student->sim_id) ? "<a href='forget_password.php'>Reset password</a>" : "") ?>
 						</span>
 					</td>
 				</tr>
@@ -75,7 +75,7 @@
 					<td>
 						SIM ID
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -93,7 +93,7 @@
 					<td>
 						UOW ID
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -111,7 +111,7 @@
 					<td>
 						Name
 					</td>
-					<td>
+					<td colspan='2'>
 						<input type='text' name='name' maxlength='64' value='<?= $student->get_name() ?>' style='width:97%;' required />
 					</td>
 				</tr>
@@ -119,7 +119,7 @@
 					<td>
 						SIM E-mail
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -141,6 +141,9 @@
 					<td>
 						<input type='email' name='personal_email' value='<?= $student->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
+					<td>
+						<label><input type='checkbox' name='show_email' value='1' <?= (($student->show_email()) ? "checked" : "") ?>/> Show to others?</label>
+					</td>
 				</tr>
 				<tr>
 					<td>
@@ -149,12 +152,15 @@
 					<td>
 						<input type='text' name='phone' value='<?= $student->get_phone() ?>' style='width:97%;' required />
 					</td>
+					<td>
+						<label><input type='checkbox' name='show_phone' value='1' <?= (($student->show_phone()) ? "checked" : "") ?>/> Show to others?</label>
+					</td>
 				</tr>
 				<tr>
 					<td>
 						Type
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -174,7 +180,7 @@
 					<td>
 						Major
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -202,7 +208,7 @@
 					<td>
 						Year
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -220,7 +226,7 @@
 					<td>
 						Quarter
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -236,7 +242,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan='2'>
+					<td colspan='3'>
 						<?php
 							if($account->is_admin()){
 						?>

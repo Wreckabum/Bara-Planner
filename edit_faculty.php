@@ -50,7 +50,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Edit a faculty account</title>
+		<title><?= (($account->sim_id == $faculty->sim_id) ? "Edit your account details" : "Edit a faculty account") ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
@@ -62,15 +62,20 @@
 		<form action='exec_faculty.php' method='POST'>
 			<table id='edit_faculty' class='basic_table' style='width:auto;'>
 				<tr>
-					<td colspan='2'>
-						Edit faculty member
+					<td colspan='3'>
+						<span style='float:left;'>
+							<?= (($account->sim_id == $faculty->sim_id) ? "Edit your account details" : "Edit a faculty account") ?>
+						</span>
+						<span style='float:right;'>
+							<?= (($account->sim_id == $faculty->sim_id) ? "<a href='forget_password.php'>Reset password</a>" : "") ?>
+						</span>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						SIM ID
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -88,7 +93,7 @@
 					<td>
 						UOW ID
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							if($account->is_admin()){
 						?>
@@ -106,7 +111,7 @@
 					<td>
 						Name
 					</td>
-					<td>
+					<td colspan='2'>
 						<input type='text' name='name' maxlength='64' value='<?= $faculty->get_name() ?>' style='width:97%;' required />
 					</td>
 				</tr>
@@ -114,7 +119,7 @@
 					<td>
 						SIM E-mail
 					</td>
-					<td>
+					<td colspan='2'>
 						<input type='email' name='sim_email' value='<?= $faculty->get_sim_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
 				</tr>
@@ -125,18 +130,31 @@
 					<td>
 						<input type='email' name='personal_email' value='<?= $faculty->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
+					<td>
+						<label><input type='checkbox' name='show_email' value='1' <?= (($faculty->show_email()) ? "checked" : "") ?>/> Show to others?</label>
+					</td>
+				</tr>
+					<td>
+						Phone number
+					</td>
+					<td>
+						<input type='text' name='phone' value='<?= $faculty->get_phone() ?>' style='width:97%;' required />
+					</td>
+					<td>
+						<label><input type='checkbox' name='show_phone' value='1' <?= (($faculty->show_phone()) ? "checked" : "") ?>/> Show to others?</label>
+					</td>
 				</tr>
 				<tr>
 					<td>
 						Majors
 					</td>
-					<td>
+					<td colspan='2'>
 						<?php
 							$all_majors = get_all_majors();
 							
-							foreach($all_majors as $id => $details){
+							foreach($all_majors as $major){
 						?>
-								<label><input type='checkbox' name='majors[]' value='<?= $id ?>' <?= (in_array($id, $faculty->get_majors()) ? "checked" : "") ?>/><?= $id ?> - <?= $details['name'] ?></label>
+								<label><input type='checkbox' name='majors[]' value='<?= $major->id ?>' <?= (in_array($major->id, $faculty->get_majors()) ? "checked" : "") ?>/><?= $major->id ?> - <?= $major->get_name() ?></label>
 								<br />
 						<?php
 							}
@@ -144,15 +162,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						Phone number
-					</td>
-					<td>
-						<input type='text' name='phone' value='<?= $faculty->get_phone() ?>' style='width:97%;' required />
-					</td>
-				</tr>
 				<tr>
-					<td colspan='2'>
+					<td colspan='3'>
 						<?php
 							if($account->is_admin()){
 						?>

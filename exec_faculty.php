@@ -63,6 +63,8 @@
 		}
 	}elseif(isset($_POST['edit'])){
 		$_POST['id'] = ((isset($_POST['id'])) ? $_POST['id'] : "");
+		$show_phone = (isset($_POST['show_phone']) ? 1 : 0);
+		$show_email = (isset($_POST['show_email']) ? 1 : 0);
 		
 		if($account->sim_id == $_POST['id']){
 			$query = 
@@ -72,7 +74,9 @@
 						`sim_email` = '{$_POST['sim_email']}', 
 						`personal_email` = '{$_POST['personal_email']}', 
 						`majors` = '". addslashes(json_encode($_POST['majors'])) ."', 
-						`phone` = '{$_POST['phone']}'
+						`phone` = '{$_POST['phone']}', 
+						`show_phone` = '{$show_phone}', 
+						`show_email` = '{$show_email}'
 					WHERE
 						`sim_id` = '{$_POST['id']}';";
 			

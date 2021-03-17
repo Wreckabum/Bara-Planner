@@ -16,6 +16,8 @@
 		private	$phone;
 		private	$sim_email;
 		private	$personal_email;
+		private	$show_phone;
+		private	$show_email;
 		protected $account_type;
 		
 		protected $majors;
@@ -33,11 +35,16 @@
 			if(mysqli_num_rows($query) == 1){
 				$this->sim_id = $result['sim_id'];
 				$this->uow_id = $result['uow_id'];
+				
 				$this->name = $result['name'];
 				$this->phone = $result['phone'];
 				$this->sim_email = $result['sim_email'];
 				$this->personal_email = $result['personal_email'];
+				$this->show_phone = $result['show_phone'];
+				$this->show_email = $result['show_email'];
+				
 				$this->account_type = $result['type'];
+				
 				$this->raw = $result;
 			}else{
 				throw new Exception("Account not found.");
@@ -139,6 +146,24 @@
 		*/
 		public function is_super(){
 			return $this->account_type == 9;
+		}
+		
+		/*
+			Checks if the account has allowed sharing of phone number
+			
+			@return bool
+		*/
+		public function show_phone(){
+			return (bool)$this->show_phone;
+		}
+		
+		/*
+			Checks if the account has allowed sharing of email
+			
+			@return bool
+		*/
+		public function show_email(){
+			return (bool)$this->show_email;
 		}
 	}
 	

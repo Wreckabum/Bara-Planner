@@ -41,7 +41,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>View Account - <?= $view_account->get_name() ?></title>
+		<title><?= (($account->sim_id == $view_account->sim_id) ? "Your account" : "View Account - {$view_account->get_name()}") ?></title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
@@ -50,14 +50,15 @@
 		<?php include("include/templates/header.php"); ?>
 		<table id='view_account' class='basic_table container' style='width:auto;'>
 			<tr>
-				<td colspan='2'>
-					<?= $view_account->get_name() ?>'s Profile
+				<td colspan='3'>
+					<?= (($account->sim_id == $view_account->sim_id) ? "Your account" : "{$view_account->get_name()}'s Profile") ?>
 				</td>
-			</tr><tr>
+			</tr>
+			<tr>
 				<td>
 					SIM ID:
 				</td>
-				<td>
+				<td colspan='2'>
 					<?= ucfirst($view_account->sim_id) ?>
 				</td>
 			</tr>
@@ -65,7 +66,7 @@
 				<td>
 					UOW ID:
 				</td>
-				<td>
+				<td colspan='2'>
 					<?= $view_account->uow_id ?>
 				</td>
 			</tr>
@@ -73,7 +74,7 @@
 				<td>
 					Name:
 				</td>
-				<td>
+				<td colspan='2'>
 					<?= ucfirst($view_account->get_name()) ?>
 				</td>
 			</tr>
@@ -81,7 +82,7 @@
 				<td>
 					SIM E-mail:
 				</td>
-				<td>
+				<td colspan='2'>
 					<?= $view_account->get_sim_email() ?>
 				</td>
 			</tr>
@@ -89,23 +90,63 @@
 				<td>
 					Personal E-mail:
 				</td>
-				<td>
-					<?= $view_account->get_personal_email() ?>
-				</td>
+				<?php
+					if(
+						$view_account->show_email() || 
+						$account->is_admin() || 
+						$account->is_faculty() || 
+						$account->sim_id == $view_account->sim_id
+					){
+				?>
+						<td>
+							<?= $view_account->get_personal_email() ?>
+						</td>
+						<td style='background-color:<?= (($view_account->show_email()) ? "#C7E8C7" : "#E28D8D") ?>'>
+							<?= (($view_account->show_email()) ? "Shown" : "Hidden") ?>
+						</td>
+				<?php
+					}else{
+				?>
+						<td colspan='2'>
+							-
+						</td>
+				<?php
+					}
+				?>
 			</tr>
 			<tr>
 				<td>
 					Phone:
 				</td>
-				<td>
-					<?= $view_account->get_phone() ?>
-				</td>
+				<?php
+					if(
+						$view_account->show_phone() || 
+						$account->is_admin() || 
+						$account->is_faculty() || 
+						$account->sim_id == $view_account->sim_id
+					){
+				?>
+						<td>
+							<?= $view_account->get_phone() ?>
+						</td>
+						<td style='background-color:<?= (($view_account->show_phone()) ? "#C7E8C7" : "#E28D8D") ?>'>
+							<?= (($view_account->show_phone()) ? "Shown" : "Hidden") ?>
+						</td>
+				<?php
+					}else{
+				?>
+						<td colspan='2'>
+							-
+						</td>
+				<?php
+					}
+				?>
 			</tr>
 			<tr>
 				<td>
 					Type:
 				</td>
-				<td>
+				<td colspan='2'>
 					<?= $view_account->get_account_type() ?>
 				</td>
 			</tr>
@@ -118,7 +159,7 @@
 							<td>
 								Major:
 							</td>
-							<td>
+							<td colspan='2'>
 								<?php						
 									$major = get_major($view_account->get_majors());
 								?>
@@ -129,7 +170,7 @@
 							<td>
 								Year:
 							</td>
-							<td>
+							<td colspan='2'>
 								<?= $view_account->get_year() ?>
 							</td>
 						</tr>
@@ -137,7 +178,7 @@
 							<td>
 								Quarter:
 							</td>
-							<td>
+							<td colspan='2'>
 								<?= $view_account->get_quarter() ?>
 							</td>
 						</tr>
@@ -148,9 +189,9 @@
 							<td>
 								Majors:
 							</td>
-							<td>
+							<td colspan='2'>
 								<?php						
-									$majors = get_major($view_account->get_majors());
+									$majors = get_all_majors();
 									
 									foreach($majors as $major){
 								?>
@@ -179,7 +220,7 @@
 				if($account->sim_id == $view_account->sim_id){
 			?>
 					<tr>
-						<td colspan='2'>
+						<td colspan='3'>
 							<a href="<?= $go_to ?>?a=<?= $view_account->sim_id ?>">
 								Update
 							</a>
@@ -197,7 +238,7 @@
 								Edit Account
 							</a>
 						</td>
-						<td>
+						<td colspan='2'>
 							<a id='delete_link' href='#' onClick="show_delete();">
 								Delete Account
 							</a>
@@ -211,7 +252,7 @@
 				}
 			?>
 			<tr>
-				<td colspan='2'>
+				<td colspan='3'>
 					<a href='home.php'>
 						Back to main page
 					</a>

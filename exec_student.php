@@ -42,27 +42,27 @@
 					(`sim_id`, 
 					`uow_id`, 
 					`name`, 
+					`password`, 
+					`phone`, 
 					`sim_email`, 
 					`personal_email`, 
 					`type`, 
 					`majors`, 
 					`year`, 
-					`quarter`,
-					`phone`,
-					`password`
+					`quarter`
 					)
 				VALUES
 					('{$_POST['sim_id']}', 
 					'{$_POST['uow_id']}', 
 					'{$_POST['name']}', 
+					'{$password}', 
+					'{$_POST['phone']}', 
 					'{$_POST['sim_email']}', 
 					'{$_POST['personal_email']}', 
 					'{$_POST['type']}', 
 					'[\"{$_POST['major']}\"]', 
 					'{$_POST['year']}', 
-					'{$_POST['quarter']}', 
-					'{$_POST['phone']}',
-					'{$password}')"
+					'{$_POST['quarter']}')"
 		) !== true){
 			//Error when adding
 			header("location: add_student.php?err=1");
@@ -72,6 +72,8 @@
 		}
 	}elseif(isset($_POST['edit'])){
 		$_POST['id'] = ((isset($_POST['id'])) ? $_POST['id'] : "");
+		$show_phone = (isset($_POST['show_phone']) ? 1 : 0);
+		$show_email = (isset($_POST['show_email']) ? 1 : 0);
 		
 		if($account->sim_id == $_POST['id']){
 			$query = 
@@ -79,7 +81,9 @@
 				SET
 					`name` = '{$_POST['name']}', 
 					`personal_email` = '{$_POST['personal_email']}', 
-					`phone` = '{$_POST['phone']}'
+					`phone` = '{$_POST['phone']}', 
+					`show_phone` = '{$show_phone}', 
+					`show_email` = '{$show_email}'
 				WHERE
 					`sim_id` = '{$_POST['id']}';";
 			
