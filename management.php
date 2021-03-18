@@ -161,6 +161,13 @@
 							<a href="set_deadline.php" class="btn btn-primary">Set</a>
 						</div>
 					</div>
+					<div class="card" style="width: 33%;">
+						<div class="card-body">
+							<h5 class="card-title">Send E-Mail to Students</h5>
+							<p class="card-text">E-mail students of a semester their passwords</p>
+							<a href="send_email.php" class="btn btn-primary">Send</a>
+						</div>
+					</div>
 			<?php
 				}
 			?>

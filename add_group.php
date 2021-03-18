@@ -299,7 +299,7 @@
 				<a href='home.php'>Back to main page</a>
 			</body>
 			<script>
-				$("#applicable_students").DataTable({
+				var dt = $("#applicable_students").DataTable({
 					/* Disable initial sort */
 					"aaSorting": []
 				});
@@ -321,7 +321,30 @@
 						disabled: false,
 						items: "tr:not(:first, :contains('No data available in table'))",
 						helper: "clone",
-						connectWith: ".connected_sortable"
+						connectWith: ".connected_sortable",
+						receive : function(event, element){
+							//If from group members
+							if($($(element)[0]['sender'][0]).attr("id") == "group_members"){
+								let row_data = [];
+								
+								$($(element)[0]['item'][0]).find("td")
+									.each(function(idx, col){
+										row_data.push($(col).text().trim())
+									});
+								
+								dt.row.add(row_data).draw();
+							}
+						},
+						update: function(event, element){
+							//If from group members for end only
+							if($(element)[0]['sender'] !== null){
+								if($($(element)[0]['sender'][0]).attr("id") == "group_members"){
+									$(element)[0]['item'][0].remove();
+								}else{
+									dt.row($($(element)[0]['item'][0])).remove().draw();
+								}
+							}
+						}
 					})
 					.disableSelection();
 				
