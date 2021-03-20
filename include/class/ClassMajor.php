@@ -54,6 +54,13 @@
 		}
 		
 		/*
+			Get student type
+		*/
+		public function get_student_type(){
+			return (($this->is_full_time()) ? 1 : 2);
+		}
+		
+		/*
 			Checks if the major is for full-time students
 			
 			@return bool

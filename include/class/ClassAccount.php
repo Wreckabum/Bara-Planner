@@ -165,6 +165,21 @@
 		public function show_email(){
 			return (bool)$this->show_email;
 		}
+		
+		/*
+			Sets the password for the account (TODO: hashed and salted)
+			
+			@return bool
+		*/
+		public function set_password($password = "~"){
+			if($password == "~"){
+				$password = generate_password();
+			}else{
+				str_clean($password);
+			}
+			
+			return db_query("UPDATE `accounts` SET `password` = '{$password}' WHERE `sim_id` = '{$this->sim_id}'");
+		}
 	}
 	
 	//Close connection

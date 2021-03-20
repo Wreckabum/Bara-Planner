@@ -34,7 +34,7 @@
 	(isset($_POST['quarter']) ? $_POST['quarter'] = (int)$_POST['quarter'] : "");
 	
 	if(isset($_POST['add'])){
-		$password = generate_password();
+		$password = generate_password(); //Set initial random password
 
 		if(db_query(
 			"INSERT INTO

@@ -24,7 +24,6 @@
 	}
 	
 	$errors = ((isset($_GET['err'])) ? json_decode($_GET['err']) : []);
-	$headers = ((isset($_GET['h'])) ? json_decode($_GET['h']) : []);
 	$year = ((isset($_GET['y'])) ? str_clean($_GET['y']) : date('Y'));
 	$quarter = ((isset($_GET['q'])) ? str_clean($_GET['q']) : ceil(date('n') / 3));
 ?>
@@ -33,7 +32,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Result of import</title>
+		<title>Result of E-Mail</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='stylesheet' href='include/css/dataTables.min.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
@@ -43,7 +42,7 @@
 	<body>
 		<?php include('include/templates/header.php'); ?>
 		<h4>
-			Successfully added: <?= $_GET['c'] ?> Students
+			Successfully E-Mailed: <?= $_GET['c'] ?> Students
 			<br />
 			Errors: <?= count($errors) ?>
 		</h4>
@@ -57,17 +56,26 @@
 				<table id='filter_table' class='display'>
 					<thead>
 						<tr>
-							<?php
-								foreach($headers as $header){
-							?>
-									<th>
-										<?= $header ?>
-									</th>
-							<?php
-								}
-							?>
-							<th>
-								Error
+							<th style='text-align:center;'>
+								SIM ID
+							</th>
+							<th style='text-align:center;'>
+								UOW ID
+							</th>
+							<th style='text-align:center;'>
+								Name
+							</th>
+							<th style='text-align:center;'>
+								SIM Email
+							</th>
+							<th style='text-align:center;'>
+								Personal Email
+							</th>
+							<th style='text-align:center;'>
+								Phone
+							</th>
+							<th style='text-align:center;'>
+								Major
 							</th>
 						</tr>
 					</thead>
@@ -76,19 +84,28 @@
 							foreach($errors as $error){
 						?>
 								<tr>
-									<?php
-										foreach($headers as $header){
-									?>
-											<td>
-												<input type='text' name='<?= $header ?>' value='<?= $error->$header ?>' />
-											</td>
-									<?php
-										}
-									?>
-									<td>
-										<input type='hidden' name='year' value='<?= $year ?>' />
-										<input type='hidden' name='quarter' value='<?= $quarter ?>' />
-										<?= $error->error ?>
+									<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
+									<td style='padding-right:0;'>
+										<?= $student->sim_id ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->uow_id ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->get_name() ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->get_sim_email() ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->get_personal_email() ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->get_phone() ?>
+									</td>
+									<td style='padding-right:0;'>
+										<?= $student->get_majors() ?>
+									</td>
 									</td>
 								</tr>
 						<?php

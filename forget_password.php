@@ -38,20 +38,61 @@
 				$to_reset = get_account_by_email($email);
 				
 				//Allow reset of self only
-				if($to_reset->sim_id == $account->sim_id){	
-					$old_password = mysqli_fetch_assoc((db_query("SELECT `password` FROM `accounts` WHERE `sim_id` = '{$to_reset->id}';")));
-					$password = generate_password();
-					$update = db_query("UPDATE `accounts` SET `password` = '{$password}' WHERE `sim_id` = '{$to_reset->id}';");
+				if($to_reset->sim_id == $account->sim_id){
+					//Set new password
+					db_query("START TRANSACTION;");
 					
-					if($update === True){
-						//Password reset
+					$password = generate_password();
+					$update = $to_reset->set_password($password);
+					
+					if($update === true){
 						$sender = "noreply@fyp.com";
 						$subject = "Reset Password";
-						$message = "New Password: {$password}";
 						$headers = "From:{$sender}\r\nCC:{$to_reset->get_personal_email()}";
+						$message = 
+							"<html lang='en'>
+								<body>
+									<table style='border-collapse:collapse; border:1px #666666 solid; padding:10px;'>
+										<tr>
+											<td colspan='2' style='background-color:#EEEEEE; border:1px #666666 solid; padding:10px;'>
+												<strong>Request to reset your password</strong>
+											</td>
+										</tr>
+										<tr>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												Name:
+											</td>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												{$to_reset->get_name()}
+											</td>
+										</tr>
+										<tr>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												Date of reset:
+											</td>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												<?= (date('d M Y, D,  g:i a')) ?>
+											</td>
+										</tr>
+										<tr>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												Password:
+											</td>
+											<td style='border:1px #666666 solid; padding:10px;'>
+												{$password}
+											</td>
+										</tr>
+									</table>
+									<h5>
+										If you did not reset your password, please e-mail 
+										<br />the <a href='mailto:Bernardsin@sim.edu.sg?subject=Wrongful reset of password'>FYP coordinator</a> with your SIM ID immediately.
+									</h5>
+								</body>
+							</html>";
 
 						if(mail($email, $subject, $message, $headers)){
 							//E-mail successfully sent
+							db_query("COMMIT;");
 ?>
 							<script>
 								window.alert('Password has been succesfuly reset.\nPlease check your E-mail and login with new password.');
@@ -60,7 +101,7 @@
 <?php
 						}else{
 							//E-mail failure; revert password change
-							db_query("UPDATE `accounts` SET `password` = '{$old_password}' WHERE `sim_id` = '{$to_reset->id}';");
+							db_query("ROLLBACK;");
 ?>
 							<script>
 								window.alert('There was an error with the sending of the E-mail.\nThe password reset was reverted.');
@@ -71,6 +112,7 @@
 					}else{
 						//Password reset error
 						$reset_error = "Password Reset Failed! Please try again later.";
+						db_query("ROLLBACK;");
 					}
 				}else{
 					//Mismatch E-mail

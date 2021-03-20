@@ -62,7 +62,7 @@
 	}
 	
 	//Prompt for semester
-	if(!isset($_GET['semester'])){
+	if(!isset($_GET['semester']) || !isset($_GET['type'])){
 ?>
 		<!DOCTYPE html>
 		<html lang='en'>
@@ -116,6 +116,9 @@
 <?php
 	}else{
 		//Semester selected
+		str_clean($_GET['semester']);
+		str_clean($_GET['type']);
+		
 		list($year, $quarter) = explode("_", $_GET['semester']);	
 		
 		$applicable_students = get_students($year, $quarter, $_GET['type'], true); //Get all students in semester that is not in a group
@@ -148,7 +151,6 @@
 								</th>
 								<?php
 									for($i = 1; $i <= count($all_projects); $i++){
-										
 								?>
 										<th style='width:30px; padding:0; text-align:center; background-image:none !important;'>
 											<?= $i ?>

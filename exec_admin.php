@@ -30,6 +30,8 @@
 	});
 	
 	if(isset($_POST['add'])){
+		$password = generate_password(); //Set initial random password
+		
 		if(db_query(
 			"INSERT INTO
 				`accounts`
@@ -39,7 +41,9 @@
 					`sim_email`, 
 					`personal_email`, 
 					`type`, 
-					`phone`)
+					`phone`, 
+					`password`
+					)
 				VALUES
 					('{$_POST['sim_id']}', 
 					'{$_POST['uow_id']}', 
@@ -47,7 +51,8 @@
 					'{$_POST['sim_email']}', 
 					'{$_POST['personal_email']}', 
 					'8', 
-					'{$_POST['phone']}')"
+					'{$_POST['phone']}', 
+					'{$password}')"
 		) !== true){
 			//Error when adding
 			header("location: add_admin.php?err=1");

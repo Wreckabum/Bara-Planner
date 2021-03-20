@@ -514,10 +514,13 @@
 	
 	/*
 		Checks for existing semesters with no deadline, and updates the table accordingly
+		
+		@return	bool
 	*/
 	function add_missing_deadlines(){		
 		$all_deadlines = get_all_deadlines();	
 		$available_semesters = get_semesters();
+		$new_semester_added = false;
 		
 		foreach($available_semesters as $year => $quarters){
 			foreach($quarters as $quarter){
@@ -540,8 +543,16 @@
 								('{$year}', 
 								'{$quarter}');"
 					);
+					
+					$new_semester_added = true;
 				}
 			}
+		}
+		
+		if($new_semester_added){
+			return true;
+		}else{
+			return false;
 		}
 	}
 ?>

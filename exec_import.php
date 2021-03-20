@@ -68,7 +68,7 @@
 		//Check if major exists
 		foreach($majors as $major){
 			if($major->id == $student->major){
-				$student->type = $major->get_type();
+				$student->type = $major->get_student_type();
 				break;
 			}
 		}

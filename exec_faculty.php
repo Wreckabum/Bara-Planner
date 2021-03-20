@@ -30,7 +30,8 @@
 	});
 	
 	if(isset($_POST['add'])){
-		$password = generate_password();
+		$password = generate_password(); //Set initial random password
+		
 		if(db_query(
 			"INSERT INTO
 				`accounts`
@@ -52,7 +53,7 @@
 					'{$_POST['personal_email']}', 
 					'0', 
 					'". addslashes(json_encode($_POST['majors'])) ."', 
-					'{$_POST['phone']}',
+					'{$_POST['phone']}', 
 					'{$password}')"
 		) !== true){
 			//Error when adding

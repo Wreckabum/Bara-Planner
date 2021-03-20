@@ -121,7 +121,6 @@
 			</tbody>
 		</table>
 		<br />
-		<br />
 		<form action='exec_import.php' method='POST'>
 			<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the student details to be imported.</label>
 			<br />
