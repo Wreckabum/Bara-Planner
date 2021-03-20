@@ -1,6 +1,6 @@
 Programme,Term,ID,UOW ID,SIM ID,Name,Mobile No.,SIM Email,Personal Email
 BCSF,5000,S123123X,10591275,6925601,Oisin Donald,99099669,oisin.donal@mymail.sim.edu.sg,oisin.donal@test.com
-XYZ,5000,S123123X,10586987,6957896,Wron Major,99099909,no.major@mymail.sim.edu.sg,no.major@test.com
+XYZ,5000,S123123X,10586987,6957896,Wrong Major,99099909,no.major@mymail.sim.edu.sg,no.major@test.com
 BSSP,5000,S123123X,10553744,6916845,Ravinder Rowley,98461944,ravin.rowle@mymail.sim.edu.sg,ravin.rowle@test.com
 BDP,5000,S123123X,10556259,6914575,Yusuf Khan,99340263,yusuf.khan@mymail.sim.edu.sg,yusuf.khan@test.com
 BSSP,5000,S123123X,10517980,6976482,Amin Levine,99112439,amin.levin@mymail.sim.edu.sg,amin.levin@test.com

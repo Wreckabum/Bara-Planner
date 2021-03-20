@@ -34,6 +34,11 @@
 	
 	//Get headers
 	foreach($students->{'1'} as $key => $value){
+		//For re-submissions
+		if($key == "year" || $key == "quarter"){
+			continue;
+		}
+		
 		$headers[] = $key;
 	}
 	
@@ -70,7 +75,6 @@
 		
 		//Do not proceed with SQL insertion if any of the following is missing
 		if(
-			!isset($student->type) ||
 			!isset($student->major) ||
 			!isset($student->uow_id) ||
 			!isset($student->sim_id) ||
@@ -79,6 +83,14 @@
 			!isset($student->sim_email) ||
 			!isset($student->personal_email) 
 		){
+			$student->error = "Missing required field.";
+			$errors[] = $student;
+			continue;
+		}
+		
+		//Check for valid major
+		if(!isset($student->type)){
+			$student->error = "Invalid major.";
 			$errors[] = $student;
 			continue;
 		}
@@ -114,6 +126,7 @@
 					'{$password}')"
 		) !== true){
 			//Error when adding
+			$student->error = "Duplicate account.";
 			$errors[] = $student;
 			continue;
 		}else{
@@ -125,7 +138,21 @@
 	$error_info = "";
 	
 	if(count($errors) > 0){
-		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers);
+		//Clean the data sent back
+		foreach($errors as $error){
+			unset($error->sim_id);
+			unset($error->uow_id);
+			unset($error->name);
+			unset($error->sim_email);
+			unset($error->personal_email);
+			unset($error->major);
+			unset($error->type);
+			unset($error->phone);
+			unset($error->year);
+			unset($error->quarter);
+		}
+		
+		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&y={$_POST['year']}&q={$_POST['quarter']}";
 	}
 	
 	header("location: import_result.php?c={$success_count}{$error_info}");

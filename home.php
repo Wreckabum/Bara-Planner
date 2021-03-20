@@ -48,9 +48,6 @@
 			<li>
 				Import faculty
 			</li>
-			<li>
-				Retry failed imports
-			</li>
 		</ul>
 	</body>
 </html>
