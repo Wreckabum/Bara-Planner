@@ -209,11 +209,11 @@
 				$go_to = "";
 					
 				if($view_account->is_admin()){
-					$go_to = "edit_admin";
+					$go_to = "edit_admin.php";
 				}elseif($view_account->is_faculty()){
-					$go_to = "edit_faculty";
+					$go_to = "edit_faculty.php";
 				}elseif($view_account->is_student()){
-					$go_to = "edit_student";
+					$go_to = "edit_student.php";
 				}
 				
 				//If own account
