@@ -130,9 +130,22 @@
 					<td>
 						<input type='email' name='personal_email' value='<?= $admin->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
 					</td>
-					<td>
-						<label><input type='checkbox' name='show_email' value='1' <?= (($admin->show_email()) ? "checked" : "") ?>/> Show to others?</label>
-					</td>
+					<?php
+						if($account->sim_id == $admin->sim_id){
+							//Only allow self to update the field
+					?>
+							<td>
+								<label><input type='checkbox' name='show_email' value='1' <?= (($admin->show_email()) ? "checked" : "") ?>/> Show to others?</label>
+							</td>
+					<?php
+						}else{
+					?>
+							<td style='background-color:<?= (($admin->show_email()) ? "#C7E8C7" : "#E28D8D") ?>'>
+								<?= (($admin->show_email()) ? "Shown" : "Hidden") ?>
+							</td>
+					<?php
+						}
+					?>
 				</tr>
 				<tr>
 					<td>
@@ -141,9 +154,22 @@
 					<td>
 						<input type='text' name='phone' value='<?= $admin->get_phone() ?>' style='width:97%;' required />
 					</td>
-					<td>
-						<label><input type='checkbox' name='show_phone' value='1' <?= (($admin->show_phone()) ? "checked" : "") ?>/> Show to others?</label>
-					</td>
+					<?php
+						if($account->sim_id == $admin->sim_id){
+							//Only allow self to update the field
+					?>
+							<td>
+								<label><input type='checkbox' name='show_phone' value='1' <?= (($admin->show_phone()) ? "checked" : "") ?>/> Show to others?</label>
+							</td>
+					<?php
+						}else{
+					?>
+							<td style='background-color:<?= (($admin->show_phone()) ? "#C7E8C7" : "#E28D8D") ?>'>
+								<?= (($admin->show_phone()) ? "Shown" : "Hidden") ?>
+							</td>
+					<?php
+						}
+					?>
 				</tr>
 				<tr>
 					<td colspan='3'>
