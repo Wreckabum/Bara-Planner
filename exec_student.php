@@ -88,8 +88,8 @@
 					`name` = '{$_POST['name']}', 
 					`personal_email` = '{$_POST['personal_email']}', 
 					`phone` = '{$_POST['phone']}', 
-					`show_phone` = '{$show_phone}', 
-					`show_email` = '{$show_email}'
+					`show_phone` = {$show_phone}, 
+					`show_email` = {$show_email}
 				WHERE
 					`sim_id` = '{$_POST['id']}';";
 			
