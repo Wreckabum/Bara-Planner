@@ -62,7 +62,13 @@
 		str_clean($type);
 		
 		if($type == ""){
-			$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_id` = '{$id}';"))['type'];
+			$query = db_query("SELECT `type` FROM `accounts` WHERE `sim_id` = '{$id}';");
+			
+			if(mysqli_num_rows($query) > 0){
+				$type = mysqli_fetch_assoc($query)['type'];
+			}else{
+				throw new Exception("Account not found.");
+			}
 		}
 		
 		if($type == 1 || $type == 2){
@@ -73,7 +79,7 @@
 			return new Faculty($id);
 		}
 		
-		return false;
+		throw new Exception("Account type not found.");
 	}
 	
 	/*
@@ -87,8 +93,18 @@
 		str_clean($email);
 		str_clean($type);
 		
-		if($type == ""){
-			$type = mysqli_fetch_assoc(db_query("SELECT `type` FROM `accounts` WHERE `sim_email` = '{$email}';"))['type'];
+		$query = db_query("SELECT `sim_id`, `type` FROM `accounts` WHERE `sim_email` = '{$email}';");
+		
+		if(mysqli_num_rows($query) > 0){
+			$result = mysqli_fetch_assoc($query);
+			
+			$id = $result['sim_id'];
+			
+			if($type == ""){
+				$type = $result['type'];
+			}
+		}else{
+			throw new Exception("Account not found.");
 		}
 		
 		if($type == 1 || $type == 2){
@@ -99,7 +115,7 @@
 			return new Faculty($id);
 		}
 		
-		return false;
+		throw new Exception("Account type not found.");
 	}
 	
 	/*

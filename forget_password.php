@@ -18,8 +18,7 @@
 	
 	//Define variables and initialize with empty values
 	$email = "";
-	$email_error = "";
-	$reset_error = "";
+	$error_text = "";
 	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -28,7 +27,7 @@
 		
 		//If email is empty
 		if(empty($email)){
-			$email_error = "Please enter email.";
+			$error_text = "Please enter email.";
 		}else{
 			$email = trim($email);
 		}
@@ -95,8 +94,8 @@
 							db_query("COMMIT;");
 ?>
 							<script>
-								window.alert('Password has been succesfuly reset.\nPlease check your E-mail and login with new password.');
-								window.location.href='index.php';
+								window.alert("Password has been succesfuly reset.\nPlease check your E-mail and login with new password.");
+								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
 							</script>
 <?php
 						}else{
@@ -104,23 +103,23 @@
 							db_query("ROLLBACK;");
 ?>
 							<script>
-								window.alert('There was an error with the sending of the E-mail.\nThe password reset was reverted.');
-								window.location.href='index.php';
+								window.alert("There was an error with the sending of the E-mail.\nThe password reset was reverted.");
+								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
 							</script>
 <?php
 						}
 					}else{
 						//Password reset error
-						$reset_error = "Password Reset Failed! Please try again later.";
 						db_query("ROLLBACK;");
+						$error_text = "Password Reset Failed! Please try again later.";
 					}
 				}else{
 					//Mismatch E-mail
-					$reset_error = "Wrong E-Mail address.";
+					$error_text = "Wrong E-Mail address.";
 				}
 			}catch(Exception $e){
 				//User does not exist
-				$reset_error = "Wrong E-Mail address.";
+				$error_text = "Wrong E-Mail address.";
 			}
 		}
 	}
@@ -144,18 +143,18 @@
 			<h2>Reset Password</h2>
 			<p>Please fill in your email to reset password.</p>
 			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<div class='form-group <?= (!empty($email_error)) ? 'has-error' : ''; ?>'>
-					<label>Username</label>
+				<div class='form-group <?= (!empty($error_text)) ? 'has-error' : ''; ?>'>
+					<label>SIM E-Mail</label>
 					<input type='text' name='email' class='form-control' value='<?= $email; ?>'>
-					<span class='help-block'><?= $email_error; ?></span>
-				</div>	
-				<span class='help-block'><?= $reset_error; ?></span>
+					<span class='help-block'><?= $error_text; ?></span>
+				</div>	</span>
 				<div class='form-group'>
 					<input type='submit' name='reset' class='btn btn-primary' value='Reset Password'>
 				</div>
 			</form>
 		</div>
 		<br />
+		<a href='home.php'>Back to main page</a>
 	</body>
 </html>
 <?php
