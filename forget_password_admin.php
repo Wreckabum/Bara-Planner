@@ -16,26 +16,49 @@
 	
 	$account = get_account($_SESSION["id"]);
 	
+	//If not admin
+	if(!$account->is_admin()){
+		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	//Define variables and initialize with empty values
+	$sim_id = "";
+	$uow_id = "";
 	$email = "";
 	$error_text = "";
 	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		//Extra layer of checks
+		$sim_id = str_clean($_POST["sim_id"]);
+		$uow_id = str_clean($_POST["uow_id"]);
 		$email = str_clean($_POST["email"]);
 		
 		//If email is empty
-		if(empty($email)){
-			$error_text = "Please enter E-Mail.";
+		if(empty($sim_id) || empty($uow_id) || empty($email)){
+			$error_text = "Please enter all requried details.";
 		}
 		
-		if(!empty($email)){
+		if(!empty($sim_id) && !empty($uow_id) && !empty($email)){
 			try{
-				$to_reset = get_account_by_email($email);
+				$to_reset = get_account($sim_id);
 				
-				//Allow reset of self only
-				if($to_reset->sim_id == $account->sim_id){
+				//If trying to reset admin account without being super admin
+				if($to_reset->is_admin() && !$account->is_super()){
+?>
+					<script>
+						window.alert("Insufficient privileges.");
+						window.location.href = "view_account.php?a=" + <?= $to_reset->sim_id ?>;
+					</script>
+<?php
+					@mysqli_close($GLOBALS['mysql_link']);
+					exit();
+				}
+				
+				//If correct details
+				if($to_reset->uow_id == $uow_id && $to_reset->get_sim_email() == $email){
 					//Set new password
 					db_query("START TRANSACTION;");
 					
@@ -81,8 +104,10 @@
 										</tr>
 									</table>
 									<h5>
-										If you did not reset your password, please e-mail 
-										<br />the <a href='mailto:Bernardsin@sim.edu.sg?subject=Wrongful reset of password'>FYP coordinator</a> with your SIM ID immediately.
+										Your password has been manually. reset by an 
+										<br />administrator. Please
+										E-Mail the <a href='mailto:Bernardsin@sim.edu.sg?subject=Manual reset of password'>FYP coordinator</a> 
+										<br />for any enquiries.
 									</h5>
 								</body>
 							</html>";
@@ -92,8 +117,8 @@
 							db_query("COMMIT;");
 ?>
 							<script>
-								window.alert("Password has been succesfuly reset.\nPlease check your E-mail and login with new password.");
-								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
+								window.alert("Password has been succesfuly reset.");
+								window.location.href = "view_account.php?a=" + <?= $to_reset->sim_id ?>;
 							</script>
 <?php
 							@mysqli_close($GLOBALS['mysql_link']);
@@ -104,7 +129,7 @@
 ?>
 							<script>
 								window.alert("There was an error with the sending of the E-mail.\nThe password reset was reverted.");
-								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
+								window.location.href = "view_account.php?a=" + <?= $to_reset->sim_id ?>;
 							</script>
 <?php
 							@mysqli_close($GLOBALS['mysql_link']);
@@ -117,11 +142,11 @@
 					}
 				}else{
 					//Mismatch E-mail
-					$error_text = "Wrong E-Mail address.";
+					$error_text = "Wrong details.";
 				}
 			}catch(Exception $e){
 				//User does not exist
-				$error_text = "Wrong E-Mail address.";
+				$error_text = "Wrong details.";
 			}
 		}
 	}
@@ -143,9 +168,13 @@
 		<?php include("include/templates/header.php"); ?>
 		<div class='wrapper' style='padding:0 20px;'>
 			<h2>Reset Password</h2>
-			<p>Please fill in your E-Mail to reset password.</p>
+			<p>Please fill in the following user details to reset their password.</p>
 			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<div class='form-group <?= (!empty($error_text)) ? 'has-error' : ''; ?>'>
+					<label>SIM ID</label>
+					<input type='text' name='sim_id' class='form-control' value='<?= $sim_id; ?>'>
+					<label>UOW ID</label>
+					<input type='text' name='uow_id' class='form-control' value='<?= $uow_id; ?>'>
 					<label>SIM E-Mail</label>
 					<input type='text' name='email' class='form-control' value='<?= $email; ?>'>
 					<span class='help-block'><?= $error_text; ?></span>

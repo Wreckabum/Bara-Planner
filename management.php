@@ -168,6 +168,13 @@
 							<a href="email.php" class="btn btn-primary">Send</a>
 						</div>
 					</div>
+					<div class="card" style="width: 33%;">
+						<div class="card-body">
+							<h5 class="card-title">Reset Other Password</h5>
+							<p class="card-text">Reset another user's password</p>
+							<a href="forget_password_admin.php" class="btn btn-primary">Send</a>
+						</div>
+					</div>
 			<?php
 				}
 			?>
