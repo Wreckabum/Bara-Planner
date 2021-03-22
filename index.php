@@ -18,6 +18,24 @@
 	$password_error = "";
 	$login_error = "";
 	
+	//Connect to database
+	sql_connect();
+	
+	//Testing new student for demo
+	$new_student = "";
+		
+	$q = db_query("SELECT `password` FROM `accounts` WHERE `sim_email` = 'oisin.donal@mymail.sim.edu.sg';");
+	
+	if(mysqli_num_rows($q) > 0){
+		$new_student = 
+			"<br />
+			<form action='". htmlspecialchars($_SERVER['PHP_SELF']) ."' method='post'>
+				<input type='hidden' name='email' value='oisin.donal@mymail.sim.edu.sg'>
+				<input type='hidden' name='password' value='". mysqli_fetch_assoc($q)['password'] ."'>
+				<input type='submit' value='Newly Added Student'>
+			</form>";
+	}
+	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if(isset($_POST['forget_password'])){
@@ -343,18 +361,18 @@
 			<div class='wrapper' style='padding:0 20px;'>
 				<h2>Login</h2>
 				<p>Please fill in your credentials to login.</p>
-				<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-					<div class='form-group <?php echo (!empty($email_error)) ? 'has-error' : ''; ?>'>
+				<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+					<div class='form-group <?= (!empty($email_error)) ? 'has-error' : ''; ?>'>
 						<label>Username</label>
-						<input type='text' name='email' class='form-control' value='<?php echo $email; ?>'>
-						<span class='help-block'><?php echo $email_error; ?></span>
+						<input type='text' name='email' class='form-control' value='<?= $email; ?>'>
+						<span class='help-block'><?= $email_error; ?></span>
 					</div>	
-					<div class='form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>'>
+					<div class='form-group <?= (!empty($password_error)) ? 'has-error' : ''; ?>'>
 						<label>Password</label>
 						<input type='password' name='password' class='form-control'>
-						<span class='help-block'><?php echo $password_error; ?></span>
+						<span class='help-block'><?= $password_error; ?></span>
 					</div>
-					<span class='help-block'><?php echo $login_error; ?></span>
+					<span class='help-block'><?= $login_error; ?></span>
 					<div class='form-group'>
 						<input type='submit' name='login' class='btn btn-primary' value='Login'>
 						<input type='submit' name='forget_password' class='btn btn-primary' value='Forget Password'>
@@ -362,35 +380,36 @@
 				</form>
 			</div>
 			<br />
-			<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='carve.delah@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='FfI0M2Na'>
 				<input type='submit' value='Super Admin'>
 			</form>
 			<br />
-			<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='abiga.attre@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='XiRSszCDo9iS'>
 				<input type='submit' value='Admin'>
 			</form>
 			<br />
-			<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='sZoS3rWaSJ'>
 				<input type='submit' value='Faculty'>
 			</form>
 			<br />
-			<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='cleme.tanby@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='OQGJrSSz6D'>
 				<input type='submit' value='Full-time Student'>
 			</form>
 			<br />
-			<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='delan.abell@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='1FS3sT1bmx'>
 				<input type='submit' value='Part-time Student'>
 			</form>
+			<?= $new_student ?>
 		</div>
 	</body>
 </html>
