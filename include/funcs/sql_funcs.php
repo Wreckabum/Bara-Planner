@@ -331,8 +331,24 @@
 		
 		@return	Array of Project Objects
 	*/
-	function get_all_projects(){
-		$query = db_query("SELECT `id` FROM `projects` ORDER BY `id` ASC;");
+	function get_all_projects($year = "*", $quarter = "*"){
+		$filter = [];
+		
+		if($year != "*"){
+			$filter[] = "`year` = '". (int)$year ."'";
+		}
+		
+		if($quarter != "*"){
+			$filter[] = "`quarter` = '". (int)$quarter ."'";
+		}
+		
+		$filter_text = "";
+		
+		if(count($filter) > 0){
+			$filter_text = "WHERE ". implode(" AND ", $filter);
+		}
+		
+		$query = db_query("SELECT `id` FROM `projects` {$filter_text} ORDER BY `id` ASC;");
 		
 		$output = [];
 		

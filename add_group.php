@@ -123,7 +123,7 @@
 		
 		$applicable_students = get_students($year, $quarter, $_GET['type'], true); //Get all students in semester that is not in a group
 		$all_faculty = get_all_accounts([0]);
-		$all_projects = get_all_projects();
+		$all_projects = get_all_projects($year, $quarter);
 ?>
 		<!DOCTYPE html>
 		<html lang='en'>
