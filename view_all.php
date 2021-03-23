@@ -750,13 +750,13 @@
 		
 		function go_to(type, id){
 			if(type == "account"){
-				window.location.href = "view_account?a=" + id;
+				window.location.href = "view_account.php?a=" + id;
 			}else if(type == "major"){
-				window.location.href = "view_major?m=" + id;
+				window.location.href = "view_major.php?m=" + id;
 			}else if(type == "project"){
-				window.location.href = "view_project?p=" + id;
+				window.location.href = "view_project.php?p=" + id;
 			}else if(type == "group"){
-				window.location.href = "view_group?g=" + id;
+				window.location.href = "view_group.php?g=" + id;
 			}
 		}
 		

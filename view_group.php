@@ -65,13 +65,13 @@
 					if($group->get_supervisor()->get_name() == $account->get_name()){
 						$supervisor_background = "background-color:#BCE2BE";
 					}else{
-						$supervisor_field = "<a href='view_account?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
+						$supervisor_field = "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
 					}
 					
 					if($group->get_assessor()->get_name() == $account->get_name()){
 						$assessor_background = "background-color:#BCE2BE";
 					}else{
-						$assessor_field = "<a href='view_account?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
+						$assessor_field = "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
 					}
 					
 		?>
@@ -114,7 +114,7 @@
 								<?php
 									foreach($group->get_members() as $member){
 								?>
-										<a href='view_account?a=<?= $member->sim_id ?>'>
+										<a href='view_account.php?a=<?= $member->sim_id ?>'>
 											<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 										</a>
 										<br />
@@ -128,7 +128,7 @@
 								Project:
 							</td>
 							<td>
-								<a href='view_project?p=<?= $group->get_project()->id ?>'>
+								<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
 									<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 								</a>
 							</td>
@@ -162,7 +162,7 @@
 							Supervisor:
 						</td>
 						<td>
-							<?= (is_null($group->get_supervisor()) ? "" : "<a href='view_account?a={$group->get_supervisor()->sim_id}'>{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})</a>") ?>
+							<?= (is_null($group->get_supervisor()) ? "" : "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})</a>") ?>
 						</td>
 					</tr>
 					<tr>
@@ -170,7 +170,7 @@
 							Assessor:
 						</td>
 						<td>
-							<?= (is_null($group->get_assessor()) ? "" : "<a href='view_account?a={$group->get_assessor()->sim_id}'>{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})</a>") ?>
+							<?= (is_null($group->get_assessor()) ? "" : "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})</a>") ?>
 						</td>
 					</tr>
 					
@@ -182,7 +182,7 @@
 							<?php
 								foreach($group->get_members() as $member){
 							?>
-									<a href='view_account?a=<?= $member->sim_id ?>'>
+									<a href='view_account.php?a=<?= $member->sim_id ?>'>
 										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
 									</a>
 									<br />
@@ -196,7 +196,7 @@
 							Project:
 						</td>
 						<td>
-							<a href='view_project?p=<?= $group->get_project()->id ?>'>
+							<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
 								<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 							</a>
 						</td>
