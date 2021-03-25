@@ -175,7 +175,7 @@
 			$type_checks[] = 2;
 		}
 		
-		if(count($type) == 0){
+		if(count($type_checks) == 0){
 			$type_checks = [1, 2];
 		}
 		
