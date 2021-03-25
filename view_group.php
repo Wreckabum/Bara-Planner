@@ -90,6 +90,14 @@
 							</td>
 						</tr>
 						<tr>
+							<td style='width:25%;'>
+								Type:
+							</td>
+							<td>
+								<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
+							</td>
+						</tr>
+						<tr>
 							<td style='<?= $supervisor_background ?>'>
 								Supervisor:
 							</td>
@@ -155,6 +163,14 @@
 						</td>
 						<td>
 							<?= $group->get_name() ?>
+						</td>
+					</tr>
+					<tr>
+						<td style='width:25%;'>
+							Type:
+						</td>
+						<td>
+							<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
 						</td>
 					</tr>
 					<tr>

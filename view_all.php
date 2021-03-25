@@ -656,6 +656,9 @@
 										Name
 									</th>
 									<th style='text-align:center;'>
+										Type
+									</th>
+									<th style='text-align:center;'>
 										Supervisor
 									</th>
 									<th style='text-align:center;'>
@@ -688,6 +691,9 @@
 											</td>
 											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
 												<?= $group->get_name() ?>
+											</td>
+											<td>
+												<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
 											</td>
 											<td style='text-align:center; cursor:pointer;' onClick="go_to('group', '<?= $group->id ?>');">
 												<?= (is_null($group->get_supervisor()) ? "" : "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})") ?>

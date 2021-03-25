@@ -77,6 +77,13 @@
 		*/
 		public function get_members(){
 			return $this->members;
+		}		
+		
+		/*
+			Get group type
+		*/
+		public function get_type(){
+			return $this->get_members()[0]->get_type_int();
 		}
 	}
 	
