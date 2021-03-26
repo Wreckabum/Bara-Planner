@@ -75,13 +75,6 @@
 							<a href="view_group.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
-					<div class="card" style="width: 33%;">
-						<div class="card-body">
-							<h5 class="card-title">View All Projects</h5>
-							<p class="card-text">View all available projects</p>
-							<a href="list_projects.php" class="btn btn-primary">View</a>
-						</div>
-					</div>
 			<?php
 				}
 				
