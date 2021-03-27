@@ -25,6 +25,7 @@
 	
 	$errors = ((isset($_GET['err'])) ? json_decode($_GET['err']) : []);
 	$headers = ((isset($_GET['h'])) ? json_decode($_GET['h']) : []);
+	$type = (($_GET['t'] == "student") ? "student" : "faculty");
 	$year = ((isset($_GET['y'])) ? str_clean($_GET['y']) : date('Y'));
 	$quarter = ((isset($_GET['q'])) ? str_clean($_GET['q']) : ceil(date('n') / 3));
 ?>
@@ -37,13 +38,13 @@
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='stylesheet' href='include/css/dataTables.min.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
-		<script src='include/js/jquery-light-v3.5.1.js'></script>		
+		<script src='include/js/jquery-light-v3.5.1.js'></script>
 		<script src='include/js/dataTables.min.js'></script>
 	</head>
 	<body>
 		<?php include('include/templates/header.php'); ?>
 		<h4>
-			Successfully added: <?= $_GET['c'] ?> Students
+			Successfully added: <?= $_GET['c'] ?> <?= (($_GET['t'] == "student") ? "Students" : "Faculty members") ?>
 			<br />
 			Errors: <?= count($errors) ?>
 		</h4>
@@ -86,6 +87,7 @@
 										}
 									?>
 									<td>
+										<input type='hidden' name='type' value='<?= $type ?>' />
 										<input type='hidden' name='year' value='<?= $year ?>' />
 										<input type='hidden' name='quarter' value='<?= $quarter ?>' />
 										<?= $error->error ?>
@@ -134,8 +136,14 @@
 
 			$("#jquery_form").append($("<input/>", {
 				type: "hidden",
-				name: "students",
+				name: "import_data",
 				value: JSON.stringify(all_rows)
+			}));
+			
+			$("#jquery_form").append($("<input/>", {
+				type: "hidden",
+				name: "type",
+				value: "<?= $type ?>"
 			}));
 			
 			$("#jquery_form").append($("<input/>", {

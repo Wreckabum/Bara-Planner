@@ -35,6 +35,14 @@
 				$err = "Please upload a valid file.";
 				break;
 			
+			case 3:
+				$err = "Please choose valid type.";
+				break;
+			
+			case 4:
+				$err = "Students cannot have multiple majors.";
+				break;
+			
 			default:
 				$err = "";
 				break;
@@ -49,6 +57,7 @@
 		<title>Import students</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
 		<?php include('include/templates/header.php'); ?>
@@ -64,11 +73,19 @@
 					<input type='file' name='csv' class='form-control' />
 				</div>
 				<div class='form-group'>
+					Account Type:
+					<br />
+				<select id='account_type' name='type' class='form-control' required>
+					<option value='student' <?= ((isset($_GET['t'])) ? (($_GET['t'] == "student") ? "selected" : "") : "") ?>>Student</option>
+					<option value='faculty' <?= ((isset($_GET['t'])) ? (($_GET['t'] == "faculty") ? "selected" : "") : "") ?>>Faculty</option>
+				</select>
+				</div>
+				<div id='year' class='form-group'>
 					Year:
 					<br />
 					<input type='number' name='year' value='<?= ((isset($_GET['y'])) ? $_GET['y'] : date('Y')) ?>' maxlength='4' class='form-control' required />
 				</div>
-				<div class='form-group'>
+				<div id='quarter' class='form-group'>
 					Quarter:
 					<br />
 					<input type='number' name='quarter' value='<?= ((isset($_GET['q'])) ? $_GET['q'] : ceil(date('n') / 3)) ?>' min='1' max='4' class='form-control' required />
@@ -82,6 +99,17 @@
 		<a href='home.php'>Back to main page</a>
 	</body>
 </html>
+<script>
+	$("#account_type").on("change", function(){
+		if($(this).val() == "student"){
+			$("#year").show();
+			$("#quarter").show();
+		}else{
+			$("#year").hide();
+			$("#quarter").hide();
+		}
+	});
+</script>
 <?php
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);

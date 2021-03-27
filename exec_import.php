@@ -24,18 +24,26 @@
 	}
 	
 	$majors = get_all_majors();
-	$students = json_decode($_POST['students']);
+	$import_data = json_decode($_POST['import_data']);
 	$errors = [];
 	$headers = [];
 	$success_count = 0;
 	
+	str_clean($_POST['type']);
 	str_clean($_POST['year']);
 	str_clean($_POST['quarter']);
 	
+	//Check type
+	if($_POST['type'] != "student" && $_POST['type'] != "faculty"){
+		header("location: import.php?t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}&err=3");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	//Get headers
-	foreach($students->{'1'} as $key => $value){
+	foreach($import_data->{'1'} as $key => $value){
 		//For re-submissions
-		if($key == "year" || $key == "quarter"){
+		if($key == "type" || $key == "year" || $key == "quarter"){
 			continue;
 		}
 		
@@ -43,59 +51,115 @@
 	}
 	
 	//Process each row
-	foreach($students as $student){
+	foreach($import_data as $row){
 		//Prepare the strings for SQL insertion
-		foreach($student as $key => &$value){
+		foreach($row as $key => &$value){
 			str_clean($value);
 			
 			if($key == "Programme"){
-				$student->major = $value;
+				$row->major = $value;
 			}elseif($key == "UOW ID"){
-				$student->uow_id = $value;
+				$row->uow_id = $value;
 			}elseif($key == "SIM ID"){
-				$student->sim_id = $value;
+				$row->sim_id = $value;
 			}elseif($key == "Name"){
-				$student->name = $value;
+				$row->name = $value;
 			}elseif($key == "Mobile No."){
-				$student->phone = $value;
+				$row->phone = $value;
 			}elseif($key == "SIM Email"){
-				$student->sim_email = $value;
+				$row->sim_email = $value;
 			}elseif($key == "Personal Email"){
-				$student->personal_email = $value;
+				$row->personal_email = $value;
 			}
 		}
 		
-		//Check if major exists
-		foreach($majors as $major){
-			if($major->id == $student->major){
-				$student->type = $major->get_student_type();
-				break;
-			}
-		}
-		
-		//Do not proceed with SQL insertion if any of the following is missing
+		//Do not proceed with SQL insertion if any of the following fields are missing
 		if(
-			!isset($student->major) ||
-			!isset($student->uow_id) ||
-			!isset($student->sim_id) ||
-			!isset($student->name) ||
-			!isset($student->phone) ||
-			!isset($student->sim_email) ||
-			!isset($student->personal_email) 
+			!isset($row->{'Programme'}) || 
+			!isset($row->{'UOW ID'}) || 
+			!isset($row->{'SIM ID'}) || 
+			!isset($row->{'Name'}) || 
+			!isset($row->{'SIM Email'})
 		){
-			$student->error = "Missing required field.";
-			$errors[] = $student;
+			$row->error = "Missing required field.";
+			$errors[] = $row;
 			continue;
 		}
 		
-		//Check for valid major
-		if(!isset($student->type)){
-			$student->error = "Invalid major.";
-			$errors[] = $student;
+		//////Check if major(s) exists
+		////
+		$major_array = explode(",", $row->major);
+		
+		//For students
+		if($_POST['type'] == "student"){
+			if(count($major_array) == 1){
+				//If only 1 major attached to row
+				foreach($majors as $major){
+					if($major->id == $row->major){
+						$row->type = $major->get_student_type();
+						break;
+					}
+				}
+			}else{
+				//Multiple majors
+				$row->error = "Student cannot have multiple majors.";
+				$errors[] = $row;
+				continue;
+			}
+			
+			$sql_year = "'{$_POST['year']}'";
+			$sql_quarter = "'{$_POST['quarter']}'";
+			$sql_major = "'[\"{$row->major}\"]'";
+		}else{
+			//For faculty
+			$row->type = 0;
+			$row->accepted_majors = [];
+			
+			foreach($majors as $major){
+				//If only 1 major attached to row
+				if(count($major_array) == 1){
+					if($major->id == $row->major){
+						$row->accepted_majors[] = $row->major;
+						break;
+					}
+				}else{
+					//Multiple majors
+					foreach($major_array as $check_major){
+						$check_major = trim($check_major);
+						
+						if($major->id == $check_major){
+							$row->accepted_majors[] = $major->id;
+						}
+					}
+				}
+			}
+			
+			
+			//There is a major in the list that is not found
+			if(count($major_array) != count($row->accepted_majors)){
+				$row->error = "Invalid major found.";
+				$errors[] = $row;
+				continue;
+			}
+			
+			$sql_year = "NULL";
+			$sql_quarter = "NULL";
+			$sql_major = "'". addslashes(json_encode($row->accepted_majors)) ."'";
+		}
+		
+		
+		//Ensure type exist (checking student)
+		if(!isset($row->type)){
+			$row->error = "Invalid major.";
+			$errors[] = $row;
 			continue;
 		}
+		////
+		//////
 		
 		$password = generate_password();
+		$phone = ((isset($row->phone))? "'{$row->phone}'" : NULL);
+		$personal_email = ((isset($row->personal_email))? "'{$row->personal_email}'" : NULL);
 		
 		if(db_query(
 			"INSERT INTO
@@ -113,21 +177,21 @@
 					`password`
 					)
 				VALUES
-					('{$student->sim_id}', 
-					'{$student->uow_id}', 
-					'{$student->name}', 
-					'{$student->sim_email}', 
-					'{$student->personal_email}', 
-					'{$student->type}', 
-					'[\"{$student->major}\"]', 
-					'{$_POST['year']}', 
-					'{$_POST['quarter']}', 
-					'{$student->phone}',
+					('{$row->sim_id}', 
+					'{$row->uow_id}', 
+					'{$row->name}', 
+					'{$row->sim_email}', 
+					{$personal_email}, 
+					'{$row->type}', 
+					{$sql_major}, 
+					{$sql_year}, 
+					{$sql_quarter}, 
+					{$phone},
 					'{$password}')"
 		) !== true){
 			//Error when adding
-			$student->error = "Duplicate account.";
-			$errors[] = $student;
+			$row->error = "Duplicate account.";
+			$errors[] = $row;
 			continue;
 		}else{
 			//Sucessfully added
@@ -139,20 +203,21 @@
 	
 	if(count($errors) > 0){
 		//Clean the data sent back
-		foreach($errors as $error){
-			unset($error->sim_id);
-			unset($error->uow_id);
-			unset($error->name);
-			unset($error->sim_email);
-			unset($error->personal_email);
-			unset($error->major);
-			unset($error->type);
-			unset($error->phone);
-			unset($error->year);
-			unset($error->quarter);
+		foreach($errors as $row){
+			unset($row->sim_id);
+			unset($row->uow_id);
+			unset($row->name);
+			unset($row->sim_email);
+			unset($row->personal_email);
+			unset($row->major);
+			unset($row->type);
+			unset($row->phone);
+			unset($row->year);
+			unset($row->quarter);
+			unset($row->accepted_majors);
 		}
 		
-		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&y={$_POST['year']}&q={$_POST['quarter']}";
+		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}";
 	}
 	
 	header("location: import_result.php?c={$success_count}{$error_info}");

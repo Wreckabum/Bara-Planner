@@ -9,5 +9,6 @@ BSSF,5000,S123123X,10583146,6946392,Moses Macgregor,99264890,moses.macgr@mymail.
 BDF,5000,S123123X,10533897,6922014,Matthew Kane,98924783,matth.kane@mymail.sim.edu.sg,matth.kane@test.com
 BDP,5000,S123123X,10514866,6987023,Quinn Olsen,98891261,quinn.olsen@mymail.sim.edu.sg,quinn.olsen@test.com
 BBIS,5000,S123123X,10526695,6957382,Darcy Lin,98935887,darcy.lin@mymail.sim.edu.sg,darcy.lin@test.com
-BDP,5000,S123123X,10513179,6913206,Sneha Frazier,99503173,sneha.frazi@mymail.sim.edu.sg,sneha.frazi@test.com
+BDP,5000,S123123X,10513179,6913206,Sneha Frazier,,sneha.frazi@mymail.sim.edu.sg,sneha.frazi@test.com
 BDP,5000,S123123X,10513179,6913206,Duplicate ID,99503173,dup.id@mymail.sim.edu.sg,dup.id@test.com
+"BDP, BBIS",5000,S123123X,10587395,6971689,Multiple Majors,,multi.maj@mymail.sim.edu.sg,multi.maj@test.com

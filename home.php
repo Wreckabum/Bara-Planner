@@ -31,9 +31,6 @@
 		Items left to do:
 		<ul>
 			<li>
-				Page for sending emails to students
-			</li>
-			<li>
 				Archiving
 			</li>
 			<li>
@@ -44,9 +41,6 @@
 			</li>
 			<li>
 				Score for students (viewable by supervisor/assessor/self) (convert int to grade)
-			</li>
-			<li>
-				Import faculty
 			</li>
 		</ul>
 	</body>
