@@ -150,10 +150,10 @@
 									Applicable Students
 								</th>
 								<?php
-									for($i = 1; $i <= count($all_projects); $i++){
+									foreach($all_projects as $project){
 								?>
 										<th style='width:30px; padding:0; text-align:center; background-image:none !important;'>
-											<?= $i ?>
+											<?= $project->id ?>
 										</th>
 								<?php
 									}
@@ -172,12 +172,12 @@
 											<?= $student->get_name() ?>
 										</td>
 										<?php
-											for($i = 1; $i <= count($all_projects); $i++){
+											foreach($all_projects as $project){
 										?>
 												<td style='width:30px; padding:0; text-align:center;'>
 													<?php
 														foreach($selected_choices as $rank => $id){
-															if($id == $i){
+															if($id == $project->id){
 													?>
 																<?= $rank + 1 ?>
 													<?php
@@ -271,11 +271,11 @@
 													Members
 												</td>
 												<?php
-													for($i = 1; $i <= count($all_projects); $i++){
+													foreach($all_projects as $project){
 														
 												?>
 														<td style='width:30px; padding:0; text-align:center;'>
-															<?= $i ?>
+															<?= $project->id ?>
 														</td>
 												<?php
 													}
