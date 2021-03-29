@@ -284,9 +284,25 @@
 		<a href='home.php'>Back to main page</a>
 	</body>
 	<script>
+		$.fn.dataTable.ext.type.order['rank-pre'] = function(r){
+			switch($.trim(r)){
+					case '1': case 1: return 1;
+					case '2': case 2: return 2;
+					case '3': case 3: return 3;
+					case '': return 9;
+			}
+			
+			return 9;
+		};
+		
 		var dt = $("#applicable_students").DataTable({
 			/* Disable initial sort */
-			"aaSorting": []
+			"aaSorting": [],
+			"columnDefs": 
+				[
+					{"targets": [0], "type": "string"},
+					{"targets": "_all", "type": "rank"}
+				]
 		});
 		
 		//Enable group container scroll
