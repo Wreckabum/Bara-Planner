@@ -217,10 +217,10 @@
 			unset($row->accepted_majors);
 		}
 		
-		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}";
+		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&y={$_POST['year']}&q={$_POST['quarter']}";
 	}
 	
-	header("location: import_result.php?c={$success_count}{$error_info}");
+	header("location: import_result.php?c={$success_count}{$error_info}&t={$_POST['type']}");
 	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);
