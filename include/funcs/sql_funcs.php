@@ -515,7 +515,7 @@
 		str_clean($year);
 		str_clean($quarter);
 		
-		$query = db_query("SELECT `deadline` FROM `choice_deadlines` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';");
+		$query = db_query("SELECT `deadline` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';");
 		
 		if(mysqli_num_rows($query) <= 0){
 			return NULL;
@@ -533,7 +533,7 @@
 		@return Null / Date Object
 	*/
 	function get_all_deadlines(){		
-		$query = db_query("SELECT * FROM `choice_deadlines` ORDER BY `year` DESC, `quarter` DESC;");
+		$query = db_query("SELECT `year`, `quarter`, `deadline` FROM `semester_details` ORDER BY `year` DESC, `quarter` DESC;");
 		
 		$output = [];
 		
@@ -568,7 +568,7 @@
 				if(!$found){
 					db_query(
 						"INSERT INTO
-							`choice_deadlines`
+							`semester_details`
 								(`year`,
 								`quarter`)
 							VALUES
@@ -586,5 +586,26 @@
 		}else{
 			return false;
 		}
+	}
+	
+	/*
+		Returns the details for a semester
+		
+		@param	int
+		@param	int
+		@return Array
+	*/
+	function get_semester_details($year, $quarter){
+		str_clean($year);
+		str_clean($quarter);
+		
+		$query = db_query("SELECT * FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';");
+		
+		if(mysqli_num_rows($query) <= 0){
+			return NULL;
+		}else{
+			return mysqli_fetch_object($query);
+		}
+		
 	}
 ?>

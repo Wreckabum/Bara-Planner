@@ -44,6 +44,10 @@
 				break;
 			
 			case 9:
+				$err = "Successfully added.";
+				break;
+			
+			case 10:
 				$err = "Successfully updated.";
 				break;
 			
@@ -72,7 +76,7 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<center>
-			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] == 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
+			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] >= 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
 		</center>
 		<div style='width:40%;'>
 			<table id='filter_table' class='display'>
@@ -86,6 +90,9 @@
 						</th>
 						<th style='text-align:center;'>
 							Deadline
+						</th>
+						<th style='text-align:center;'>
+							Details
 						</th>
 					</tr>
 				</thead>
@@ -105,6 +112,9 @@
 								<td>
 									<input type='date' name='deadline' <?= ((is_null($semester->deadline)) ? "" : "value='{$semester->deadline}'") ?> style='width:97%;' required />
 								</td>
+								<td style='text-align:center;'>
+									<a href='view_semester?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View Details ]</a>
+								</td>
 							</tr>
 					<?php
 						}
@@ -112,7 +122,7 @@
 				</tbody>
 			</table>
 		</div>
-		<input type='button' id='update' name='update' value='Update' />
+		<input type='button' id='update_all' name='update_all' value='Update' /> <input type='button' id='add' name='add' value='Add New' onClick="window.location.href='add_semester.php'" />
 	</body>
 	<script>
 		var dt = $("#filter_table").DataTable({
@@ -121,7 +131,7 @@
 			"paging": false
 		});
 		
-		$("#update").click(function(){
+		$("#update_all").click(function(){
 			let all_rows = [];
 			
 			dt.rows().nodes().each(function(row){
@@ -130,13 +140,14 @@
 			});
 			
 			$.ajax({
-				url: "exec_deadlines.php",
+				url: "exec_semester.php",
 				type: "POST",
 				data: {
-					all_rows: all_rows
+					all_rows: all_rows,
+					update_all: true
 				},
 				success: function(data){
-					window.location.href = "set_deadline.php?err=" + data;
+					window.location.href = "semester_details.php?err=" + data;
 				},
 				error: function(jqXHR,textStatus,errorThrown){
 					console.log("Error with AJAX request.");

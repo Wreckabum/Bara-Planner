@@ -149,9 +149,9 @@
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Set Deadline For Choices</h5>
-							<p class="card-text">Set deadline for students making their choices</p>
-							<a href="set_deadline.php" class="btn btn-primary">Set</a>
+							<h5 class="card-title">Set Deadline/Details For Semesters</h5>
+							<p class="card-text">Set deadline for students making their choices or add details for a semester.</p>
+							<a href="semester_details.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
 					<div class="card" style="width: 33%;">

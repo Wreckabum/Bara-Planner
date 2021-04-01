@@ -114,14 +114,14 @@
 		
 		//If no deadline exists, redirect
 		if(is_null($deadline)){
-			header("location: set_deadline.php?err=1");
+			header("location: view_semester.php?err=1");
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
 		
 		//If deadline has passed
 		if((strtotime(date("Y-m-d")) - strtotime($deadline)) > 0){
-			header("location: set_deadline.php?err=2");
+			header("location: view_semester.php?err=2");
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
