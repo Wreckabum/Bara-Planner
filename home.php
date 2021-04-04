@@ -45,6 +45,9 @@
 			<li>
 				Options page
 			</li>
+			<li>
+				Decide on what to do with group if faculty/project is deleted
+			</li>
 		</ul>
 	</body>
 </html>

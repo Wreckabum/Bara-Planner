@@ -21,16 +21,34 @@
 	
 	if($account->is_student()){
 		//For students, only allow viewing of own group
-		$group = get_group_by_member($account->sim_id);
-		$title_extra = " (". $group->id .")";
+		try{
+			$group = get_group_by_member($account->sim_id);
+			$title_extra = " (". $group->id .")";
+		}catch(Exception $e){
+			header("location: view_all.php?t=groups");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
 	}elseif(isset($_GET['g'])){
-		//Non-students viewing specific group	
-		$group = get_group($_GET['g']);
-		$title_extra = " (". $group->id .")";
+		//Non-students viewing specific group
+		try{
+			$group = get_group($_GET['g']);
+			$title_extra = " (". $group->id .")";
+		}catch(Exception $e){
+			header("location: view_all.php?t=groups");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
 	}elseif($account->is_faculty()){
 		//Faculty viewing their assigned groups
+		try{
 		$group_array = get_group_by_faculty($account->sim_id);
 		$title_extra = "s";
+		}catch(Exception $e){
+			header("location: view_all.php?t=groups");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
 	}
 	
 	//If no such group

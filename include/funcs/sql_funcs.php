@@ -275,7 +275,7 @@
 		@return	Array of Major Objects
 	*/
 	function get_all_majors(){
-		$query = db_query("SELECT * FROM `majors` ORDER BY `id` ASC;");
+		$query = db_query("SELECT `id` FROM `majors` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
@@ -424,9 +424,15 @@
 	function get_group_by_member($member_id){
 		str_clean($member_id);
 		
-		$group = mysqli_fetch_assoc(db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$member_id}\"}')"));
-			
-		return get_group($group['id']);
+		$query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$member_id}\"}')");
+		
+		if(mysqli_num_rows($query) == 1){
+			$group = mysqli_fetch_assoc($query);
+				
+			return get_group($group['id']);
+		}
+		
+		return null;
 	}
 	
 	/*
