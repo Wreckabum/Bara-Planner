@@ -120,27 +120,29 @@
 			
 			//If admin doing the update
 			if($account->sim_id != $_POST['id']){
-				$group = mysqli_fetch_assoc(db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$_POST['old_sim_id']}\"');"));
-				$group_members = json_decode($group['members']);
+				$query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$_POST['old_sim_id']}\"}')");
 				
-				$replaced = array_replace(
-					$group_members,
-					array_fill_keys(
-						array_keys(
-							$group_members, 
-							$_POST['old_sim_id']),
-						$_POST['new_sim_id']
-					)
-				);
-				
-				//Update groups
-				db_query(
-					"UPDATE `groups` 
-						SET
-							`members` = '". addslashes(json_encode($replaced)) ."'
-						WHERE
-							`id` = '{$group['id']}';"
-				);
+				//If student is in a group
+				if(mysqli_num_rows == 1){
+					$group = mysqli_fetch_assoc($query);
+					$group_members = json_decode($group['members']);
+					
+					foreach($group_members as $member){
+						if($member->id == $_POST['old_sim_id']){
+							$member->id = $_POST['new_sim_id'];
+							break;
+						}
+					}
+					
+					//Update groups
+					db_query(
+						"UPDATE `groups` 
+							SET
+								`members` = '". addslashes(json_encode($group_members)) ."'
+							WHERE
+								`id` = '{$group['id']}';"
+					);
+				}
 			}
 			
 			header("location: view_account.php?a={$_POST['new_sim_id']}");

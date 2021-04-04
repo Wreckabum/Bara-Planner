@@ -194,7 +194,7 @@
 		while($row = mysqli_fetch_assoc($query)){
 			//If checking if already in group
 			if($check_group){
-				$check_query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$row['sim_id']}\"');");
+				$check_query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$row['sim_id']}\"}')");
 				
 				if(mysqli_num_rows($check_query) != 0){
 					continue;
@@ -369,7 +369,7 @@
 		@param	int/array
 		@return Group Object / Array of Group Objects
 	*/
-	function get_group($id){		
+	function get_group($id){
 		if(is_array($id)){
 			array_walk_recursive($id, function(&$value, $key){
 				str_clean($value);
@@ -424,7 +424,7 @@
 	function get_group_by_member($member_id){
 		str_clean($member_id);
 		
-		$group = mysqli_fetch_assoc(db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$member_id}\"');"));
+		$group = mysqli_fetch_assoc(db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$member_id}\"}')"));
 			
 		return get_group($group['id']);
 	}
@@ -462,14 +462,14 @@
 		
 		$query = db_query(
 			"SELECT `id` FROM `groups` WHERE 
-				(JSON_CONTAINS(`members`, '\"{$id_1}\"') AND
+				(JSON_CONTAINS(`members`, '{\"id\" : \"{$id_1}\"}') AND
 					(
 						`supervisor` = '{$id_2}' OR
 						`assessor` = '{$id_2}'
 					)
 				) 
 				OR 
-				(JSON_CONTAINS(`members`, '\"{$id_2}\"') AND
+				(JSON_CONTAINS(`members`, '{\"id\" : \"{$id_2}\"}') AND
 					(
 						`supervisor` = '{$id_1}' OR
 						`assessor` = '{$id_1}'
@@ -499,7 +499,7 @@
 		str_clean($id_1);
 		str_clean($id_2);
 		
-		$query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '\"{$id_1}\"') AND JSON_CONTAINS(`members`, '\"{$id_2}\"');");
+		$query = db_query("SELECT `id` FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$id_1}\"}') AND JSON_CONTAINS(`members`, '{\"id\" : \"{$id_2}\"}');");
 		
 		return ((mysqli_num_rows($query) <= 0) ? false : true);
 	}
@@ -532,7 +532,7 @@
 		@param	int
 		@return Null / Date Object
 	*/
-	function get_all_deadlines(){		
+	function get_all_deadlines(){
 		$query = db_query("SELECT `year`, `quarter`, `deadline` FROM `semester_details` ORDER BY `year` DESC, `quarter` DESC;");
 		
 		$output = [];
@@ -549,7 +549,7 @@
 		
 		@return	bool
 	*/
-	function add_missing_deadlines(){		
+	function add_missing_deadlines(){
 		$all_deadlines = get_all_deadlines();	
 		$available_semesters = get_semesters();
 		$new_semester_added = false;

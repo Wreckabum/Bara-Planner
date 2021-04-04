@@ -122,8 +122,8 @@
 								<?php
 									foreach($group->get_members() as $member){
 								?>
-										<a href='view_account.php?a=<?= $member->sim_id ?>'>
-											<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+										<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+											<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
 										</a>
 										<br />
 								<?php
@@ -198,8 +198,8 @@
 							<?php
 								foreach($group->get_members() as $member){
 							?>
-									<a href='view_account.php?a=<?= $member->sim_id ?>'>
-										<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+									<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+										<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
 									</a>
 									<br />
 							<?php

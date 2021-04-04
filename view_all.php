@@ -705,7 +705,7 @@
 												<?php
 													foreach($group->get_members() as $member){
 												?>
-														<?= $member->get_name() ?> (<?= $member->sim_id ?>)
+														<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
 														<br />
 												<?php
 													}

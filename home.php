@@ -42,6 +42,9 @@
 			<li>
 				Score for students (viewable by supervisor/assessor/self) (convert int to grade)
 			</li>
+			<li>
+				Options page
+			</li>
 		</ul>
 	</body>
 </html>

@@ -35,9 +35,10 @@
 				$this->project = get_project($result['project'], "proj_id");
 				$this->supervisor = get_account($result['supervisor']);
 				$this->assessor = get_account($result['assessor']);
-				
 				foreach(json_decode($result['members']) as $member){
-					$this->members[] = get_account($member);
+					$member->details = get_account($member->id); //Create student object
+					unset($member->id); //Unset the ID variable
+					$this->members[] = $member;
 				}
 			}else{
 				throw new Exception("Group not found.");
@@ -83,7 +84,7 @@
 			Get group type
 		*/
 		public function get_type(){
-			return $this->get_members()[0]->get_type_int();
+			return $this->get_members()[0]->details->get_type_int();
 		}
 	}
 	

@@ -66,6 +66,7 @@
 	$check_year = "";
 	$check_quarter = "";
 	$check_type = "";
+	$members = [];
 	
 	foreach($_GET['student'] as $student){
 		try{
@@ -100,6 +101,12 @@
 				exit();
 			}
 		}
+		
+		//Populate the members array
+		$temp = [];
+		$temp['id'] = $check_account->sim_id;
+		$temp['score'] = null;
+		$members[] = $temp;
 	}
 	
 	if(isset($_POST['add'])){
@@ -117,7 +124,7 @@
 					'{$_POST['name']}', 
 					'{$_POST['supervisor']}', 
 					'{$_POST['assessor']}', 
-					'". addslashes(json_encode($_GET['student'])) ."', 
+					'". addslashes(json_encode($members)) ."', 
 					'{$_POST['project']}');"
 		) !== true){
 			//Error when adding
@@ -133,7 +140,7 @@
 					`name` = '{$_POST['name']}', 
 					`supervisor` = '{$_POST['supervisor']}', 
 					`assessor` = '{$_POST['assessor']}', 
-					`members` = '". addslashes(json_encode($_GET['student'])) ."', 
+					`members` = '". addslashes(json_encode($members)) ."', 
 					`project` = '{$_POST['project']}'
 				WHERE
 					`id` = '{$_POST['id']}';"

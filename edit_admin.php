@@ -128,7 +128,7 @@
 						Personal E-mail
 					</td>
 					<td>
-						<input type='email' name='personal_email' value='<?= $admin->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
+						<input type='email' name='personal_email' value='<?= $admin->get_personal_email() ?>' maxlength='64'  style='width:97%;' />
 					</td>
 					<?php
 						if($account->sim_id == $admin->sim_id){
@@ -152,7 +152,7 @@
 						Phone number
 					</td>
 					<td>
-						<input type='text' name='phone' value='<?= $admin->get_phone() ?>' style='width:97%;' required />
+						<input type='text' name='phone' value='<?= $admin->get_phone() ?>' style='width:97%;' />
 					</td>
 					<?php
 						if($account->sim_id == $admin->sim_id){

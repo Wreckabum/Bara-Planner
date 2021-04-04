@@ -139,7 +139,7 @@
 						Personal E-mail
 					</td>
 					<td>
-						<input type='email' name='personal_email' value='<?= $student->get_personal_email() ?>' maxlength='64'  style='width:97%;' required />
+						<input type='email' name='personal_email' value='<?= $student->get_personal_email() ?>' maxlength='64'  style='width:97%;' />
 					</td>
 					<?php
 						if($account->sim_id == $student->sim_id){
@@ -163,7 +163,7 @@
 						Phone number
 					</td>
 					<td>
-						<input type='text' name='phone' value='<?= $student->get_phone() ?>' style='width:97%;' required />
+						<input type='text' name='phone' value='<?= $student->get_phone() ?>' style='width:97%;' />
 					</td>
 					<?php
 						if($account->sim_id == $student->sim_id){

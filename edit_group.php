@@ -63,10 +63,10 @@
 	
 	$group = get_group($_GET['g']);
 	
-	$year = $group->get_members()[0]->get_year();
-	$quarter = $group->get_members()[0]->get_quarter();
-	$quarter = $group->get_members()[0]->get_quarter();
-	$type = $group->get_members()[0]->get_type_int();
+	$year = $group->get_members()[0]->details->get_year();
+	$quarter = $group->get_members()[0]->details->get_quarter();
+	$quarter = $group->get_members()[0]->details->get_quarter();
+	$type = $group->get_members()[0]->details->get_type_int();
 	
 	$applicable_students = get_students($year, $quarter, $type, true); //Get all students in semester that is not in a group
 	$all_faculty = get_all_accounts([0]);
@@ -98,11 +98,11 @@
 							Applicable Students
 						</th>
 						<?php
-							for($i = 1; $i <= count($all_projects); $i++){
+							foreach($all_projects as $project){
 								
 						?>
 								<th style='width:30px; padding:0; text-align:center; background-image:none !important;'>
-									<?= $i ?>
+									<?= $project->id ?>
 								</th>
 						<?php
 							}
@@ -121,12 +121,12 @@
 									<?= $student->get_name() ?>
 								</td>
 								<?php
-									for($i = 1; $i <= count($all_projects); $i++){
+									foreach($all_projects as $project){
 								?>
 										<td style='width:30px; padding:0; text-align:center;'>
 											<?php
 												foreach($selected_choices as $rank => $id){
-													if($id == $i){
+													if($id == $project->id){
 											?>
 														<?= $rank + 1 ?>
 											<?php
@@ -223,11 +223,11 @@
 											Members
 										</td>
 										<?php
-											for($i = 1; $i <= count($all_projects); $i++){
+											foreach($all_projects as $project){
 												
 										?>
 												<td style='width:30px; padding:0; text-align:center;'>
-													<?= $i ?>
+													<?= $project->id ?>
 												</td>
 										<?php
 											}
@@ -235,21 +235,21 @@
 									</tr>
 									<?php
 										foreach($group->get_members() as $member){
-											$selected_choices = $member->get_choices();
+											$selected_choices = $member->details->get_choices();
 											$index = 0;
 											$choice = 1;
 									?>
-											<tr id='student_<?= $member->sim_id ?>' style='cursor:move;'>
+											<tr id='student_<?= $member->details->sim_id ?>' style='cursor:move;'>
 												<td style='padding-right:0;'>
-													<?= $member->get_name() ?>
+													<?= $member->details->get_name() ?>
 												</td>
 												<?php
-													for($i = 1; $i <= count($all_projects); $i++){
+													foreach($all_projects as $project){
 												?>
 														<td style='width:30px; padding:0; text-align:center;'>
 															<?php
 																foreach($selected_choices as $rank => $id){
-																	if($id == $i){
+																	if($id == $project->id){
 															?>
 																		<?= $rank + 1 ?>
 															<?php
