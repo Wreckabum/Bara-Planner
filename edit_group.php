@@ -297,7 +297,8 @@
 		
 		var dt = $("#applicable_students").DataTable({
 			/* Disable initial sort */
-			"aaSorting": [],
+			"aaSorting": [], 
+			"paging": false, 
 			"columnDefs": 
 				[
 					{"targets": [0], "type": "string"},
