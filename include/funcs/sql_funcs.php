@@ -7,6 +7,7 @@
 	require_once(dirname(__FILE__)."/../class/ClassGroup.php");
 	require_once(dirname(__FILE__)."/../class/ClassProject.php");
 	require_once(dirname(__FILE__)."/../class/ClassMajor.php");
+	require_once(dirname(__FILE__)."/../class/ClassGrades.php");
 	require_once(dirname(__FILE__)."/sub_funcs.php");
 	
 	/*

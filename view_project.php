@@ -14,11 +14,12 @@
 	//Connect to database
 	sql_connect();
 	
-	$account = get_account($_SESSION["id"]);	
-	$project = get_project($_GET['p']);
+	$account = get_account($_SESSION["id"]);
 	
-	//If no such project
-	if(is_null($project)){
+	
+	try{
+		$project = get_project($_GET['p']);
+	}catch(Exception $e){
 		header("location: view_all.php?t=projects");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();

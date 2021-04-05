@@ -37,16 +37,16 @@
 				Highlight repeat student based on archives
 			</li>
 			<li>
-				Use classes for setters for updating
-			</li>
-			<li>
-				Score for students (viewable by supervisor/assessor/self) (convert int to grade)
+				Decide on what to do with group if faculty/project is deleted
 			</li>
 			<li>
 				Options page
 			</li>
+		</ul>
+		Clean-up:
+		<ul>
 			<li>
-				Decide on what to do with group if faculty/project is deleted
+				Use classes for setters for updating where possible
 			</li>
 		</ul>
 	</body>

@@ -227,7 +227,8 @@
 											?>
 										</select>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<td style='width:5%; padding:5px; text-align:center;'>
 										Assessor:
 									</td>
@@ -242,7 +243,8 @@
 											?>
 										</select>
 									</td>
-								</tr><tr>
+								</tr>
+								<tr>
 									<td style='width:5%; padding:5px; text-align:center;'>
 										Project:
 									</td>

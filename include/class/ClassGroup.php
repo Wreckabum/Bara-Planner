@@ -74,7 +74,7 @@
 		}
 		
 		/*
-			Get members
+			Get members [score: "", details: {}]
 		*/
 		public function get_members(){
 			return $this->members;
@@ -85,6 +85,33 @@
 		*/
 		public function get_type(){
 			return $this->get_members()[0]->details->get_type_int();
+		}
+		
+		/*
+			Check if supervisor
+		*/
+		public function is_supervisor($supervisor_id){
+			return ($this->supervisor->sim_id == $supervisor_id);
+		}
+		
+		/*
+			Check if assessor
+		*/
+		public function is_assessor($supervisor_id){
+			return ($this->assessor->sim_id == $supervisor_id);
+		}
+		
+		/*
+			Check if member
+		*/
+		public function is_member($member_id){
+			foreach($this->members as $member){
+				if($member->details->sim_id == $member_id){
+					return true;
+				}
+			}
+			
+			return false;
 		}
 	}
 	

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 04, 2021 at 05:10 AM
+-- Generation Time: Apr 05, 2021 at 02:18 PM
 -- Server version: 5.7.19
 -- PHP Version: 7.4.11
 
@@ -1225,7 +1225,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(32) DEFAULT NULL,
   `supervisor` varchar(10) DEFAULT NULL,
   `assessor` varchar(10) DEFAULT NULL,
-  `members` json NOT NULL COMMENT 'JSON of int(10) [accounts.id]',
+  `members` json NOT NULL COMMENT 'JSON of {id:int(10), score:int(3)} [accounts.id]',
   `project` varchar(24) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `groups_name` (`name`) USING BTREE,

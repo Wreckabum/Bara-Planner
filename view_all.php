@@ -160,15 +160,9 @@
 									<th style='text-align:center;'>
 										Choices
 									</th>
-									<?php
-										if($account->is_admin()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -209,21 +203,21 @@
 											<td style='text-align:center;'>
 												
 											</td>
-											<?php
-												if($account->is_admin()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_account.php?a=<?= $student->sim_id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+												<a href='view_account.php?a=<?= $student->sim_id ?>'>
+													[ View ]
+												</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														&nbsp;&nbsp;
 														<a href='edit_student.php?a=<?= $student->sim_id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}
@@ -257,15 +251,9 @@
 									<th style='text-align:center;'>
 										Majors
 									</th>
-									<?php
-										if($account->is_admin()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -294,21 +282,21 @@
 											<td style='text-align:center;'>
 												<?= $faculty->get_majors(true) ?>
 											</td>
-											<?php
-												if($account->is_admin()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_account.php?a=<?= $faculty->sim_id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+												<a href='view_account.php?a=<?= $faculty->sim_id ?>'>
+													[ View ]
+												</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														&nbsp;&nbsp;
 														<a href='edit_faculty.php?a=<?= $faculty->sim_id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}
@@ -339,15 +327,9 @@
 									<th style='text-align:center;'>
 										Phone
 									</th>
-									<?php
-										if($account->is_super()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -373,21 +355,21 @@
 											<td style='text-align:center;'>
 												<?= $admin->get_phone() ?>
 											</td>
-											<?php
-												if($account->is_super()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_account.php?a=<?= $admin->sim_id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+													<a href='view_account.php?a=<?= $admin->sim_id ?>'>
+														[ View ]
+													</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														&nbsp;&nbsp;
 														<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}
@@ -412,15 +394,9 @@
 									<th style='text-align:center;'>
 										Type
 									</th>
-									<?php
-										if($account->is_admin()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -440,21 +416,21 @@
 											<td style='text-align:center;'>
 												<?= (($major->is_full_time()) ? "Full-time" : "Part-time") ?>
 											</td>
-											<?php
-												if($account->is_admin()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_major.php?m=<?= $major->id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+													<a href='view_major.php?m=<?= $major->id ?>'>
+														[ View ]
+													</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														<br />
 														<a href='edit_major.php?m=<?= $major->id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}
@@ -485,15 +461,9 @@
 									<th style='text-align:center;'>
 										Quarter
 									</th>
-									<?php
-										if($account->is_admin()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -519,21 +489,21 @@
 											<td style='text-align:center;'>
 												<?= $project->get_quarter() ?>
 											</td>
-											<?php
-												if($account->is_admin()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_project.php?p=<?= $project->id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+													<a href='view_project.php?p=<?= $project->id ?>'>
+														[ View ]
+													</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														<br />
 														<a href='edit_project.php?p=<?= $project->id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}
@@ -567,15 +537,9 @@
 									<th style='text-align:center;'>
 										Project
 									</th>
-									<?php
-										if($account->is_admin()){
-									?>
-											<th style='text-align:center;'>
-												Actions
-											</th>
-									<?php
-										}
-									?>
+									<th style='text-align:center;'>
+										Actions
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -611,21 +575,21 @@
 											<td style='text-align:left;'>
 												<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 											</td>
-											<?php
-												if($account->is_admin()){
-											?>
-													<td style='text-align:center;'>
-														<a href='view_group.php?g=<?= $group->id ?>'>
-															[ View ]
-														</a>
+											<td style='text-align:center;'>
+													<a href='view_group.php?g=<?= $group->id ?>'>
+														[ View ]
+													</a>
+												<?php
+													if($account->is_admin()){
+												?>
 														<br />
 														<a href='edit_group.php?g=<?= $group->id ?>'>
 															[ Edit ]
 														</a>
-													</td>
-											<?php
-												}
-											?>
+												<?php
+													}
+												?>
+											</td>
 										</tr>
 								<?php
 									}

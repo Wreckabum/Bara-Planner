@@ -72,95 +72,157 @@
 		<?php
 			include("include/templates/header.php"); 
 			
-			//$As faculty, show all assigned groups
+			//As faculty, show all assigned groups
 			if($account->is_faculty() && !isset($_GET['g'])){
+		?>
+				<table id='group_filter' class='basic_table' style='width:40%; text-align:center;'>
+					<tr>
+						<td colspan='2'>
+							Filters
+						</td>
+					</tr>
+					<tr>
+						<td id='filter_supervisor' style='width:50%; text-align:center; font-weight:bold; background-color:#BFC8EC;'>
+							Supervisor
+						</td>
+						<td id='filter_assessor' style='width:50%; text-align:center; font-weight:bold; background-color:#BFC8EC;'>
+							Assessor
+						</td>
+					</tr>
+				</table>
+				<br />
+		<?php
 				foreach($group_array as $group){
 					$supervisor_background = "";
 					$assessor_background = "";
 					$supervisor_field = "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})";
 					$assessor_field = "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})";
+					$filter_type = "unknown";
 					
-					if($group->get_supervisor()->get_name() == $account->get_name()){
+					if($group->is_supervisor($account->sim_id)){
 						$supervisor_background = "background-color:#BCE2BE";
+						$filter_type = "supervisor";
 					}else{
 						$supervisor_field = "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
 					}
 					
-					if($group->get_assessor()->get_name() == $account->get_name()){
+					if($group->is_assessor($account->sim_id)){
 						$assessor_background = "background-color:#BCE2BE";
+						$filter_type = "assessor";
 					}else{
 						$assessor_field = "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
 					}
 					
 		?>
-					<table id='view_group' class='basic_table' style='width:40%;'>
-						<tr>
-							<td colspan='2'>
-								Group #<?= $group->id ?>
-							</td>
-						</tr>
-						<tr>
-							<td style='width:25%;'>
-								Name:
-							</td>
-							<td>
-								<?= $group->get_name() ?>
-							</td>
-						</tr>
-						<tr>
-							<td style='width:25%;'>
-								Type:
-							</td>
-							<td>
-								<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
-							</td>
-						</tr>
-						<tr>
-							<td style='<?= $supervisor_background ?>'>
-								Supervisor:
-							</td>
+					<div class='<?= $filter_type ?>' style='margin-bottom:20px;'>
+						<table id='view_group' class='basic_table' style='width:40%;'>
+							<tr>
+								<td colspan='3'>
+									Group #<?= $group->id ?>
+								</td>
+							</tr>
+							<tr>
+								<td style='width:25%;'>
+									Name:
+								</td>
+								<td colspan='2'>
+									<?= $group->get_name() ?>
+								</td>
+							</tr>
+							<tr>
+								<td style='width:25%;'>
+									Type:
+								</td>
+								<td colspan='2'>
+									<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
+								</td>
+							</tr>
+							<tr>
 								<td style='<?= $supervisor_background ?>'>
-									<?= $supervisor_field ?>
-							</td>
-						</tr>
-						<tr>
-							<td style='<?= $assessor_background ?>'>
-								Assessor:
-							</td>
-							<td style='<?= $assessor_background ?>'>
-								<?= $assessor_field ?>
-							</td>
-						</tr>
-						
-						<tr>
-							<td style='width:25%;'>
-								Members:
-							</td>
-							<td>
+									Supervisor:
+								</td>
+								<td colspan='2' style='<?= $supervisor_background ?>'>
+										<?= $supervisor_field ?>
+								</td>
+							</tr>
+							<tr>
+								<td style='<?= $assessor_background ?>'>
+									Assessor:
+								</td>
+								<td colspan='2'style='<?= $assessor_background ?>'>
+									<?= $assessor_field ?>
+								</td>
+							</tr>
+							<tr>
+								<td style='width:25%;'>
+									Project:
+								</td>
+								<td colspan='2'>
+									<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
+										<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan='<?= count($group->get_members()) ?>'style='width:25%;'>
+									Members:
+								</td>
 								<?php
+									$first = true;
+									
 									foreach($group->get_members() as $member){
+										$score = "";
+										
+										if(is_null($member->score)){
+											$score = "N/A";
+										}else{
+											$score = (int)$member->score ." (". Grades::get_grade($member->score) .")";
+										}
+										
+										if($first){
 								?>
-										<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
-											<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
-										</a>
-										<br />
+											<td>
+												<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+													<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+												</a>
+											</td>
+											<td style='text-align:center;' >
+												<?= $score ?>
+											</td>
+										</tr>
 								<?php
+											$first = false;
+										}else{
+								?>
+											<tr>
+												<td>
+													<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+														<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+													</a>
+												</td>
+												<td style='text-align:center;' >
+													<?= $score ?>
+												</td>
+											</tr>
+								<?php
+										}
 									}
 								?>
-							</td>
-						</tr>
-						<tr>
-							<td style='width:25%;'>
-								Project:
-							</td>
-							<td>
-								<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
-									<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
-								</a>
-							</td>
-						</tr>
-					</table>
-					<br />
+							<?php
+								if($group->is_assessor($account->sim_id)){
+							?>
+									<tr>
+										<td colspan='3'>
+											<a href="grade_group.php?g=<?= $group->id ?>">
+												[ Grade ]
+											</a>
+										</td>
+									</tr>
+							<?php
+								}
+							?>
+						</table>
+					</div>
 		<?php
 				}
 		?>
@@ -171,7 +233,7 @@
 		?>
 				<table id='view_group' class='basic_table' style='width:40%;'>
 					<tr>
-						<td colspan='2'>
+						<td colspan='3'>
 							Group #<?= $group->id ?>
 						</td>
 					</tr>
@@ -179,7 +241,7 @@
 						<td style='width:25%;'>
 							Name:
 						</td>
-						<td>
+						<td colspan='2'>
 							<?= $group->get_name() ?>
 						</td>
 					</tr>
@@ -187,7 +249,7 @@
 						<td style='width:25%;'>
 							Type:
 						</td>
-						<td>
+						<td colspan='2'>
 							<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
 						</td>
 					</tr>
@@ -195,7 +257,7 @@
 						<td style='width:25%;'>
 							Supervisor:
 						</td>
-						<td>
+						<td colspan='2'>
 							<?= (is_null($group->get_supervisor()) ? "" : "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})</a>") ?>
 						</td>
 					</tr>
@@ -203,37 +265,77 @@
 						<td style='width:25%;'>
 							Assessor:
 						</td>
-						<td>
+						<td colspan='2'>
 							<?= (is_null($group->get_assessor()) ? "" : "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})</a>") ?>
-						</td>
-					</tr>
-					
-					<tr>
-						<td style='width:25%;'>
-							Members:
-						</td>
-						<td>
-							<?php
-								foreach($group->get_members() as $member){
-							?>
-									<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
-										<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
-									</a>
-									<br />
-							<?php
-								}
-							?>
 						</td>
 					</tr>
 					<tr>
 						<td style='width:25%;'>
 							Project:
 						</td>
-						<td>
+						<td colspan='2'>
 							<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
 								<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 							</a>
 						</td>
+					</tr>
+					<tr>
+						<td rowspan='<?= count($group->get_members()) ?>'style='width:25%;'>
+							Members:
+						</td>
+						<?php
+							$first = true;
+							
+							foreach($group->get_members() as $member){
+								$score = "";
+								
+								if($account->is_student()){
+									if($account->sim_id == $member->details->sim_id){
+										if(is_null($member->score)){
+											$score = "N/A";
+										}else{
+											$score = (int)$member->score ." (". Grades::get_grade($member->score) .")";
+										}
+									}else{
+										$score = "-";
+									}
+								}else{
+									if(is_null($member->score)){
+										$score = "N/A";
+									}else{
+										$score = (int)$member->score ." (". Grades::get_grade($member->score) .")";
+									}
+								}
+									
+								if($first){
+						?>
+									<td>
+										<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+											<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+										</a>
+									</td>
+									<td style='text-align:center;' >
+										<?= $score ?>
+									</td>
+								</tr>
+						<?php
+									$first = false;
+								}else{
+						?>
+									<tr>
+										<td>
+											<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+												<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+											</a>
+										</td>
+										<td style='text-align:center;' >
+											<?= $score ?>
+										</td>
+									</tr>
+						<?php
+								}
+							}
+						?>
 					</tr>
 					<?php
 						//Ensure acocunt is admin
@@ -245,7 +347,7 @@
 										Edit Group
 									</a>
 								</td>
-								<td>
+								<td colspan='2'>
 									<a id='delete_link' href='#' onClick="show_delete();">
 										Delete Group
 									</a>
@@ -259,7 +361,7 @@
 						}
 					?>
 					<tr>
-						<td colspan='2'>
+						<td colspan='3'>
 							<a href='home.php'>
 								Back to main page
 							</a>
@@ -282,6 +384,30 @@
 			}else{
 				$("#delete_submit").attr("disabled", true);
 			}
+		});
+		
+		$("#filter_supervisor").click(function(){
+			if($("#filter_supervisor").css("background-color") == "rgb(191, 200, 236)"){
+				$("#filter_supervisor").css("background-color", "rgb(255, 255, 255)");
+			}else{
+				$("#filter_supervisor").css("background-color", "rgb(191, 200, 236)");
+			}
+			
+			$(".supervisor").each(function(){
+				$(this).toggle("fast");
+			});
+		});
+		
+		$("#filter_assessor").click(function(){
+			if($("#filter_assessor").css("background-color") == "rgb(191, 200, 236)"){
+				$("#filter_assessor").css("background-color", "rgb(255, 255, 255)");
+			}else{
+				$("#filter_assessor").css("background-color", "rgb(191, 200, 236)");
+			}
+			
+			$(".assessor").each(function(){
+				$(this).toggle("fast");
+			});
 		});
 	</script>
 </html>

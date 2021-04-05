@@ -12,31 +12,3 @@
 	background-color:#B0D8EA;
 	font-weight: bold;
 }
-
-.project_table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
-.project_table th, td {
-	padding: 8px;
-	text-align: left;
-	border-bottom: 1px solid #ddd;
-}
-
-.project_table tr:hover {
-	background-color:#f5f5f5;
-}
-
-
-.profile_details tr:nth-child(even) {
-	background-color: #f2f2f2;
-}
-
-
-/* can change .profile_details to just table if want all the able first column to change */
-.profile_details td:nth-child(1){
-    font-weight: bold;
-	
-}
-
