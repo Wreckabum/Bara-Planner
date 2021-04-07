@@ -113,8 +113,6 @@
 					<?php
 						foreach($applicable_students as $student){
 							$selected_choices = $student->get_choices();
-							$index = 0;
-							$choice = 1;
 					?>
 							<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
 								<td style='padding-right:0;'>

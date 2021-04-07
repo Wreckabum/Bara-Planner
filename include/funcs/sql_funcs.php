@@ -615,4 +615,154 @@
 		}
 		
 	}
+	
+	/*
+		Returns the details for a semester
+		
+		@param	int ($year)
+		@param	int ($quarter)
+		@param	int ($type) [1/2]
+		@param	int ($min)
+		@param	int ($max)
+	*/
+	function test_auto_grouping(){
+		/* 
+			TODO:
+				Handle extras when current target not meant using $max as limiter
+				Group last batch if applicable
+		 */
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$start = microtime(true);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//Declarefor testing
+		$year = 2020;
+		$quarter = 1;
+		$type = 1;
+		$min = 5;
+		$max = 6;
+		
+		$applicable_students = get_students($year, $quarter, $type, true); //All students not in a group
+		$all_projects = get_all_projects($year, $quarter); //All projects
+		$project_ids = [];
+		
+		//Get project IDs
+		array_walk($all_projects, function(&$value, $key) use (&$project_ids){
+			$project_ids[] = $value->id;
+		});
+		
+		$student_choices_weight = [];
+		
+		//For each student
+		foreach($applicable_students as $student){
+			$temp_choices = []; //Prepare choices array
+			
+			//Loop through each possible project choice
+			foreach($project_ids as $project_id){
+				$weight = 0; //Default weight
+				
+				//If student's choice, update weight
+				foreach($student->get_choices() as $rank => $id){
+					if($id == $project_id){
+						switch($rank){
+							case 0:
+								$weight = 3;
+								break;
+							
+							case 1:
+								$weight = 2;
+								break;
+							
+							case 2:
+								$weight = 1;
+								break;
+						}
+					}
+				}
+			
+				$temp_choices[$project_id] = $weight; //Add to weight array for student
+			}
+			
+			$student_choices_weight[$student->sim_id] = $temp_choices;
+		}
+		
+		//Declare variables for grouping
+		$groups = []; //Final group array
+		$target_total_weight = $min * 3; //Target weight
+		
+		//Loop to create the groups whilst there are still positions available
+		while(count($student_choices_weight) > $min){
+			echo "Trying to target weight {$target_total_weight}<br>";
+			
+			foreach($project_ids as $project_id){
+				$current_group = []; //Prepare temporary array for current group
+				$current_total_weight = 0;
+				
+				uasort($student_choices_weight, function($a, $b) use (&$project_id){
+					return $b[$project_id] - $a[$project_id];
+				});
+				
+				//Loop through each $project_id and start grouping students
+				foreach($student_choices_weight as $student_id => $choices){
+					//Current group does not have $min students
+					if(count($current_group) < $min){
+						//Add current student to group
+						$current_group[$student_id] = $choices;
+						$current_total_weight += $choices[$project_id];
+					}else{
+						//Current group has $min students
+						
+						//If current group meets the current target weight
+						if($current_total_weight >= $target_total_weight){
+							//Add to groups
+							$groups[$project_id][$current_total_weight][] = $current_group;
+							
+							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added group with total weight of {$current_total_weight} to Project #{$project_id} -> First ID: ". array_keys($current_group)[0] ."<br>";
+							
+							//Remove from students array
+							foreach($current_group as $temp_id => $temp_choices){
+								unset($student_choices_weight[$temp_id]);
+							}
+							
+							$current_total_weight = 0; //Reset counter
+							$current_group = []; //Reset temporary container
+							
+							//Add current student to group
+							$current_group[$student_id] = $choices;
+							$current_total_weight += $choices[$project_id];
+						}else{
+							//Can try to disperse where possible using $max as a limiter
+							//TODO
+							
+							break; //Move on to the next $project_id
+						}
+					}
+				}
+			}
+			
+			$target_total_weight--; //Try next best
+			
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;Left with ". count($student_choices_weight) ." students<br>";
+		}
+		
+		//Finish final grouping of applicable
+		if(count($student_choices_weight) >= $min){
+			//TODO
+		}
+		
+		echo "<br>";
+		foreach($student_choices_weight as $student_id => $choices){
+			echo $student_id ." -> ";print_r($choices);echo"<br>";
+		}
+		
+		/* ini_set("xdebug.var_display_max_children", '-1');
+		ini_set("xdebug.var_display_max_data", '-1');
+		ini_set("xdebug.var_display_max_depth", '-1');
+		var_dump($groups); */
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Time taken
+		var_dump(microtime(true) - $start);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
 ?>
