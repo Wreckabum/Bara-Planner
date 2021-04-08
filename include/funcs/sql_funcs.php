@@ -698,8 +698,12 @@
 				$current_group = []; //Prepare temporary array for current group
 				$current_total_weight = 0;
 				
-				uasort($student_choices_weight, function($a, $b) use (&$project_id){
-					return $b[$project_id] - $a[$project_id];
+				uksort($student_choices_weight, function($a, $b) use (&$student_choices_weight, &$project_id){
+					if($student_choices_weight[$b][$project_id] == $student_choices_weight[$a][$project_id]){
+						return $a - $b;
+					}else{
+						return $student_choices_weight[$b][$project_id] - $student_choices_weight[$a][$project_id];
+					}
 				});
 				
 				//Loop through each $project_id and start grouping students
