@@ -861,6 +861,9 @@
 			}
 		}
 		
+		echo "<br>";
+		echo "<h5>There are ". count($student_choices_weight) ." record(s) remaining to be put into groups.</h5>";
+		
 		/* ini_set("xdebug.var_display_max_children", '-1');
 		ini_set("xdebug.var_display_max_data", '-1');
 		ini_set("xdebug.var_display_max_depth", '-1');
