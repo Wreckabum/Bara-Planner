@@ -15,6 +15,8 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
+	
+	//test_auto_grouping();
 ?>
 <!DOCTYPE html>
 <html lang='en'>

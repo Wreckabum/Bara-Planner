@@ -626,11 +626,6 @@
 		@param	int ($max)
 	*/
 	function test_auto_grouping(){
-		/* 
-			TODO:
-				Handle extras when current target not meant using $max as limiter
-				Group last batch if applicable
-		 */
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$start = microtime(true);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -721,7 +716,7 @@
 							//Add to groups
 							$groups[$project_id][$current_total_weight][] = $current_group;
 							
-							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Added group with total weight of {$current_total_weight} to Project #{$project_id} -> First ID: ". array_keys($current_group)[0] ."<br>";
+							echo "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Added group with total weight of {$current_total_weight} to Project #{$project_id} -> First ID: ". array_keys($current_group)[0] ."<br>";
 							
 							//Remove from students array
 							foreach($current_group as $temp_id => $temp_choices){
@@ -734,9 +729,69 @@
 							//Add current student to group
 							$current_group[$student_id] = $choices;
 							$current_total_weight += $choices[$project_id];
-						}else{
-							//Can try to disperse where possible using $max as a limiter
-							//TODO
+						}else{							
+							//Prepare containers for student by weight in current group to distribute
+							$first_choice = [];
+							$second_choice = [];
+							$third_choice = [];
+							
+							//Sort out the remaining students based on weight
+							foreach($current_group as $this_member_id => $this_member_choices){
+								if($this_member_choices[$project_id] == 3){
+									$first_choice[$this_member_id] = $current_group[$this_member_id];
+								}elseif($this_member_choices[$project_id] == 2){
+									$second_choice[$this_member_id] = $current_group[$this_member_id];
+								}elseif($this_member_choices[$project_id] == 1){
+									$third_choice[$this_member_id] = $current_group[$this_member_id];
+								}
+								
+								unset($current_group[$this_member_id]); //Exclude if not first choice
+							}
+							
+							//Which weight to attemp to distribute (prevents distributing too early)
+							if($target_total_weight / $min === 3){
+								$current_group = $first_choice;
+							}elseif($target_total_weight / $min === 2){
+								$current_group = $second_choice;
+							}elseif($target_total_weight / $min === 1){
+								$current_group = $third_choice;
+							}
+							
+							//Try to distribute (first choice)
+							foreach($current_group as $this_member_id => $this_member_choices){
+								//Ensure project already has a group
+								if(isset($groups[$project_id])){
+									foreach($groups[$project_id] as $total_weight_key => $weighted_groups){
+										//Count and check if there are slots available for even distribution
+										$total_number_of_groups_in_weight = 0;
+										$total_members_in_project_weight = 0;
+										
+										foreach($groups[$project_id][$total_weight_key] as $group_key => $group_members){
+											$total_number_of_groups_in_weight++;
+											$total_members_in_project_weight += count($group_members);
+										}
+										
+										//If can distribute
+										if(
+											($total_members_in_project_weight + count($current_group)) % $max == 0 || //Perfect distribution
+											($total_number_of_groups_in_weight * $max) - ($total_members_in_project_weight + count($current_group)) > 0 //If remainder can fit within existing groups
+										){
+											foreach($weighted_groups as $weighted_group_key => $weighted_group_members){
+												//If an existing group still has slots available
+												if(count($weighted_group_members) < $max){
+													//Add this student to the group
+													$groups[$project_id][$total_weight_key][$weighted_group_key][$this_member_id] = $this_member_choices;
+													
+													echo "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Added {$this_member_id} to Project ID: {$project_id}, Total Weight:{$total_weight_key}, Group #{$weighted_group_key}<br>";
+													
+													//Remove from students array
+													unset($student_choices_weight[$this_member_id]);
+												}
+											}
+										}
+									}
+								}
+							}
 							
 							break; //Move on to the next $project_id
 						}
@@ -746,23 +801,89 @@
 			
 			$target_total_weight--; //Try next best
 			
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;Left with ". count($student_choices_weight) ." students<br>";
-		}
-		
-		//Finish final grouping of applicable
-		if(count($student_choices_weight) >= $min){
-			//TODO
+			echo "&ensp;&ensp;&ensp;&ensp;Left with ". count($student_choices_weight) ." students<br>";
 		}
 		
 		echo "<br>";
+		echo "<h3>Remainder:</h3>";
 		foreach($student_choices_weight as $student_id => $choices){
-			echo $student_id ." -> ";print_r($choices);echo"<br>";
+			echo $student_id ." -> ";
+			print_r($choices);
+			echo "<br>";
+		}
+		echo "<br>";
+		
+		//Distribute any remaining students
+		if(count($student_choices_weight) >= 0){
+			//For each remaining student
+			foreach($student_choices_weight as $student_id => $choices){
+				$student_preferred_choices = [];
+				$student_preferred_choices[] = array_search(3, $choices);
+				$student_preferred_choices[] = array_search(2, $choices);
+				$student_preferred_choices[] = array_search(1, $choices);
+				
+				$student_distributed = false;
+				
+				//Check the desired choices
+				foreach($student_preferred_choices as $choice_key => $choice_weight){
+					//If existing group exists
+					if(isset($groups[$choice_weight])){
+						//Loop through the groups for the project
+						foreach($groups[$choice_weight] as $group_weight => $group_keys){
+							if($student_distributed){
+								break;
+							}
+							
+							//Check all groups regardless of weight
+							foreach($group_keys as $group_key => $student_ids){
+								if($student_distributed){
+									break;
+								}
+								
+								//If there is still a slot available
+								if(count($student_ids) < $max){
+									//Add to group
+									$groups[$choice_weight][$group_weight][$group_key][$student_id] = $choices;
+									
+									echo "{$student_id} to Project ID: {$choice_weight}, Total Weight:{$group_weight}, Group #{$group_key} [Choice #". ($choice_key + 1) ."]<br>";
+									
+									//Remove from students array
+									unset($student_choices_weight[$student_id]);
+									
+									$student_distributed = true;
+									break;
+								}
+							}
+						}
+					}
+				}
+				
+			}
 		}
 		
 		/* ini_set("xdebug.var_display_max_children", '-1');
 		ini_set("xdebug.var_display_max_data", '-1');
 		ini_set("xdebug.var_display_max_depth", '-1');
+		echo "<br>";
+		echo "<h3>Full var_dump:</h3>";
 		var_dump($groups); */
+		
+		echo "<br>";
+		echo "<h3>Groups:</h3>";
+		foreach($groups as $project_id => $weights){
+			echo "<h4>&ensp;&ensp;&ensp;Project ID: {$project_id}</h4>";
+			foreach($weights as $weight => $group_ids){
+				echo "<h5>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Weight: {$weight}</h5>";
+				foreach($group_ids as $group_id => $student_ids){
+					echo "<h6>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Group ID: {$group_id}, Size: ". count($student_ids) ."</h6>";
+					foreach($student_ids as $student_id => $choices){
+						echo "&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{$student_id} -> ";
+						print_r($choices);
+						echo "<br>";
+					}
+				}
+			}
+		}
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Time taken
