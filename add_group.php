@@ -1,5 +1,5 @@
 <?php
-	//Deprecated
+	/////////////////////////////////////////Deprecated
 	// Initialize the session
 	session_start();
 	

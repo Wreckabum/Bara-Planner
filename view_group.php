@@ -343,7 +343,7 @@
 					?>
 							<tr>
 								<td>
-									<a href="edit_group.php?g=<?= $group->id ?>">
+									<a href="edit_group_multiple.php?semester=<?= $group->get_year() ?>_<?= $group->get_quarter() ?>&type=<?= $group->get_type() ?>#<?= $group->id ?>">
 										Edit Group
 									</a>
 								</td>

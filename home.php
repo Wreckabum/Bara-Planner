@@ -15,8 +15,6 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-	
-	//test_auto_grouping();
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -33,10 +31,7 @@
 		Items left to do:
 		<ul>
 			<li>
-				Possibly replacing single group addition with multiple altogether (To remove deprecated pages/sections)
-			</li>
-			<li>
-				Editing multiple groups
+				To remove deprecated pages/sections after testing
 			</li>
 			<li>
 				Archiving

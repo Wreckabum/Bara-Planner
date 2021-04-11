@@ -330,6 +330,8 @@
 	/*
 		Returns an array of Project Objects
 		
+		@param	int (optional)
+		@param	int (optional)
 		@return	Array of Project Objects
 	*/
 	function get_all_projects($year = "*", $quarter = "*"){
@@ -398,16 +400,30 @@
 	/*
 		Returns an Array of Group Objects
 		
+		@param	int (optional)
+		@param	int (optional)
 		@return	Array of Group Objects
 	*/
-	function get_all_groups(){
+	function get_all_groups($year = "*", $quarter = "*"){		
 		$query = db_query("SELECT `id` FROM `groups` ORDER BY `id` ASC;");
 		
 		$output = [];
 		
 		while($row = mysqli_fetch_assoc($query)){
 			try{
-				$output[] = get_group($row['id']);
+				$this_group = get_group($row['id']);//(int)$year
+				
+				//If $year was given, and this group is not from said year, skip
+				if($year != "*" && $this_group->get_year() != (int)$year){
+					continue;
+				}
+				
+				//If $quarter was given, and this group is not from said quarter, skip
+				if($year != "*" && $this_group->get_quarter() != (int)$quarter){
+					continue;
+				}
+				
+				$output[] = $this_group;
 			}catch(Exception $e){
 				continue;
 			}
@@ -627,6 +643,12 @@
 		$return	Multidemnsional-Array
 	*/
 	function auto_group($year, $quarter, $type, $min, $max){
+		str_clean($year);
+		str_clean($quarter);
+		str_clean($type);
+		str_clean($min);
+		str_clean($max);
+	
 		$applicable_students = get_students($year, $quarter, $type, true); //All students not in a group
 		$all_projects = get_all_projects($year, $quarter); //All projects
 		$project_ids = [];

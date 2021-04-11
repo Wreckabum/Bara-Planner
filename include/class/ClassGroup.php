@@ -88,6 +88,20 @@
 		}
 		
 		/*
+			Get group year
+		*/
+		public function get_year(){
+			return $this->get_members()[0]->details->get_year();
+		}
+		
+		/*
+			Get group quarter
+		*/
+		public function get_quarter(){
+			return $this->get_members()[0]->details->get_quarter();
+		}
+		
+		/*
 			Check if supervisor
 		*/
 		public function is_supervisor($supervisor_id){
@@ -99,6 +113,13 @@
 		*/
 		public function is_assessor($supervisor_id){
 			return ($this->assessor->sim_id == $supervisor_id);
+		}
+		
+		/*
+			Check if project (checks both ID nad Proj_id)
+		*/
+		public function is_project($proj_id){
+			return ($this->project->id == $proj_id || $this->project->proj_id == $proj_id);
 		}
 		
 		/*
