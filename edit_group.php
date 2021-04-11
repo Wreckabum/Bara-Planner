@@ -114,7 +114,7 @@
 						foreach($applicable_students as $student){
 							$selected_choices = $student->get_choices();
 					?>
-							<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
+							<tr id='student_<?= $student->sim_id ?>' class='move'>
 								<td style='padding-right:0;'>
 									<?= $student->get_name() ?>
 								</td>
@@ -237,7 +237,7 @@
 											$index = 0;
 											$choice = 1;
 									?>
-											<tr id='student_<?= $member->details->sim_id ?>' style='cursor:move;'>
+											<tr id='student_<?= $member->details->sim_id ?>' class='move'>
 												<td style='padding-right:0;'>
 													<?= $member->details->get_name() ?>
 												</td>

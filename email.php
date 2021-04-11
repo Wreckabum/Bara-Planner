@@ -114,14 +114,14 @@
 		
 		//If no deadline exists, redirect
 		if(is_null($deadline)){
-			header("location: view_semester.php?err=1");
+			header("location: view_semester.php?y={$year}&q={$quarter}&err=1");
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
 		
 		//If deadline has passed
 		if((strtotime(date("Y-m-d")) - strtotime($deadline)) > 0){
-			header("location: view_semester.php?err=2");
+			header("location: view_semester.php?y={$year}&q={$quarter}&err=2");
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
@@ -178,7 +178,7 @@
 						<?php
 							foreach($students as $student){
 						?>
-								<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
+								<tr>
 									<td style='padding-right:0;'>
 										<?= $student->sim_id ?>
 									</td>
@@ -199,7 +199,6 @@
 									</td>
 									<td style='padding-right:0;'>
 										<?= $student->get_majors() ?>
-									</td>
 									</td>
 								</tr>
 						<?php

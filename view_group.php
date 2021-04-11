@@ -42,8 +42,8 @@
 	}elseif($account->is_faculty()){
 		//Faculty viewing their assigned groups
 		try{
-		$group_array = get_group_by_faculty($account->sim_id);
-		$title_extra = "s";
+			$group_array = get_group_by_faculty($account->sim_id);
+			$title_extra = "s";
 		}catch(Exception $e){
 			header("location: view_all.php?t=groups");
 			@mysqli_close($GLOBALS['mysql_link']);

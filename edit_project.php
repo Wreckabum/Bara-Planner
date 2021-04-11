@@ -37,11 +37,12 @@
 		}
 	}
 	
-	$project = get_project($_GET['p']);
-	
-	//If no such project
-	if(is_null($project)){
+	try{
+		$project = get_project($_GET['p']);
+	}catch(Exception $e){
 		header("location: view_all.php?t=projects");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
 	}
 ?>
 

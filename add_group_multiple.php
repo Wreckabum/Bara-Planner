@@ -131,6 +131,7 @@
 				<meta charset='UTF-8'>
 				<title>Create a group</title>
 				<link rel='stylesheet' href='include/css/main.css' />
+				<link rel='stylesheet' href='include/css/scroll_columns.css' />
 				<link rel='stylesheet' href='include/css/dataTables.min.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 				<script src='include/js/jquery-light-v3.5.1.js'></script>
@@ -142,8 +143,8 @@
 				<center>
 					<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 				</center>
-				<div id='students_container' style='display:inline-block; width:49%; vertical-align:top;'>
-					<table id='applicable_students' class='display connected_sortable' style='width:100%;'>
+				<div id='students_container' class='column_container' style='display:inline-block; width:49%; height:100%; vertical-align:top; overflow-y: hidden;'>
+					<table id='applicable_students' class='display connected_sortable inner_content' style='width:100%;'>
 						<thead>
 							<tr>
 								<th style='background-image:none !important;'>
@@ -193,13 +194,18 @@
 						</tbody>
 					</table>
 				</div>
-				<div id='group_container' style='display:inline-block; width:50%; vertical-align:top;'>
-					<div id='group_inner_container'>
+				<div id='groups_container' class='column_container' style='display:inline-block; width:50%; vertical-align:top;'>
+					<div id='groups_inner_container' class='inner_content'>
 						<form id='add_group_form' action='exec_group.php' method='POST'>
-							<table id='add_group' class='basic_table' style='width:100%;'>
+							<table id='add_group1' class='basic_table group_table' style='width:100%; margin-bottom:15px;'>
 								<tr>
 									<td colspan='2'>
-										Group Details
+										<span style='float:left'>
+											Group Details
+										</span>
+										<span class='delete_group pointer' style='float:right;'>
+											X
+										</span>
 									</td>
 								</tr>
 								<tr>
@@ -207,7 +213,7 @@
 										Name:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<input type='text' name='name' placeholder='FYP-99-S01' maxlength='32' style='width:97%;' required />
+										<input type='text' class='group_name' name='group1[name]' placeholder='FYP-99-S01' maxlength='32' style='width:97%;' required />
 									</td>
 								</tr>
 								<tr>
@@ -215,7 +221,7 @@
 										Supervisor:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select id='supervisor' name='supervisor' style='width:97%;' required>
+										<select class='group1_supervisor check_same' name='group1[supervisor]' style='width:97%;' required>
 											<?php
 												foreach($all_faculty as $supervisor){
 											?>
@@ -231,7 +237,7 @@
 										Assessor:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select id='assessor' name='assessor' style='width:97%;' required>
+										<select class='group1_assessor' name='group1[assessor]' style='width:97%;' required>
 											<?php
 												foreach($all_faculty as $assessor){
 											?>
@@ -247,7 +253,7 @@
 										Project:
 									</td>
 									<td style='width:95%; padding:5px;'>
-										<select id='project' name='project' style='width:97%;' required>
+										<select name='group1[project]' style='width:97%;' required>
 											<?php
 												foreach($all_projects as $project){
 											?>
@@ -260,7 +266,7 @@
 								</tr>
 								<tr>
 									<td colspan='2' style='width:95%; padding:5px;'>
-										<table id='group_members' class='basic_table_color connected_sortable' style='width:100%; --color:#EFC4F9;'>
+										<table class='group_members basic_table_color connected_sortable' group_id='group1' style='width:100%; --color:#EFC4F9;'>
 											<tr>
 												<td>
 													Members
@@ -281,14 +287,13 @@
 										<br />
 									</td>
 								</tr>
-								<tr>
-									<td colspan='2' style='padding:5px;'>
-										<input type='hidden' name='semester' value='<?= $_GET['semester'] ?>'>
-										<input type='hidden' name='type' value='<?= $_GET['type'] ?>'>
-										<input type='submit' name='add' value='Add Group'>
-									</td>
-								</tr>
+								<input type='hidden' name='group1[year]' value='<?= $year ?>'>
+								<input type='hidden' name='group1[quarter]' value='<?= $quarter ?>'>
+								<input type='hidden' name='group1[type]' value='<?= $_GET['type'] ?>'>
 							</table>
+							<input type='button' id='new_group' value='Include another group'>
+							<br />
+							<input type='submit' name='add_multiple' value='Add All Groups'>
 						</form>
 					</div>
 				</div>
@@ -296,6 +301,65 @@
 				<a href='home.php'>Back to main page</a>
 			</body>
 			<script>
+				//Sets all existing tables of the class as sortable
+				function set_sortable(){
+					//Enable drag/drop
+					$(".connected_sortable")
+						.sortable({
+							disabled: false,
+							items: "tr:not(:first, :contains('No data available in table'))",
+							helper: "clone",
+							connectWith: ".connected_sortable",
+							start: function(event, element){
+								//console.log($($(element)[0]['item'][0]));
+							},
+							receive : function(event, element){
+								//Update the moved row to the new table
+								if(/group_members/.test($($(element)[0]['sender'][0]).attr("class"))){
+									//Group to all students
+									let row_data = [];
+									
+									$($(element)[0]['item'][0]).find("td")
+										.each(function(idx, col){
+											row_data.push($(col).text().trim())
+										});
+									
+									dt.row.add(row_data).node().id = $(element)[0]['item'][0].id;
+									dt.draw();
+									
+									//Delete the hidden input
+									$($(element)[0]['sender'][0]).children("input:hidden[value='" + $(element)[0]['item'][0].id.replace(/student_/, "") + "']").remove();
+									
+									
+								}else{
+									//All students to group
+									
+									//Add the hidden input
+									$($($(element)[0]['item'][0].closest("table"))).append($("<input/>", {
+										type: "hidden",
+										name: $($($(element)[0]['item'][0].closest("table"))).attr("group_id") + "[students][]",
+										value: $($(element)[0]['item'][0]).attr("id").replace(/student_/, "")
+									}));
+								}
+							},
+							update: function(event, element){
+								//Delete the row from source
+								if($(element)[0]['sender'] !== null){
+									if(/group_members/.test($($(element)[0]['sender'][0]).attr("class"))){
+										//Group to all students
+										$(element)[0]['item'][0].remove();
+									}else{
+										//All students to group
+										dt.row($($(element)[0]['item'][0])).remove().draw();
+									}
+								}
+							}
+						})
+						.disableSelection();
+				}
+				
+				set_sortable(); //Sets initial sortable for first group
+				
 				$.fn.dataTable.ext.type.order['rank-pre'] = function(r){
 					switch($.trim(r)){
 							case '1': case 1: return 1;
@@ -311,6 +375,9 @@
 					/* Disable initial sort */
 					"aaSorting": [], 
 					"paging": false, 
+					"createdRow": function(row, data, dataIndex){
+						$(row).addClass("ui-sortable-handle move");
+					}, 
 					"columnDefs": 
 						[
 							{"targets": [0], "type": "string"},
@@ -319,59 +386,78 @@
 				});
 				
 				//Enable group container scroll
-				var original_height = $('#group_inner_container').offset().top;
+				var original_height = $('#groups_container').offset().top;
 				
 				$(window).scroll(function(){
 					if($(window).scrollTop() >= original_height){
-						$('#group_inner_container').css('position', 'fixed').css('top', '0');
+						$('#groups_container').css('position', 'fixed').css('top', '0');
 					}else if(original_height >= $(window).scrollTop()){
-						$('#group_inner_container').css('position', '').css('top', '');
+						$('#groups_container').css('position', '').css('top', '');
 					}
 				});
 				
-				//Enable drag/drop
-				$(".connected_sortable")
-					.sortable({
-						disabled: false,
-						items: "tr:not(:first, :contains('No data available in table'))",
-						helper: "clone",
-						connectWith: ".connected_sortable",
-						receive : function(event, element){
-							//If from group members
-							if($($(element)[0]['sender'][0]).attr("id") == "group_members"){
-								let row_data = [];
-								
-								$($(element)[0]['item'][0]).find("td")
-									.each(function(idx, col){
-										row_data.push($(col).text().trim())
-									});
-								
-								dt.row.add(row_data).node().id = $(element)[0]['item'][0].id;
-								dt.draw();
-							}
-						},
-						update: function(event, element){
-							//If from group members for end only
-							if($(element)[0]['sender'] !== null){
-								if($($(element)[0]['sender'][0]).attr("id") == "group_members"){
-									$(element)[0]['item'][0].remove();
-								}else{
-									dt.row($($(element)[0]['item'][0])).remove().draw();
-								}
-							}
-						}
-					})
-					.disableSelection();
-				
 				$("#add_group_form").submit(function(e){
-					//Check faculty involved
-					if($("#supervisor option:selected").text() == $("#assessor option:selected").text()){
-						alert("Supervisor and Assessor should be different.");
+					//Ensure at least 1 group exists
+					if($(".group_table").length == 0){
+						alert("There has to be at least 1 group to add.");
 						e.preventDefault();
+						
+						return false;
 					}
 					
-					$('#hidden_members').remove();
-					$('#add_group_form').attr("action", "exec_group.php?" + $("#group_members").sortable().sortable("serialize"));
+					//Check faculty involved for each group
+					$(".check_same").each(function(){
+						if($(this)[0]['selectedOptions'][0]['value'] == $("." + /group\d+/.exec($(this).attr("class"))[0] + "_assessor")[0]['selectedOptions'][0]['value']){
+							alert("Supervisor and Assessor should be different.");
+							e.preventDefault();
+							
+							return false;
+						}
+					});
+					
+					//Ensure no 2 group names are the same
+					let names_list = [];
+					
+					$(".group_name").each(function(){
+						if(jQuery.inArray($(this).val(), names_list) >= 0){
+							alert("Group names must be unique.");
+							e.preventDefault();
+							
+							return false;
+						}
+						
+						names_list.push($(this).val());
+					});
+				});
+				
+				//Handle group tables
+				let newest_group = $("#add_group1").clone().get(0).outerHTML;
+				let counter = 1;
+				
+				//Add new group
+				$("#new_group").click(function(){
+					$("#new_group").before(newest_group.replace(/group\d+/g, "group" + (++counter)));
+					
+					set_sortable(); //Refresh all sortable tables on page
+				});
+				
+				//Remove existing group
+				$(document).on("click", ".delete_group", function(){
+					let this_group = $(this).closest("table");
+					
+					this_group.find(".group_members tr:not(:first)").each(function(){
+						let row_data = [];
+						
+						$(this).find("td")
+							.each(function(idx, col){
+								row_data.push($(col).text().trim())
+							});
+						
+						dt.row.add(row_data).node().id = $(this)[0].id;
+						dt.draw();
+					});
+					
+					this_group.remove();
 				});
 			</script>
 		</html>

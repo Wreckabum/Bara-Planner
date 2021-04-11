@@ -12,3 +12,16 @@
 	background-color:#B0D8EA;
 	font-weight: bold;
 }
+
+.basic_table_color tr:first-child td {
+	background-color:var(--color);
+	font-weight: bold;
+}
+
+.move {
+	cursor: move;
+}
+
+.pointer {
+	cursor: pointer;
+}

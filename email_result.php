@@ -84,7 +84,6 @@
 							foreach($errors as $error){
 						?>
 								<tr>
-									<tr id='student_<?= $student->sim_id ?>' style='cursor:move;'>
 									<td style='padding-right:0;'>
 										<?= $student->sim_id ?>
 									</td>
@@ -105,7 +104,6 @@
 									</td>
 									<td style='padding-right:0;'>
 										<?= $student->get_majors() ?>
-									</td>
 									</td>
 								</tr>
 						<?php

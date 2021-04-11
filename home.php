@@ -33,6 +33,12 @@
 		Items left to do:
 		<ul>
 			<li>
+				Possibly replacing single group addition with multiple altogether
+			</li>
+			<li>
+				Editing multiple groups
+			</li>
+			<li>
 				Archiving
 			</li>
 			<li>

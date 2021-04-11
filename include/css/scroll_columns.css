@@ -1,0 +1,13 @@
+.column_container {
+	height: 100vh;
+	width: 50%;
+	float: left;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+/* Create artificial contecnt that extend past the viewport */
+.inner_content {
+	width: 100%; 
+	height: 100%;
+}
