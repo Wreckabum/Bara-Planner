@@ -223,19 +223,50 @@
 				$members[] = $temp;
 			}
 			
-			if(db_query(
-				"UPDATE `groups` 
-					SET
-						`name` = '{$group['name']}', 
-						`supervisor` = '{$group['supervisor']}', 
-						`assessor` = '{$group['assessor']}', 
-						`members` = '". addslashes(json_encode($members)) ."', 
-						`project` = '{$group['project']}'
-					WHERE
-						`id` = '{$group['id']}';"
-			) !== true){
-				//Error when updating
-				header("location: {$header_link}&err=0");
+			//Check if row exists
+			$query = db_query("SELECT `id` FROM `groups` WHERE `id` = '{$group['id']}';");
+			
+			//If update
+			if(mysqli_num_rows($query) == 1){
+				if(db_query(
+					"UPDATE `groups` 
+						SET
+							`name` = '{$group['name']}', 
+							`supervisor` = '{$group['supervisor']}', 
+							`assessor` = '{$group['assessor']}', 
+							`members` = '". addslashes(json_encode($members)) ."', 
+							`project` = '{$group['project']}'
+						WHERE
+							`id` = '{$group['id']}';"
+				) !== true){
+					//Error when updating
+					header("location: {$header_link}&err=0");
+				}
+			}else{
+				//New group
+				if(db_query(
+					"INSERT INTO
+						`groups`
+							(`id`, 
+							`name`, 
+							`supervisor`, 
+							`assessor`, 
+							`members`, 
+							`project`)
+						VALUES
+							(NULL, 
+							'{$group['name']}', 
+							'{$group['supervisor']}', 
+							'{$group['assessor']}', 
+							'". addslashes(json_encode($members)) ."', 
+							'{$group['project']}');"
+				) !== true){
+					//Error when adding
+					header("location: add_group_multiple.php?semester={$_POST['year']}_{$_POST['quarter']}&type={$_POST['type']}&err=0");
+				}else{
+					//Sucessfully added
+					header("location: view_all.php?t=groups");
+				}
 			}
 			
 			//Clear from the existing list of groups
