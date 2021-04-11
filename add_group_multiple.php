@@ -71,6 +71,7 @@
 				<title>Choose the year/quarter and type</title>
 				<link rel='stylesheet' href='include/css/main.css' />
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+				<script src='include/js/jquery-light-v3.5.1.js'></script>
 			</head>
 			<body>
 				<?php include("include/templates/header.php"); ?>
@@ -106,12 +107,27 @@
 						</tr>
 						<tr>
 							<td colspan='2'>
+								<label><input id='automate' type='checkbox' name='automate' /> Automate grouping</label>
+								<br />
+								<div id='min_max' style='display:none;'>
+									Min: <input type='number' name='min' value='5' min='1' style='width:50px; text-align:center;' />
+									Max: <input type='number' name='max' value='7' min='1' style='width:50px; text-align:center;' />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
 								<input type='submit' value='Select'>
 							</td>
 						</tr>
 					</table>
 				</form>
 			</body>
+			<script>
+				$("#automate").change(function(){
+					$("#min_max").toggle();
+				});
+			</script>
 		</html>
 <?php
 	}else{
@@ -124,6 +140,23 @@
 		$applicable_students = get_students($year, $quarter, $_GET['type'], true); //Get all students in semester that is not in a group
 		$all_faculty = get_all_accounts([0]);
 		$all_projects = get_all_projects($year, $quarter);
+		$groups = [];
+		
+		if(isset($_GET['automate'])){
+			$groups = auto_group($year, $quarter, $_GET['type'], $_GET['min'], $_GET['max']);
+			
+			/*
+				$groups = [
+					project_id => [
+						weight -> [
+							group_key => [
+								student_id => [weighted choices]
+							]
+						]
+					]
+				]
+			*/
+		}
 ?>
 		<!DOCTYPE html>
 		<html lang='en'>
@@ -164,6 +197,11 @@
 						<tbody>
 							<?php
 								foreach($applicable_students as $student){
+									//If the student is in a group, skip
+									if(nested_key_exists($student->sim_id, $groups)){
+										continue;
+									}
+									
 									$selected_choices = $student->get_choices();
 							?>
 									<tr id='student_<?= $student->sim_id ?>' class='move'>
@@ -197,108 +235,255 @@
 				<div id='groups_container' class='column_container' style='display:inline-block; width:50%; vertical-align:top;'>
 					<div id='groups_inner_container' class='inner_content'>
 						<form id='add_group_form' action='exec_group.php' method='POST'>
-							<table id='add_group1' class='basic_table group_table' style='width:100%; margin-bottom:15px;'>
-								<tr>
-									<td colspan='2'>
-										<span style='float:left'>
-											Group Details
-										</span>
-										<span class='delete_group pointer' style='float:right;'>
-											X
-										</span>
-									</td>
-								</tr>
-								<tr>
-									<td style='width:5%; padding:5px; text-align:center;'>
-										Name:
-									</td>
-									<td style='width:95%; padding:5px;'>
-										<input type='text' class='group_name' name='group1[name]' placeholder='FYP-99-S01' maxlength='32' style='width:97%;' required />
-									</td>
-								</tr>
-								<tr>
-									<td style='width:5%; padding:5px; text-align:center;'>
-										Supervisor:
-									</td>
-									<td style='width:95%; padding:5px;'>
-										<select class='group1_supervisor check_same' name='group1[supervisor]' style='width:97%;' required>
-											<?php
-												foreach($all_faculty as $supervisor){
-											?>
-													<option value='<?= $supervisor->sim_id ?>'><?= $supervisor->get_name() ?></option>
-											<?php
-												}
-											?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td style='width:5%; padding:5px; text-align:center;'>
-										Assessor:
-									</td>
-									<td style='width:95%; padding:5px;'>
-										<select class='group1_assessor' name='group1[assessor]' style='width:97%;' required>
-											<?php
-												foreach($all_faculty as $assessor){
-											?>
-													<option value='<?= $assessor->sim_id ?>'><?= $assessor->get_name() ?></option>
-											<?php
-												}
-											?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td style='width:5%; padding:5px; text-align:center;'>
-										Project:
-									</td>
-									<td style='width:95%; padding:5px;'>
-										<select name='group1[project]' style='width:97%;' required>
-											<?php
-												foreach($all_projects as $project){
-											?>
-													<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
-											<?php
-												}
-											?>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td colspan='2' style='width:95%; padding:5px;'>
-										<table class='group_members basic_table_color connected_sortable' group_id='group1' style='width:100%; --color:#EFC4F9;'>
-											<tr>
-												<td>
-													Members
-												</td>
-												<?php
-													foreach($all_projects as $project){
-														
-												?>
-														<td style='width:30px; padding:0; text-align:center;'>
-															<?= $project->id ?>
+							<?php
+								//If automation returns no groups
+								if(count($groups) == 0){
+							?>
+									<table id='add_group1' class='basic_table group_table' style='width:100%; margin-bottom:15px;'>
+										<tr>
+											<td colspan='2'>
+												<span style='float:left'>
+													Group Details
+												</span>
+												<span class='delete_group pointer' style='float:right;'>
+													X
+												</span>
+											</td>
+										</tr>
+										<tr>
+											<td style='width:5%; padding:5px; text-align:center;'>
+												Name:
+											</td>
+											<td style='width:95%; padding:5px;'>
+												<input type='text' class='group_name' name='group1[name]' placeholder='FYP-99-S01' maxlength='32' style='width:97%;' required />
+											</td>
+										</tr>
+										<tr>
+											<td style='width:5%; padding:5px; text-align:center;'>
+												Supervisor:
+											</td>
+											<td style='width:95%; padding:5px;'>
+												<select class='group1_supervisor check_same' name='group1[supervisor]' style='width:97%;' required>
+													<?php
+														foreach($all_faculty as $supervisor){
+													?>
+															<option value='<?= $supervisor->sim_id ?>'><?= $supervisor->get_name() ?></option>
+													<?php
+														}
+													?>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td style='width:5%; padding:5px; text-align:center;'>
+												Assessor:
+											</td>
+											<td style='width:95%; padding:5px;'>
+												<select class='group1_assessor' name='group1[assessor]' style='width:97%;' required>
+													<?php
+														foreach($all_faculty as $assessor){
+													?>
+															<option value='<?= $assessor->sim_id ?>'><?= $assessor->get_name() ?></option>
+													<?php
+														}
+													?>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td style='width:5%; padding:5px; text-align:center;'>
+												Project:
+											</td>
+											<td style='width:95%; padding:5px;'>
+												<select name='group1[project]' style='width:97%;' required>
+													<?php
+														foreach($all_projects as $project){
+													?>
+															<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+													<?php
+														}
+													?>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td colspan='2' style='width:95%; padding:5px;'>
+												<table class='group_members basic_table_color connected_sortable' group_id='group1' style='width:100%; --color:#EFC4F9;'>
+													<tr>
+														<td>
+															Members
 														</td>
-												<?php
-													}
-												?>
-											</tr>
-										</table>
-										<br />
-										<br />
-									</td>
-								</tr>
-								<input type='hidden' name='group1[year]' value='<?= $year ?>'>
-								<input type='hidden' name='group1[quarter]' value='<?= $quarter ?>'>
-								<input type='hidden' name='group1[type]' value='<?= $_GET['type'] ?>'>
-							</table>
+														<?php
+															foreach($all_projects as $project){
+																
+														?>
+																<td style='width:30px; padding:0; text-align:center;'>
+																	<?= $project->id ?>
+																</td>
+														<?php
+															}
+														?>
+													</tr>
+												</table>
+												<br />
+											</td>
+										</tr>
+										<input type='hidden' name='group1[year]' value='<?= $year ?>'>
+										<input type='hidden' name='group1[quarter]' value='<?= $quarter ?>'>
+										<input type='hidden' name='group1[type]' value='<?= $_GET['type'] ?>'>
+									</table>
+							<?php
+								}else{
+									//Automation has resulted in groups being made
+									$counter = 1;
+									
+									foreach($groups as $project_id => $weights){
+										foreach($weights as $weight => $group_ids){
+											foreach($group_ids as $group_id => $student_ids){
+							?>
+												<table id='add_group<?= $counter ?>' class='basic_table group_table' style='width:100%; margin-bottom:15px;'>
+													<tr>
+														<td colspan='2'>
+															<span style='float:left'>
+																Group Details
+															</span>
+															<span class='delete_group pointer' style='float:right;'>
+																X
+															</span>
+														</td>
+													</tr>
+													<tr>
+														<td style='width:5%; padding:5px; text-align:center;'>
+															Name:
+														</td>
+														<td style='width:95%; padding:5px;'>
+															<input type='text' class='group_name' name='group<?= $counter ?>[name]' placeholder='FYP-99-S01' maxlength='32' style='width:97%;' required />
+														</td>
+													</tr>
+													<tr>
+														<td style='width:5%; padding:5px; text-align:center;'>
+															Supervisor:
+														</td>
+														<td style='width:95%; padding:5px;'>
+															<select class='group1_supervisor check_same' name='group<?= $counter ?>[supervisor]' style='width:97%;' required>
+																<?php
+																	foreach($all_faculty as $supervisor){
+																?>
+																		<option value='<?= $supervisor->sim_id ?>'><?= $supervisor->get_name() ?></option>
+																<?php
+																	}
+																?>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td style='width:5%; padding:5px; text-align:center;'>
+															Assessor:
+														</td>
+														<td style='width:95%; padding:5px;'>
+															<select class='group1_assessor' name='group<?= $counter ?>[assessor]' style='width:97%;' required>
+																<?php
+																	foreach($all_faculty as $assessor){
+																?>
+																		<option value='<?= $assessor->sim_id ?>'><?= $assessor->get_name() ?></option>
+																<?php
+																	}
+																?>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td style='width:5%; padding:5px; text-align:center;'>
+															Project:
+														</td>
+														<td style='width:95%; padding:5px;'>
+															<select name='group<?= $counter ?>[project]' style='width:97%;' required>
+																<?php
+																	foreach($all_projects as $project){
+																?>
+																		<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+																<?php
+																	}
+																?>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td colspan='2' style='width:95%; padding:5px;'>
+															<table class='group_members basic_table_color connected_sortable' group_id='group<?= $counter ?>' style='width:100%; --color:#EFC4F9;'>
+																<tr>
+																	<td>
+																		Members
+																	</td>
+																	<?php
+																		foreach($all_projects as $project){
+																			
+																	?>
+																			<td style='width:30px; padding:0; text-align:center;'>
+																				<?= $project->id ?>
+																			</td>
+																	<?php
+																		}
+																	?>
+																</tr>
+																<?php
+																	foreach($student_ids as $student_id => $choices){
+																?>
+																		<tr>
+																			<td>
+																				<?php
+																					foreach($applicable_students as $student_object){
+																						if($student_object->sim_id == $student_id){
+																							echo $student_object->get_name();
+																							break;
+																						}
+																					}
+																				?>
+																			</td>
+																			<?php
+																				foreach($choices as $weights){
+																			?>
+																					<td style='width:30px; padding:0; text-align:center;'>
+																						<?php
+																							if($weights == 0){
+																								echo 0;
+																							}elseif($weights == 1){
+																								echo 3;
+																							}elseif($weights == 2){
+																								echo 2;
+																							}elseif($weights == 3){
+																								echo 1;
+																							}else
+																						?>
+																					</td>
+																			<?php
+																				}
+																			?>
+																		</tr>
+																<?php
+																	}
+																?>
+															</table>
+															<br />
+														</td>
+													</tr>
+													<input type='hidden' name='group<?= $counter ?>[year]' value='<?= $year ?>'>
+													<input type='hidden' name='group<?= $counter ?>[quarter]' value='<?= $quarter ?>'>
+													<input type='hidden' name='group<?= $counter ?>[type]' value='<?= $_GET['type'] ?>'>
+												</table>
+							<?php
+												$counter++;
+											}
+										}
+									}
+								}
+							?>
 							<input type='button' id='new_group' value='Include another group'>
 							<br />
 							<input type='submit' name='add_multiple' value='Add All Groups'>
 						</form>
 					</div>
 				</div>
-				<br />
-				<a href='home.php'>Back to main page</a>
 			</body>
 			<script>
 				//Sets all existing tables of the class as sortable

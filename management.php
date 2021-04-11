@@ -122,9 +122,9 @@
 					</div>
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
-							<h5 class="card-title">Add Group</h5>
-							<p class="card-text">Add a new group for existing students</p>
-							<a href="add_group.php" class="btn btn-primary">Add</a>
+							<h5 class="card-title">Add Groups</h5>
+							<p class="card-text">Add new groups for existing students</p>
+							<a href="add_group_multiple.php" class="btn btn-primary">Add</a>
 						</div>
 					</div>
 					<?php

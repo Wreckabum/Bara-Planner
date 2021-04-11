@@ -215,6 +215,7 @@
 		}
 		
 		if(isset($_POST['add'])){
+			//Deprecated
 			if(db_query(
 				"INSERT INTO
 					`groups`

@@ -33,7 +33,7 @@
 		Items left to do:
 		<ul>
 			<li>
-				Possibly replacing single group addition with multiple altogether
+				Possibly replacing single group addition with multiple altogether (To remove deprecated pages/sections)
 			</li>
 			<li>
 				Editing multiple groups
