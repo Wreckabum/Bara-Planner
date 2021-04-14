@@ -3,7 +3,6 @@ A comprehsnsive system to manage final year projects.
 
 [Bara Planner](http://fyp-management-tool.atwebpages.com/) |
 [Marketing website](https://baraplanner.weebly.com/)
-Bara Planner
 
 ## Contributions to Bara Planner
 - Nguyen Thien Phuc
