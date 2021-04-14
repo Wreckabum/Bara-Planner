@@ -203,7 +203,6 @@
 			db_query("UPDATE `accounts` SET `password` = '{$ori_password}' WHERE `sim_id` = '{$id}'");
 
 			return $this->assertEquals($new_password, $temp_String);
-
 		}		
 
 

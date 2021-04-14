@@ -92,7 +92,10 @@
             }
 		}
 
-		function test_get_name(){
+		/*
+			Tests get name method
+		*/		
+		public function test_get_name(){
 			return $this->assertEquals($this->name, "Clement Tanby");
 		}
 		
