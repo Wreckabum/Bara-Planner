@@ -31,9 +31,6 @@
 		Items left to do:
 		<ul>
 			<li>
-				To remove deprecated pages/sections after testing
-			</li>
-			<li>
 				Archiving
 			</li>
 			<li>
@@ -44,6 +41,9 @@
 			</li>
 			<li>
 				Options page
+			</li>
+			<li>
+				For add/edit groups, scroll to error
 			</li>
 		</ul>
 		Clean-up:
