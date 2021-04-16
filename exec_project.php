@@ -31,6 +31,7 @@
 	
 	$_POST['year'] = (int)$_POST['year'];
 	$_POST['quarter'] = (int)$_POST['quarter'];
+	$_POST['description'] = htmlspecialchars($_POST['description'], ENT_QUOTES);
 	
 	if(isset($_POST['add'])){
 		if(db_query(

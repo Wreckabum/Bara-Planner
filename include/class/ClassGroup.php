@@ -35,10 +35,22 @@
 				$this->project = get_project($result['project'], "proj_id");
 				$this->supervisor = get_account($result['supervisor']);
 				$this->assessor = get_account($result['assessor']);
-				foreach(json_decode($result['members']) as $member){
-					$member->details = get_account($member->id); //Create student object
-					unset($member->id); //Unset the ID variable
-					$this->members[] = $member;
+				
+				$all_members = json_decode($result['members']);
+				
+				if(count($all_members) > 0 ){
+					foreach($all_members as $member){
+						$member->details = get_account($member->id); //Create student object
+						unset($member->id); //Unset the ID variable
+						$this->members[] = $member;
+					}
+				}else{
+					db_query(
+						"DELETE FROM
+							`groups`
+						WHERE
+							`id` = '{$result['id']}';");
+					throw new Exception("Group empty; deleted.");
 				}
 			}else{
 				throw new Exception("Group not found.");

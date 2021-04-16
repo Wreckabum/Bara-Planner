@@ -43,6 +43,10 @@
 				$err = "Invalid date.";
 				break;
 			
+			case 4:
+				$err = "Error archiving.";
+				break;
+			
 			case 9:
 				$err = "Successfully added.";
 				break;
@@ -94,6 +98,9 @@
 						<th style='text-align:center;'>
 							Details
 						</th>
+						<th style='text-align:center;'>
+							Archive
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,6 +122,17 @@
 								<td style='text-align:center;'>
 									<a href='view_semester?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View Details ]</a>
 								</td>
+								<td style='text-align:center;'>
+									<a id='archive_link_<?= $semester->year ?>_<?= $semester->quarter ?>' href='#' onClick="show_archive(<?= $semester->year ?>, <?= $semester->quarter ?>);">
+										[ Archive Semester ]
+									</a>
+									<form id='archive_form_<?= $semester->year ?>_<?= $semester->quarter ?>' action='exec_archive.php' method='POST' style='display:none;' onSubmit="return confirm('Confirm: Archive all data pertaining to Year <?= $semester->year ?>, Q<?= $semester->quarter ?>?');">
+										<input type='checkbox' class='confirm_checkbox' name='archive_confirm' value='1' required/>
+										<input type='hidden' name='year' value='<?= $semester->year ?>'/>
+										<input type='hidden' name='quarter' value='<?= $semester->quarter ?>'/>
+										<input type='submit' name='archive_submit' class='archive_submit' value='Archive' disabled/>
+									</form>
+								</td>
 							</tr>
 					<?php
 						}
@@ -125,6 +143,19 @@
 		<input type='button' id='update_all' name='update_all' value='Update' /> <input type='button' id='add' name='add' value='Add New' onClick="window.location.href='add_semester.php'" />
 	</body>
 	<script>
+		function show_archive(year, quarter){
+			$("#archive_link_" + year + "_" + quarter).hide();
+			$("#archive_form_" + year + "_" + quarter).show();
+		}
+		
+		$(".confirm_checkbox").change(function(){
+			if($(this).is(":checked")){
+				$(this).closest("form").find(":submit").attr("disabled", false);
+			}else{
+				$(this).closest("form").find(":submit").attr("disabled", true);
+			}
+		});
+		
 		var dt = $("#filter_table").DataTable({
 			/* Disable initial sort */
 			"aaSorting": [],

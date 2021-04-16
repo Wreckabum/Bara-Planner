@@ -282,7 +282,7 @@
 		
 		while($row = mysqli_fetch_assoc($query)){
 			try{
-				$output[] = get_major($row['id']);
+				$output[$row['id']] = get_major($row['id']);
 			}catch(Exception $e){
 				continue;
 			}

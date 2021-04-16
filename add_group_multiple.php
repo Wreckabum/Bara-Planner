@@ -55,6 +55,10 @@
 				$err = "Not all students are from the same type (FT/PT).";
 				break;
 			
+			case 7:
+				$err = "Group must contain at least 1 student.";
+				break;
+			
 			default:
 				$err = "";
 				break;
@@ -602,6 +606,16 @@
 						}
 						
 						names_list.push($(this).val());
+					});
+					
+					//Ensure there is at least 1 group member for each group
+					$(".group_members").each(function(){
+						if($(this).find("tr:last").index() == 0){
+							alert("Each group must have at least 1 member.");
+							e.preventDefault();
+							
+							return false;
+						}
 					});
 				});
 				

@@ -72,6 +72,12 @@
 			$check_type = "";
 			$members = [];
 			
+			if(count($group['students']) <= 0){
+				header("location: {$header_link}&err=7");
+				@mysqli_close($GLOBALS['mysql_link']);
+				exit();
+			}
+			
 			foreach($group['students'] as $student){
 				try{
 					$check_account = get_account($student);
@@ -182,6 +188,10 @@
 			$check_type = "";
 			$members = [];
 			
+			if(count($group['students']) <= 0){
+				continue;
+			}
+			
 			foreach($group['students'] as $student){
 				try{
 					$check_account = get_account($student);
@@ -278,13 +288,19 @@
 			}
 		}
 		
-		//Handle deletion of groups
+		//Handle deletion of groups (removed, or no students)
+		$delete_group_ids = [];
+		
 		foreach($all_groups as $group){
+			$delete_group_ids[] = $group->id;
+		}
+		
+		if(count($delete_group_ids) > 0){
 			db_query(
 				"DELETE FROM
 					`groups`
 				WHERE
-					`id` = '{$group->id}';");
+					`id` IN ('". implode("', '", $delete_group_ids) ."');"
 		}
 		
 		header("location: view_all.php?t=groups");

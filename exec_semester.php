@@ -29,7 +29,6 @@
 		exit();
 	}
 	
-	
 	if(isset($_POST['add'])){
 		//Prepare the strings for SQL insertion
 		array_walk_recursive($_POST, function(&$value, $key){
