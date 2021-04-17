@@ -29,6 +29,8 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	$_POST['name'] =  htmlspecialchars($_POST['name'], ENT_QUOTES);
+	
 	if(isset($_POST['add'])){
 		$password = generate_password(); //Set initial random password
 		

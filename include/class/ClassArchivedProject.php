@@ -4,31 +4,34 @@
 	sql_connect();
 	
 	/*
-		Class for majors
+		Class for projects
 	*/
-	class Major{
-		public	$id;
+	class ArchivedProject{
+		public	$proj_id;
+		
 		private	$name;
 		private	$description;
-		private $type;
+		private	$year;
+		private	$quarter;
 		
 		/*
 			Constructor
 		*/
-		public function __construct($id){
-			$id = str_clean($id);
+		public function __construct($proj_id, $year, $quarter){
+			$proj_id = str_clean($proj_id);
 			
-			$query = db_query("SELECT * FROM `majors` WHERE `id` = '{$id}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `archive_projects` WHERE `proj_id` = '{$proj_id}', `year` = '{$year}', `quarter` = '{$quarter}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the poject exists
 			if(mysqli_num_rows($query) == 1){
-				$this->id = $result['id'];
+				$this->proj_id = $result['proj_id'];
 				$this->name = $result['name'];
 				$this->description = $result['description'];
-				$this->type = $result['type'];
+				$this->year = $result['year'];
+				$this->quarter = $result['quarter'];
 			}else{
-				throw new Exception("Major not found.");
+				throw new Exception("Archived project not found.");
 			}			
 		}
 		
@@ -59,35 +62,17 @@
 		}
 		
 		/*
-			Get type
+			Get year
 		*/
-		public function get_type(){
-			return $this->type;
+		public function get_year(){
+			return (int)$this->year;
 		}
 		
 		/*
-			Get student type
+			Get quarter
 		*/
-		public function get_student_type(){
-			return (($this->is_full_time()) ? 1 : 2);
-		}
-		
-		/*
-			Checks if the major is for full-time students
-			
-			@return bool
-		*/
-		public function is_full_time(){
-			return $this->type == 1;
-		}
-		
-		/*
-			Checks if the major is for part-time students
-			
-			@return bool
-		*/
-		public function is_part_time(){
-			return $this->type == 0;
+		public function get_quarter(){
+			return (int)$this->quarter;
 		}
 	}
 	

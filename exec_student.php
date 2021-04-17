@@ -29,6 +29,7 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	$_POST['name'] =  htmlspecialchars($_POST['name'], ENT_QUOTES);
 	(isset($_POST['type']) ? $_POST['type'] = (int)$_POST['type'] : "");
 	(isset($_POST['year']) ? $_POST['year'] = (int)$_POST['year'] : "");
 	(isset($_POST['quarter']) ? $_POST['quarter'] = (int)$_POST['quarter'] : "");

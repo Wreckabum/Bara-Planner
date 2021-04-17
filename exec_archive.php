@@ -61,7 +61,7 @@
 	//////Archive semester details -----------------------------------
 	
 	//Insert into archive
-/* 		if(db_query(
+		if(db_query(
 			"INSERT INTO 
 				`archive_semester_details` 
 					(`year`, 
@@ -95,13 +95,76 @@
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
-*/
+		
+	//////------------------------------------------------------------
 	
+	
+	//////Archive groups ---------------------------------------------
+		
+		$all_groups = get_all_groups($_POST['year'], $_POST['quarter']);
+		$group_ids = [];
+		
+		foreach($all_groups as $group){
+			$members = [];
+			
+			foreach($group->get_members() as $student){
+				//Populate the members array
+				$temp = [];
+				$temp['id'] = $student->details->sim_id;
+				$temp['score'] = $student->score;
+				$members[] = $temp;
+			}
+			
+			//Insert into archive
+			if(db_query(
+				"INSERT INTO
+					`archive_groups`
+						(`name`, 
+						`supervisor`, 
+						`assessor`, 
+						`members`, 
+						`proj_id`,  
+						`year`, 
+						`quarter`)
+					VALUES
+						('{$group->get_name()}', 
+						'{$group->get_supervisor()->get_name()}',
+						'{$group->get_assessor()->get_name()}', 
+						'". addslashes(json_encode($members)) ."',  
+						'{$group->get_project()->proj_id}', 
+						'{$group->get_year()}', 
+						'{$group->get_quarter()}');"
+			) !== true){
+				//If error
+				db_query("ROLLBACK;");
+				header("location: semester_details.php?err=4");
+				exit();
+			}
+			
+			$group_ids[] = $group->id;
+		}
+		
+		//Delete from main table
+		if(count($group_ids) > 0){
+			if(db_query(
+				"DELETE FROM 
+					`groups` 
+				WHERE 
+					`id` IN ('". implode("', '", $group_ids) ."');"
+			) !== true){
+				//If error
+				db_query("ROLLBACK;");
+				header("location: semester_details.php?err=4");
+				@mysqli_close($GLOBALS['mysql_link']);
+				exit();
+			}
+		}
+		
 	//////------------------------------------------------------------
 	
 	
 	//////Archive projects -------------------------------------------
-/*		
+		
  		$all_projects = get_all_projects($_POST['year'], $_POST['quarter']);
 		$proj_ids = [];
 		
@@ -118,7 +181,7 @@
 					VALUES
 						('{$project->proj_id}', 
 						'{$project->get_name()}', 
-						'". htmlspecialchars($project->get_description(), ENT_QUOTES) ."', 
+						'{$project->get_description(true)}', 
 						'{$project->get_year()}', 
 						'{$project->get_quarter()}');"
 			) !== true){
@@ -147,13 +210,12 @@
 				exit();
 			};
 		}
-*/
-	
+		
 	//////------------------------------------------------------------
 	
 	
 	//////Archive accounts -------------------------------------------
-/* 		
+		
  		$all_students = get_students($_POST['year'], $_POST['quarter']);
 		$all_majors = get_all_majors();
 		$student_ids = [];
@@ -162,7 +224,7 @@
 		foreach($all_students as $student){
 			if(db_query(
 				"INSERT INTO
-					`accounts`
+					`archive_accounts`
 						(`sim_id`, 
 						`uow_id`, 
 						`name`, 
@@ -178,7 +240,7 @@
 					VALUES
 						('{$student->sim_id}', 
 						'{$student->uow_id}', 
-						'{$student->get_name()}', 
+						'{$student->get_name(true)}', 
 						'{$student->get_phone()}', 
 						'{$student->get_sim_email()}', 
 						'{$student->get_personal_email()}', 
@@ -204,7 +266,7 @@
 				"DELETE FROM 
 					`accounts` 
 				WHERE 
-					`id` IN ('". implode("', '", $student_ids) ."');"
+					`sim_id` IN ('". implode("', '", $student_ids) ."');"
 			) !== true){
 				//If error
 				db_query("ROLLBACK;");
@@ -213,73 +275,7 @@
 				exit();
 			}
 		}
- */
-	//////------------------------------------------------------------
-	
-	
-	//////Archive groups ---------------------------------------------
-/* 		
-		$all_groups = get_all_groups($_POST['year'], $_POST['quarter']);
-		$group_ids = [];
 		
-		foreach($all_groups as $group){
-			$members = [];
-			
-			foreach($group->get_members() as $student){
-				
-				//Populate the members array
-				$temp = [];
-				$temp['id'] = $student->details->sim_id;
-				$temp['score'] = $student->score;
-				$members[] = $temp;
-			}
-			
-			//Insert into archive
-			if(db_query(
-				"INSERT INTO
-					`groups`
-						(`name`, 
-						`supervisor`, 
-						`assessor`, 
-						`members`, 
-						`project_id`, 
-						`project_name`, 
-						`year`, 
-						`quarter`)
-					VALUES
-						('{$group->get_name()}', 
-						'{$group->get_supervisor()->get_name()}',
-						'{$group->get_assessor()->get_name()}', 
-						'". addslashes(json_encode($members)) ."',  
-						'{$group->get_project()->proj_id}', 
-						'{$group->get_project()->get_name()}', 
-						'{$group->get_year()}', 
-						'{$group->get_quarter()}');"
-			) !== true){
-				//If error
-				db_query("ROLLBACK;");
-				header("location: semester_details.php?err=4");
-			}
-			
-			$group_ids[] = $group->id;
-		}
-		
-		//Delete from main table
-		if(count($group_ids) > 0){
-			if(db_query(
-				"DELETE FROM 
-					`groups` 
-				WHERE 
-					`id` IN ('". implode("', '", $group_ids) ."');"
-			) !== true){
-				//If error
-				db_query("ROLLBACK;");
-				header("location: semester_details.php?err=4");
-				@mysqli_close($GLOBALS['mysql_link']);
-				exit();
-			}
-		}
-*/
 	//////------------------------------------------------------------
 	
 	//////Complete archiving process ---------------------------------

@@ -60,7 +60,7 @@
 			}
 			
 			try{
-				get_project($group['project'], 'proj_id');
+				get_project($group['project']);
 			}catch(Exception $e){
 				header("location: {$header_link}&err=3");
 				@mysqli_close($GLOBALS['mysql_link']);
@@ -176,7 +176,7 @@
 			}
 			
 			try{
-				get_project($group['project'], 'proj_id');
+				get_project($group['project']);
 			}catch(Exception $e){
 				header("location: {$header_link}&err=3");
 				@mysqli_close($GLOBALS['mysql_link']);

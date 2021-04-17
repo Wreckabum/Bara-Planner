@@ -6,57 +6,48 @@
 	/*
 		Class for groups
 	*/
-	class Group{
-		public	$id;
-		
+	class ArchivedGroup{
 		private	$name;
-		
-		private	$project;
 		private	$supervisor;
 		private	$assessor;
+		private	$proj_id;
+		private $year;
+		private $quarter;
 		
 		private	$members = [];
 		
 		/*
 			Constructor
 		*/
-		public function __construct($id){
-			$id = str_clean($id);
+		public function __construct($name, $year, $quarter){
+			$name = str_clean($name);
 			
-			$query = db_query("SELECT * FROM `groups` WHERE `id` = '{$id}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `archive_groups` WHERE `name` = '{$name}', `year` = '{$year}', `quarter` = '{$quarter}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the poject exists
 			if(mysqli_num_rows($query) == 1){
-				$this->id = $result['id'];
-				
 				$this->name = $result['name'];
-				
-				$this->project = get_project($result['project']);
-				$this->supervisor = get_account($result['supervisor']);
-				$this->assessor = get_account($result['assessor']);
+				$this->supervisor = $result['supervisor'];
+				$this->assessor = $result['assessor'];
+				$this->proj_id = get_project($result['proj_id']);
+				$this->year = $result['year'];
+				$this->quarter = $result['quarter'];
 				
 				$all_members = json_decode($result['members']);
 				
 				if(count($all_members) > 0 ){
 					foreach($all_members as $member){
-						$member->details = get_account($member->id); //Create student object
+						$member->details = new ArchivedStudent($member->id, $this->year, $this->quarter);
 						
 						unset($member->id); //Unset the ID variable
 						
 						$this->members[] = $member;
 					}
-				}else{
-					db_query(
-						"DELETE FROM
-							`groups`
-						WHERE
-							`id` = '{$result['id']}';");
-					throw new Exception("Group empty; deleted.");
 				}
 			}else{
-				throw new Exception("Group not found.");
-			}
+				throw new Exception("Archived group not found.");
+			}	
 		}
 		
 		/*
@@ -70,18 +61,18 @@
 			Get project ID
 		*/
 		public function get_project(){
-			return $this->project;
+			return new ArchivedProject($this->project_id, $this->year, $this->quarter);
 		}
 		
 		/*
-			Get supervisor object
+			Get supervisor name
 		*/
 		public function get_supervisor(){
 			return $this->supervisor;
 		}
 		
 		/*
-			Get assessor object
+			Get assessor name
 		*/
 		public function get_assessor(){
 			return $this->assessor;
@@ -105,35 +96,14 @@
 			Get group year
 		*/
 		public function get_year(){
-			return $this->get_members()[0]->details->get_year();
+			return $this->year;
 		}
 		
 		/*
 			Get group quarter
 		*/
 		public function get_quarter(){
-			return $this->get_members()[0]->details->get_quarter();
-		}
-		
-		/*
-			Check if supervisor
-		*/
-		public function is_supervisor($supervisor_id){
-			return ($this->supervisor->sim_id == $supervisor_id);
-		}
-		
-		/*
-			Check if assessor
-		*/
-		public function is_assessor($supervisor_id){
-			return ($this->assessor->sim_id == $supervisor_id);
-		}
-		
-		/*
-			Check if project (checks both ID nad Proj_id)
-		*/
-		public function is_project($proj_id){
-			return ($this->project->id == $proj_id || $this->project->proj_id == $proj_id);
+			return $this->quarter;
 		}
 		
 		/*

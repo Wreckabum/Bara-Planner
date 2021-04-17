@@ -53,9 +53,15 @@
 		
 		/*
 			Get name
+			
+			@param	bool
 		*/
-		public function get_name(){
-			return $this->name;
+		public function get_name($safe = false){
+			if($safe){
+				return htmlspecialchars($this->name, ENT_QUOTES);
+			}else{
+				return $this->name;
+			}
 		}
 		
 		/*
@@ -94,18 +100,23 @@
 				case 0:
 					return "Faculty";
 					break;
+				
 				case 1:
 					return "Full-time Student";
 					break;
+				
 				case 2:
 					return "Part-time Student";
 					break;
+				
 				case 8:
 					return "Administrator";
 					break;
+				
 				case 9:
 					return "Super Administrator";
 					break;
+				
 				default:
 					return "Unknown";
 					break;

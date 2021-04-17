@@ -25,12 +25,12 @@
 	
 	if(isset($_GET['t'])){
 		switch($_GET['t']){
-			case "ft":
-				$rows = get_all_accounts([1]);
-				break;
-			
 			case "students":
 				$rows = get_all_accounts([1, 2]);
+				break;
+			
+			case "ft":
+				$rows = get_all_accounts([1]);
 				break;
 			
 			case "pt":
@@ -62,6 +62,34 @@
 				break;
 		}
 	}
+	
+	if(isset($_GET['a'])){
+		switch($_GET['a']){
+			case "students":
+				$rows = get_all_archived_accounts([1, 2]);
+				break;
+			
+			case "ft":
+				$rows = get_all_archived_accounts([1]);
+				break;
+			
+			case "pt":
+				$rows = get_all_archived_accounts([2]);
+				break;
+			
+			case "projects":
+				$rows = get_all_archived_projects();
+				break;
+			
+			case "groups":
+				$rows = get_all_archived_groups();
+				break;
+			
+			default:
+				$rows = null;
+				break;
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -78,528 +106,562 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand">
-					<a href="#"></a>
-				</li>
-				<li class="sidebar-brand">
-					<a href="#"></a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="show_student_options();get_active();">Students</a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="get_accounts('faculty');get_active();">Faculty</a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="get_accounts('admin');get_active();">Admin</a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="get_accounts('majors');get_active();">Majors</a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="get_accounts('projects');get_active();">Projects</a>
-				</li>
-				<li>
-					<a href="#" class='menu' onClick="get_accounts('groups');get_active();">Groups</a>
-				</li>
-				<hr />
-				<div id='view_student' style='display:none;'>
+		<div id='body_content'>
+			<div id='sidebar_wrapper'>
+				<ul id='sidebar_nav'>
 					<li>
-						<a href="#" onClick="get_accounts('students');">All</a>
+						<a href='#' class='menu' onClick="toggle_active();">Active</a>
 					</li>
+					<div id='active_records' style='display:none; padding-left:20px;'>
+						<li>
+							<a href='#' class='menu' onClick="toggle_active_students();">Students</a>
+						</li>
+						<div id='active_students' style='display:none; padding-left:20px;'>
+							<li>
+								<a href='#' onClick="get_accounts('t', 'students');">All</a>
+							</li>
+							<li>
+								<a href='#' onClick="get_accounts('t', 'ft');">Full-Time</a>
+							</li>
+							<li>
+								<a href='#' onClick="get_accounts('t', 'pt');">Part-Time</a>
+							</li>
+						</div>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('t', 'faculty');">Faculty</a>
+						</li>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('t', 'admin');">Admin</a>
+						</li>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('t', 'majors');">Majors</a>
+						</li>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('t', 'projects');">Projects</a>
+						</li>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('t', 'groups');">Groups</a>
+						</li>
+					</div>
+					<br />
 					<li>
-						<a href="#" onClick="get_accounts('ft');">Full-Time</a>
+						<a href='#' class='menu' onClick="toggle_archive();">Archived</a>
 					</li>
+					<div id='archived_records' style='display:none; padding-left:20px;'>
+						<li>
+							<a href='#' class='menu' onClick="toggle_archived_students();">Students</a>
+						</li>
+						<div id='archived_students' style='display:none; padding-left:20px;'>
+							<li>
+								<a href='#' onClick="get_accounts('a', 'students');">All</a>
+							</li>
+							<li>
+								<a href='#' onClick="get_accounts('a', 'ft');">Full-Time</a>
+							</li>
+							<li>
+								<a href='#' onClick="get_accounts('a', 'pt');">Part-Time</a>
+							</li>
+						</div>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('a', 'projects');">Projects</a>
+						</li>
+						<li>
+							<a href='#' class='menu' onClick="get_accounts('a', 'groups');">Groups</a>
+						</li>
+					</div>
 					<li>
-						<a href="#" onClick="get_accounts('pt');">Part-Time</a>
-					</li>
+				</ul>
+			</div>
+			<div id='main_content'>
+				<div id='inner_content'>
+					<?php
+						if(isset($rows)){
+							if(isset($_GET['t'])){
+								if($_GET['t'] == "students" || $_GET['t'] == "pt" || $_GET['t'] == "ft"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													SIM ID
+												</th>
+												<th style='text-align:center;'>
+													UOW ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													SIM Email
+												</th>
+												<th style='text-align:center;'>
+													Personal Email
+												</th>
+												<th style='text-align:center;'>
+													Phone
+												</th>
+												<th style='text-align:center;'>
+													Type
+												</th>
+												<th style='text-align:center;'>
+													Major
+												</th>
+												<th style='text-align:center;'>
+													Year
+												</th>
+												<th style='text-align:center;'>
+													Quarter
+												</th>
+												<th style='text-align:center;'>
+													Choices
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $student){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $student->sim_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->uow_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_sim_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_personal_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_phone() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= ($student->is_part_time() ? "Part-Time" : ($student->is_full_time() ? "Full-Time" : "")) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_majors(true) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_year() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_quarter() ?>
+														</td>
+														<td style='text-align:center;'>
+															
+														</td>
+														<td style='text-align:center;'>
+															<a href='view_account.php?a=<?= $student->sim_id ?>'>
+																[ View ]
+															</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	&nbsp;&nbsp;
+																	<a href='edit_student.php?a=<?= $student->sim_id ?>'>
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['t'] == "faculty"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													SIM ID
+												</th>
+												<th style='text-align:center;'>
+													UOW ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													SIM Email
+												</th>
+												<th style='text-align:center;'>
+													Personal Email
+												</th>
+												<th style='text-align:center;'>
+													Phone
+												</th>
+												<th style='text-align:center;'>
+													Majors
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $faculty){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $faculty->sim_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->uow_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->get_sim_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->get_personal_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->get_phone() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $faculty->get_majors(true) ?>
+														</td>
+														<td style='text-align:center;'>
+															<a href='view_account.php?a=<?= $faculty->sim_id ?>'>
+																[ View ]
+															</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	&nbsp;&nbsp;
+																	<a href='edit_faculty.php?a=<?= $faculty->sim_id ?>'>
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['t'] == "admin"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													SIM ID
+												</th>
+												<th style='text-align:center;'>
+													UOW ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													SIM Email
+												</th>
+												<th style='text-align:center;'>
+													Personal Email
+												</th>
+												<th style='text-align:center;'>
+													Phone
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $admin){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $admin->sim_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $admin->uow_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $admin->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $admin->get_sim_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $admin->get_personal_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $admin->get_phone() ?>
+														</td>
+														<td style='text-align:center;'>
+																<a href='view_account.php?a=<?= $admin->sim_id ?>'>
+																	[ View ]
+																</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	&nbsp;&nbsp;
+																	<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['t'] == "majors"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													Description
+												</th>
+												<th style='text-align:center;'>
+													Type
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $major){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $major->id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $major->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= nl2br($major->get_description()) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= (($major->is_full_time()) ? "Full-time" : "Part-time") ?>
+														</td>
+														<td style='text-align:center;'>
+																<a href='view_major.php?m=<?= $major->id ?>'>
+																	[ View ]
+																</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	<br />
+																	<a href='edit_major.php?m=<?= $major->id ?>'>
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['t'] == "projects"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													ID
+												</th>
+												<th style='text-align:center;'>
+													Project ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													Description
+												</th>
+												<th style='text-align:center;'>
+													Year
+												</th>
+												<th style='text-align:center;'>
+													Quarter
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $project){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $project->id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->proj_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= nl2br($project->get_description()) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_year() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_quarter() ?>
+														</td>
+														<td style='text-align:center;'>
+																<a href='view_project.php?p=<?= $project->id ?>'>
+																	[ View ]
+																</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	<br />
+																	<a href='edit_project.php?p=<?= $project->id ?>'>
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['t'] == "groups"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													Type
+												</th>
+												<th style='text-align:center;'>
+													Supervisor
+												</th>
+												<th style='text-align:center;'>
+													Assessor
+												</th>
+												<th style='text-align:center;'>
+													Members
+												</th>
+												<th style='text-align:center;'>
+													Project
+												</th>
+												<th style='text-align:center;'>
+													Actions
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $group){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $group->id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $group->get_name() ?>
+														</td>
+														<td>
+															<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= (is_null($group->get_supervisor()) ? "" : "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})") ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= (is_null($group->get_assessor()) ? "" : "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})") ?>
+														</td>
+														<td style='text-align:left;'>
+															<?php
+																foreach($group->get_members() as $member){
+															?>
+																	<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+																	<br />
+															<?php
+																}
+															?>
+														</td>
+														<td style='text-align:left;'>
+															<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+																<a href='view_group.php?g=<?= $group->id ?>'>
+																	[ View ]
+																</a>
+															<?php
+																if($account->is_admin()){
+															?>
+																	<br />
+																	<a href="edit_group_multiple.php?semester=<?= $group->get_year() ?>_<?= $group->get_quarter() ?>&type=<?= $group->get_type() ?>#<?= $group->id ?>">
+																		[ Edit ]
+																	</a>
+															<?php
+																}
+															?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}
+							}elseif(isset($_GET['a'])){
+					?>
+								Check type and print
+					<?php
+							}
+						}
+					?>
 				</div>
-			</ul>
-		</div>
-		<br />
-		<div class='container' style='max-width:inherit; width:auto;'>
-			<?php
-				if(isset($rows)){
-					if($_GET['t'] == "students" || $_GET['t'] == "pt" || $_GET['t'] == "ft"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										SIM ID
-									</th>
-									<th style='text-align:center;'>
-										UOW ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										SIM Email
-									</th>
-									<th style='text-align:center;'>
-										Personal Email
-									</th>
-									<th style='text-align:center;'>
-										Phone
-									</th>
-									<th style='text-align:center;'>
-										Type
-									</th>
-									<th style='text-align:center;'>
-										Major
-									</th>
-									<th style='text-align:center;'>
-										Year
-									</th>
-									<th style='text-align:center;'>
-										Quarter
-									</th>
-									<th style='text-align:center;'>
-										Choices
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $student){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $student->sim_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->uow_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_sim_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_personal_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_phone() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= ($student->is_part_time() ? "Part-Time" : ($student->is_full_time() ? "Full-Time" : "")) ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_majors(true) ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_year() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $student->get_quarter() ?>
-											</td>
-											<td style='text-align:center;'>
-												
-											</td>
-											<td style='text-align:center;'>
-												<a href='view_account.php?a=<?= $student->sim_id ?>'>
-													[ View ]
-												</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														&nbsp;&nbsp;
-														<a href='edit_student.php?a=<?= $student->sim_id ?>'>
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}elseif($_GET['t'] == "faculty"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										SIM ID
-									</th>
-									<th style='text-align:center;'>
-										UOW ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										SIM Email
-									</th>
-									<th style='text-align:center;'>
-										Personal Email
-									</th>
-									<th style='text-align:center;'>
-										Phone
-									</th>
-									<th style='text-align:center;'>
-										Majors
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $faculty){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $faculty->sim_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->uow_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->get_sim_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->get_personal_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->get_phone() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $faculty->get_majors(true) ?>
-											</td>
-											<td style='text-align:center;'>
-												<a href='view_account.php?a=<?= $faculty->sim_id ?>'>
-													[ View ]
-												</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														&nbsp;&nbsp;
-														<a href='edit_faculty.php?a=<?= $faculty->sim_id ?>'>
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}elseif($_GET['t'] == "admin"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										SIM ID
-									</th>
-									<th style='text-align:center;'>
-										UOW ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										SIM Email
-									</th>
-									<th style='text-align:center;'>
-										Personal Email
-									</th>
-									<th style='text-align:center;'>
-										Phone
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $admin){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $admin->sim_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $admin->uow_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $admin->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $admin->get_sim_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $admin->get_personal_email() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $admin->get_phone() ?>
-											</td>
-											<td style='text-align:center;'>
-													<a href='view_account.php?a=<?= $admin->sim_id ?>'>
-														[ View ]
-													</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														&nbsp;&nbsp;
-														<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}elseif($_GET['t'] == "majors"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										Description
-									</th>
-									<th style='text-align:center;'>
-										Type
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $major){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $major->id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $major->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= nl2br($major->get_description()) ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= (($major->is_full_time()) ? "Full-time" : "Part-time") ?>
-											</td>
-											<td style='text-align:center;'>
-													<a href='view_major.php?m=<?= $major->id ?>'>
-														[ View ]
-													</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														<br />
-														<a href='edit_major.php?m=<?= $major->id ?>'>
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}elseif($_GET['t'] == "projects"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										ID
-									</th>
-									<th style='text-align:center;'>
-										Project ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										Description
-									</th>
-									<th style='text-align:center;'>
-										Year
-									</th>
-									<th style='text-align:center;'>
-										Quarter
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $project){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $project->id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $project->proj_id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $project->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= nl2br($project->get_description()) ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $project->get_year() ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $project->get_quarter() ?>
-											</td>
-											<td style='text-align:center;'>
-													<a href='view_project.php?p=<?= $project->id ?>'>
-														[ View ]
-													</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														<br />
-														<a href='edit_project.php?p=<?= $project->id ?>'>
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}elseif($_GET['t'] == "groups"){
-			?>
-						<table id='filter_table' class='display'>
-							<thead>
-								<tr>
-									<th style='text-align:center;'>
-										ID
-									</th>
-									<th style='text-align:center;'>
-										Name
-									</th>
-									<th style='text-align:center;'>
-										Type
-									</th>
-									<th style='text-align:center;'>
-										Supervisor
-									</th>
-									<th style='text-align:center;'>
-										Assessor
-									</th>
-									<th style='text-align:center;'>
-										Members
-									</th>
-									<th style='text-align:center;'>
-										Project
-									</th>
-									<th style='text-align:center;'>
-										Actions
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-									foreach($rows as $group){
-								?>
-										<tr>
-											<td style='text-align:center;'>
-												<?= $group->id ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= $group->get_name() ?>
-											</td>
-											<td>
-												<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= (is_null($group->get_supervisor()) ? "" : "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})") ?>
-											</td>
-											<td style='text-align:center;'>
-												<?= (is_null($group->get_assessor()) ? "" : "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})") ?>
-											</td>
-											<td style='text-align:left;'>
-												<?php
-													foreach($group->get_members() as $member){
-												?>
-														<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
-														<br />
-												<?php
-													}
-												?>
-											</td>
-											<td style='text-align:left;'>
-												<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
-											</td>
-											<td style='text-align:center;'>
-													<a href='view_group.php?g=<?= $group->id ?>'>
-														[ View ]
-													</a>
-												<?php
-													if($account->is_admin()){
-												?>
-														<br />
-														<a href="edit_group_multiple.php?semester=<?= $group->get_year() ?>_<?= $group->get_quarter() ?>&type=<?= $group->get_type() ?>#<?= $group->id ?>">
-															[ Edit ]
-														</a>
-												<?php
-													}
-												?>
-											</td>
-										</tr>
-								<?php
-									}
-								?>
-							</tbody>
-						</table>
-			<?php
-					}
-				}
-			?>
+			</div>
 		</div>
 	</body>
 	<script>

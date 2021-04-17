@@ -46,16 +46,28 @@
 		
 		/*
 			Get name
+			
+			@param	bool
 		*/
-		public function get_name(){
-			return $this->name;
+		public function get_name($safe = false){
+			if($safe){
+				return htmlspecialchars($this->name, ENT_QUOTES);
+			}else{
+				return $this->name;
+			}
 		}
 		
 		/*
 			Get description
+			
+			@param	bool
 		*/
-		public function get_description(){
-			return $this->description;
+		public function get_description($safe = false){
+			if($safe){
+				return htmlspecialchars($this->description, ENT_QUOTES);
+			}else{
+				return $this->description;
+			}
 		}
 		
 		/*

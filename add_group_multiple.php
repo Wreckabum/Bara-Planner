@@ -305,7 +305,7 @@
 													<?php
 														foreach($all_projects as $project){
 													?>
-															<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+															<option value='<?= $project->id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 													<?php
 														}
 													?>
@@ -406,7 +406,7 @@
 																<?php
 																	foreach($all_projects as $project){
 																?>
-																		<option value='<?= $project->proj_id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+																		<option value='<?= $project->id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 																<?php
 																	}
 																?>
