@@ -32,9 +32,23 @@
 				
 				$this->name = $result['name'];
 				
-				$this->project = get_project($result['project']);
-				$this->supervisor = get_account($result['supervisor']);
-				$this->assessor = get_account($result['assessor']);
+				try{
+					$this->project = get_project($result['project']);
+				}catch(Exception $e){
+						$this->project = null;
+				}
+				
+				try{
+					$this->supervisor = get_account($result['supervisor']);
+				}catch(Exception $e){
+					$this->supervisor = null;
+				}
+				
+				try{
+					$this->assessor = get_account($result['assessor']);
+				}catch(Exception $e){
+					$this->assessor = null;
+				}
 				
 				$all_members = json_decode($result['members']);
 				

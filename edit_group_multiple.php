@@ -250,8 +250,9 @@
 												<select class='group<?= $counter ?>_supervisor check_same' name='group<?= $counter ?>[supervisor]' style='width:97%;' required>
 													<?php
 														foreach($all_faculty as $supervisor){
+															$selected = ((is_null($group->get_supervisor())) ? "" : (($group->is_supervisor($supervisor->sim_id)) ? "selected" : ""));
 													?>
-															<option value='<?= $supervisor->sim_id ?>' <?= (($group->is_supervisor($supervisor->sim_id)) ? "selected" : "") ?>><?= $supervisor->get_name() ?></option>
+															<option value='<?= $supervisor->sim_id ?>' <?= $selected ?>><?= $supervisor->get_name() ?></option>
 													<?php
 														}
 													?>
@@ -266,8 +267,9 @@
 												<select class='group<?= $counter ?>_assessor' name='group<?= $counter ?>[assessor]' style='width:97%;' required>
 													<?php
 														foreach($all_faculty as $assessor){
+															$selected = ((is_null($group->get_assessor())) ? "" : (($group->is_assessor($assessor->sim_id)) ? "selected" : ""));
 													?>
-															<option value='<?= $assessor->sim_id ?>' <?= (($group->is_assessor($assessor->sim_id)) ? "selected" : "") ?>><?= $assessor->get_name() ?></option>
+															<option value='<?= $assessor->sim_id ?>' <?= $selected ?>><?= $assessor->get_name() ?></option>
 													<?php
 														}
 													?>
@@ -282,8 +284,9 @@
 												<select name='group<?= $counter ?>[project]' style='width:97%;' required>
 													<?php
 														foreach($all_projects as $project){
+															$selected = ((is_null($group->get_project())) ? "" : (($group->is_project($project->id)) ? "selected" : ""));
 													?>
-															<option value='<?= $project->proj_id ?>' <?= (($group->is_project($project->id)) ? "selected" : "") ?>>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+															<option value='<?= $project->proj_id ?>' <?= $selected ?>>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 													<?php
 														}
 													?>

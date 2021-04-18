@@ -266,7 +266,9 @@
 														<td style='text-align:center;'>
 															<?php
 																foreach($student->get_choices() as $key => $choice){
-																	echo "#". ($key + 1) ." - ". $all_projects[$choice]->get_name() ."<br />";
+																	$proj_name = ((isset($all_projects[$choice])) ? $all_projects[$choice]->get_name() : "N/A");
+																	
+																	echo "#". ($key + 1) ." - {$proj_name}<br />";
 																}
 															?>
 														</td>
@@ -640,7 +642,7 @@
 															?>
 														</td>
 														<td style='text-align:left;'>
-															<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+															<?= (is_null($group->get_project()) ? "" : "{$group->get_project()->id} - ({$group->get_project()->get_name()})") ?>
 														</td>
 														<td style='text-align:center;'>
 																<a href='view_group.php?g=<?= $group->id ?>'>

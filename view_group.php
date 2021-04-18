@@ -158,9 +158,15 @@
 									Project:
 								</td>
 								<td colspan='2'>
-									<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
-										<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
-									</a>
+									<?php
+										if(!is_null($group->get_project())){
+									?>
+											<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
+												<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+											</a>
+									<?php
+										}
+									?>
 								</td>
 							</tr>
 							<tr>
@@ -274,9 +280,15 @@
 							Project:
 						</td>
 						<td colspan='2'>
-							<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
-								<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
-							</a>
+							<?php
+								if(!is_null($group->get_project())){
+							?>
+									<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
+										<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+									</a>
+							<?php
+								}
+							?>
 						</td>
 					</tr>
 					<tr>

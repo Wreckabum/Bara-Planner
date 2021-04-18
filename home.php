@@ -34,9 +34,6 @@
 				Highlight repeat student based on archives
 			</li>
 			<li>
-				Decide on what to do with group if faculty/project is deleted
-			</li>
-			<li>
 				Options page (allow import/addition only if semester exists first, etc)
 			</li>
 			<li>

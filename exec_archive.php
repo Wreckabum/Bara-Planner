@@ -128,10 +128,10 @@
 						`quarter`)
 					VALUES
 						('{$group->get_name()}', 
-						'{$group->get_supervisor()->get_name()}',
-						'{$group->get_assessor()->get_name()}', 
+						'". ((is_null($group->get_supervisor())) ? "" : $group->get_supervisor()->get_name()) ."', 
+						'". ((is_null($group->get_assessor())) ? "" : $group->get_assessor()->get_name()) ."', 
 						'". addslashes(json_encode($members)) ."', 
-						'{$group->get_project()->proj_id}', 
+						'". ((is_null($group->get_project())) ? "" : $group->get_project()->proj_id) ."', 
 						'{$group->get_year()}', 
 						'{$group->get_quarter()}');"
 			) !== true){
