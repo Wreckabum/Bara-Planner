@@ -182,4 +182,25 @@
 			return null;
 		}
 	}
+	
+	/*
+		Returns an array of archived group objects
+		
+		@return	array of ArchivedGroup objects
+	*/
+	function get_all_archived_groups(){
+		$query = db_query("SELECT `name`, `year`, `quarter` FROM `archive_groups`;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			try{
+				$output[$row['name']] = get_archived_group($row['name'], $row['year'], $row['quarter']);
+			}catch(Exception $e){
+				continue;
+			}
+		}
+		
+		return $output;
+	}
 ?>

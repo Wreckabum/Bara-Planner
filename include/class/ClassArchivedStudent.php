@@ -25,7 +25,11 @@
 			Constructor
 		*/
 		public function __construct($id, $year, $quarter){
-			$query = db_query("SELECT * FROM `archive_accounts` WHERE `sim_id` = '{$id}', `year` = '{$year}', `quarter` = '{$quarter}' LIMIT 1;");
+			str_clean($id);
+			str_clean($year);
+			str_clean($quarter);
+			
+			$query = db_query("SELECT * FROM `archive_accounts` WHERE `sim_id` = '{$id}' AND `year` = '{$year}' AND `quarter` = '{$quarter}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the account exists
@@ -33,7 +37,7 @@
 				$this->sim_id = $result['sim_id'];
 				$this->uow_id = $result['uow_id'];
 				
-				$this->name = $result['name'];
+				$this->name = htmlspecialchars_decode($result['name']);
 				$this->phone = $result['phone'];
 				$this->sim_email = $result['sim_email'];
 				$this->personal_email = $result['personal_email'];

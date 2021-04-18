@@ -63,7 +63,7 @@
 			}elseif($key == "SIM ID"){
 				$row->sim_id = $value;
 			}elseif($key == "Name"){
-				$row->name = $value;
+				$row->name = htmlspecialchars($value, ENT_QUOTES);
 			}elseif($key == "Mobile No."){
 				$row->phone = $value;
 			}elseif($key == "SIM Email"){

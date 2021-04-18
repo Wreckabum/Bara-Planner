@@ -7,6 +7,7 @@
 		Class for projects
 	*/
 	class ArchivedProject{
+		public	$id;
 		public	$proj_id;
 		
 		private	$name;
@@ -18,16 +19,19 @@
 			Constructor
 		*/
 		public function __construct($proj_id, $year, $quarter){
-			$proj_id = str_clean($proj_id);
+			str_clean($proj_id);
+			str_clean($year);
+			str_clean($quarter);
 			
-			$query = db_query("SELECT * FROM `archive_projects` WHERE `proj_id` = '{$proj_id}', `year` = '{$year}', `quarter` = '{$quarter}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `archive_projects` WHERE `proj_id` = '{$proj_id}' AND `year` = '{$year}' AND `quarter` = '{$quarter}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the poject exists
 			if(mysqli_num_rows($query) == 1){
+				$this->id = $result['id'];
 				$this->proj_id = $result['proj_id'];
-				$this->name = $result['name'];
-				$this->description = $result['description'];
+				$this->name = htmlspecialchars_decode($result['name']);
+				$this->description = htmlspecialchars_decode($result['description']);
 				$this->year = $result['year'];
 				$this->quarter = $result['quarter'];
 			}else{

@@ -108,69 +108,75 @@
 		<?php include("include/templates/header.php"); ?>
 		<div id='body_content'>
 			<div id='sidebar_wrapper'>
-				<ul id='sidebar_nav'>
-					<li>
-						<a href='#' class='menu' onClick="toggle_active();">Active</a>
-					</li>
-					<div id='active_records' style='display:none; padding-left:20px;'>
+				<div id='sidebar_content'>
+					<ul id='sidebar_nav'>
+						<br />
 						<li>
-							<a href='#' class='menu' onClick="toggle_active_students();">Students</a>
+							<a href='#' class='menu' onClick="toggle_active();">Active</a>
 						</li>
-						<div id='active_students' style='display:none; padding-left:20px;'>
+						<div id='active_records' style='display:none; padding-left:20px;'>
 							<li>
-								<a href='#' onClick="get_accounts('t', 'students');">All</a>
+								<a href='#' class='menu' onClick="toggle_active_students();">Students</a>
+							</li>
+							<div id='active_students' style='display:none; padding-left:20px;'>
+								<li>
+									<a href='#' onClick="get_accounts('t', 'students');">All</a>
+								</li>
+								<li>
+									<a href='#' onClick="get_accounts('t', 'ft');">Full-Time</a>
+								</li>
+								<li>
+									<a href='#' onClick="get_accounts('t', 'pt');">Part-Time</a>
+								</li>
+							</div>
+							<li>
+								<a href='#' class='menu' onClick="get_accounts('t', 'faculty');">Faculty</a>
 							</li>
 							<li>
-								<a href='#' onClick="get_accounts('t', 'ft');">Full-Time</a>
+								<a href='#' class='menu' onClick="get_accounts('t', 'admin');">Admin</a>
 							</li>
 							<li>
-								<a href='#' onClick="get_accounts('t', 'pt');">Part-Time</a>
+								<a href='#' class='menu' onClick="get_accounts('t', 'majors');">Majors</a>
+							</li>
+							<li>
+								<a href='#' class='menu' onClick="get_accounts('t', 'projects');">Projects</a>
+							</li>
+							<li>
+								<a href='#' class='menu' onClick="get_accounts('t', 'groups');">Groups</a>
+							</li>
+						</div>
+						<br />
+						<li>
+							<a href='#' class='menu' onClick="toggle_archive();">Archived</a>
+						</li>
+						<div id='archived_records' style='display:none; padding-left:20px;'>
+							<li>
+								<a href='#' class='menu' onClick="toggle_archived_students();">Students</a>
+							</li>
+							<div id='archived_students' style='display:none; padding-left:20px;'>
+								<li>
+									<a href='#' onClick="get_accounts('a', 'students');">All</a>
+								</li>
+								<li>
+									<a href='#' onClick="get_accounts('a', 'ft');">Full-Time</a>
+								</li>
+								<li>
+									<a href='#' onClick="get_accounts('a', 'pt');">Part-Time</a>
+								</li>
+							</div>
+							<li>
+								<a href='#' class='menu' onClick="get_accounts('a', 'projects');">Projects</a>
+							</li>
+							<li>
+								<a href='#' class='menu' onClick="get_accounts('a', 'groups');">Groups</a>
 							</li>
 						</div>
 						<li>
-							<a href='#' class='menu' onClick="get_accounts('t', 'faculty');">Faculty</a>
-						</li>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('t', 'admin');">Admin</a>
-						</li>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('t', 'majors');">Majors</a>
-						</li>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('t', 'projects');">Projects</a>
-						</li>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('t', 'groups');">Groups</a>
-						</li>
-					</div>
-					<br />
-					<li>
-						<a href='#' class='menu' onClick="toggle_archive();">Archived</a>
-					</li>
-					<div id='archived_records' style='display:none; padding-left:20px;'>
-						<li>
-							<a href='#' class='menu' onClick="toggle_archived_students();">Students</a>
-						</li>
-						<div id='archived_students' style='display:none; padding-left:20px;'>
-							<li>
-								<a href='#' onClick="get_accounts('a', 'students');">All</a>
-							</li>
-							<li>
-								<a href='#' onClick="get_accounts('a', 'ft');">Full-Time</a>
-							</li>
-							<li>
-								<a href='#' onClick="get_accounts('a', 'pt');">Part-Time</a>
-							</li>
-						</div>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('a', 'projects');">Projects</a>
-						</li>
-						<li>
-							<a href='#' class='menu' onClick="get_accounts('a', 'groups');">Groups</a>
-						</li>
-					</div>
-					<li>
-				</ul>
+					</ul>
+				</div>
+				<div id='sidebar_toggle' onClick="toggle_sidebar();">
+					<
+				</div>
 			</div>
 			<div id='main_content'>
 				<div id='inner_content'>
@@ -210,7 +216,7 @@
 													Year
 												</th>
 												<th style='text-align:center;'>
-													Quarter
+													Q
 												</th>
 												<th style='text-align:center;'>
 													Choices
@@ -222,6 +228,8 @@
 										</thead>
 										<tbody>
 											<?php
+												$all_projects = get_all_projects();
+												
 												foreach($rows as $student){
 											?>
 													<tr>
@@ -256,7 +264,11 @@
 															<?= $student->get_quarter() ?>
 														</td>
 														<td style='text-align:center;'>
-															
+															<?php
+																foreach($student->get_choices() as $key => $choice){
+																	echo "#". ($key + 1) ." - ". $all_projects[$choice]->get_name() ."<br />";
+																}
+															?>
 														</td>
 														<td style='text-align:center;'>
 															<a href='view_account.php?a=<?= $student->sim_id ?>'>
@@ -265,7 +277,7 @@
 															<?php
 																if($account->is_admin()){
 															?>
-																	&nbsp;&nbsp;
+																	<br />
 																	<a href='edit_student.php?a=<?= $student->sim_id ?>'>
 																		[ Edit ]
 																	</a>
@@ -344,7 +356,7 @@
 															<?php
 																if($account->is_admin()){
 															?>
-																	&nbsp;&nbsp;
+																	<br />
 																	<a href='edit_faculty.php?a=<?= $faculty->sim_id ?>'>
 																		[ Edit ]
 																	</a>
@@ -417,7 +429,7 @@
 															<?php
 																if($account->is_admin()){
 															?>
-																	&nbsp;&nbsp;
+																	<br />
 																	<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
 																		[ Edit ]
 																	</a>
@@ -514,7 +526,7 @@
 													Year
 												</th>
 												<th style='text-align:center;'>
-													Quarter
+													Q
 												</th>
 												<th style='text-align:center;'>
 													Actions
@@ -654,9 +666,227 @@
 					<?php
 								}
 							}elseif(isset($_GET['a'])){
+								if($_GET['a'] == "students" || $_GET['a'] == "pt" || $_GET['a'] == "ft"){
 					?>
-								Check type and print
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													SIM ID
+												</th>
+												<th style='text-align:center;'>
+													UOW ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													SIM Email
+												</th>
+												<th style='text-align:center;'>
+													Personal Email
+												</th>
+												<th style='text-align:center;'>
+													Phone
+												</th>
+												<th style='text-align:center;'>
+													Type
+												</th>
+												<th style='text-align:center;'>
+													Major
+												</th>
+												<th style='text-align:center;'>
+													Choices
+												</th>
+												<th style='text-align:center;'>
+													Year
+												</th>
+												<th style='text-align:center;'>
+													Q
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												$all_archived_projects = get_all_archived_projects();
+												
+												foreach($rows as $student){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $student->sim_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->uow_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_sim_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_personal_email() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_phone() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= ($student->is_part_time() ? "Part-Time" : ($student->is_full_time() ? "Full-Time" : "")) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_major_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?php
+																foreach($student->get_choices() as $key => $choice){
+																	echo "#". ($key + 1) ." - ". $all_archived_projects[$choice]->get_name() ."<br />";
+																}
+															?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_year() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $student->get_quarter() ?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
 					<?php
+								}elseif($_GET['a'] == "projects"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													ID
+												</th>
+												<th style='text-align:center;'>
+													Project ID
+												</th>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													Description
+												</th>
+												<th style='text-align:center;'>
+													Year
+												</th>
+												<th style='text-align:center;'>
+													Q
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $project){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $project->id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->proj_id ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= nl2br($project->get_description()) ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_year() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $project->get_quarter() ?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}elseif($_GET['a'] == "groups"){
+					?>
+									<table id='filter_table' class='display'>
+										<thead>
+											<tr>
+												<th style='text-align:center;'>
+													Name
+												</th>
+												<th style='text-align:center;'>
+													Type
+												</th>
+												<th style='text-align:center;'>
+													Supervisor
+												</th>
+												<th style='text-align:center;'>
+													Assessor
+												</th>
+												<th style='text-align:center;'>
+													Members
+												</th>
+												<th style='text-align:center;'>
+													Project
+												</th>
+												<th style='text-align:center;'>
+													Year
+												</th>
+												<th style='text-align:center;'>
+													Q
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												foreach($rows as $group){
+											?>
+													<tr>
+														<td style='text-align:center;'>
+															<?= $group->get_name() ?>
+														</td>
+														<td>
+															<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $group->get_supervisor() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $group->get_assessor() ?>
+														</td>
+														<td style='text-align:left;'>
+															<?php
+																foreach($group->get_members() as $member){
+															?>
+																	<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+																	<br />
+															<?php
+																}
+															?>
+														</td>
+														<td style='text-align:left;'>
+															<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $group->get_year() ?>
+														</td>
+														<td style='text-align:center;'>
+															<?= $group->get_quarter() ?>
+														</td>
+													</tr>
+											<?php
+												}
+											?>
+										</tbody>
+									</table>
+					<?php
+								}
 							}
 						}
 					?>

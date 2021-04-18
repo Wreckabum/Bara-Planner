@@ -24,8 +24,8 @@
 			//If the poject exists
 			if(mysqli_num_rows($query) == 1){
 				$this->id = $result['id'];
-				$this->name = $result['name'];
-				$this->description = $result['description'];
+				$this->name = htmlspecialchars_decode($result['name']);
+				$this->description = htmlspecialchars_decode($result['description']);
 				$this->type = $result['type'];
 			}else{
 				throw new Exception("Major not found.");

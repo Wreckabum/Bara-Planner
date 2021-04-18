@@ -36,7 +36,7 @@
 				$this->sim_id = $result['sim_id'];
 				$this->uow_id = $result['uow_id'];
 				
-				$this->name = $result['name'];
+				$this->name = htmlspecialchars_decode($result['name']);
 				$this->phone = $result['phone'];
 				$this->sim_email = $result['sim_email'];
 				$this->personal_email = $result['personal_email'];

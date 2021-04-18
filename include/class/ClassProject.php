@@ -34,8 +34,8 @@
 				$this->id = $result['id'];
 				$this->proj_id = $result['proj_id'];
 				
-				$this->name = $result['name'];
-				$this->description = $result['description'];
+				$this->name = htmlspecialchars_decode($result['name']);
+				$this->description = htmlspecialchars_decode($result['description']);
 				
 				$this->year = $result['year'];
 				$this->quarter = $result['quarter'];

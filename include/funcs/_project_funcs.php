@@ -68,7 +68,7 @@
 		
 		while($row = mysqli_fetch_assoc($query)){
 			try{
-				$output[] = get_project($row['id']);
+				$output[$row['id']] = get_project($row['id']);
 			}catch(Exception $e){
 				continue;
 			}
@@ -95,5 +95,26 @@
 		}catch(Exception $e){
 			return null;
 		}
+	}
+	
+	/*
+		Returns an array of all archived project objects
+		
+		@return	array of ArchivedProject objects
+	*/
+	function get_all_archived_projects(){
+		$query = db_query("SELECT `id`, `proj_id`, `year`, `quarter` FROM `archive_projects`;");
+		
+		$output = [];
+		
+		while($row = mysqli_fetch_assoc($query)){
+			try{
+				$output[$row['id']] = get_archived_project($row['proj_id'], $row['year'], $row['quarter']);
+			}catch(Exception $e){
+				continue;
+			}
+		}
+		
+		return $output;
 	}
 ?>

@@ -10,7 +10,7 @@
 		private	$name;
 		private	$supervisor;
 		private	$assessor;
-		private	$proj_id;
+		private	$project;
 		private $year;
 		private $quarter;
 		
@@ -20,9 +20,11 @@
 			Constructor
 		*/
 		public function __construct($name, $year, $quarter){
-			$name = str_clean($name);
+			str_clean($name);
+			str_clean($year);
+			str_clean($quarter);
 			
-			$query = db_query("SELECT * FROM `archive_groups` WHERE `name` = '{$name}', `year` = '{$year}', `quarter` = '{$quarter}' LIMIT 1;");
+			$query = db_query("SELECT * FROM `archive_groups` WHERE `name` = '{$name}' AND `year` = '{$year}' AND `quarter` = '{$quarter}' LIMIT 1;");
 			$result = mysqli_fetch_assoc($query);
 			
 			//If the poject exists
@@ -30,7 +32,7 @@
 				$this->name = $result['name'];
 				$this->supervisor = $result['supervisor'];
 				$this->assessor = $result['assessor'];
-				$this->proj_id = get_project($result['proj_id']);
+				$this->project = get_archived_project($result['proj_id'], $result['year'], $result['quarter']);
 				$this->year = $result['year'];
 				$this->quarter = $result['quarter'];
 				
@@ -58,10 +60,10 @@
 		}
 		
 		/*
-			Get project ID
+			Get project
 		*/
 		public function get_project(){
-			return new ArchivedProject($this->project_id, $this->year, $this->quarter);
+			return $this->project;
 		}
 		
 		/*

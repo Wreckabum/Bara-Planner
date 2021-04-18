@@ -130,7 +130,7 @@
 						('{$group->get_name()}', 
 						'{$group->get_supervisor()->get_name()}',
 						'{$group->get_assessor()->get_name()}', 
-						'". addslashes(json_encode($members)) ."',  
+						'". addslashes(json_encode($members)) ."', 
 						'{$group->get_project()->proj_id}', 
 						'{$group->get_year()}', 
 						'{$group->get_quarter()}');"
@@ -173,13 +173,15 @@
 			if(db_query(
 				"INSERT INTO
 					`archive_projects`
-						(`proj_id`, 
+						(`id`, 
+						`proj_id`, 
 						`name`, 
 						`description`, 
 						`year`, 
 						`quarter`)
 					VALUES
-						('{$project->proj_id}', 
+						('{$project->id}', 
+						'{$project->proj_id}', 
 						'{$project->get_name()}', 
 						'{$project->get_description(true)}', 
 						'{$project->get_year()}', 
@@ -234,6 +236,7 @@
 						`type`, 
 						`major_id`, 
 						`major_name`, 
+						`choices`, 
 						`year`, 
 						`quarter`
 						)
@@ -247,6 +250,7 @@
 						'{$student->get_type_int()}', 
 						'{$student->get_majors()}', 
 						'{$all_majors[$student->get_majors()]->get_name()}', 
+						'". addslashes(json_encode($student->get_choices())) ."', 
 						'{$student->get_year()}', 
 						'{$student->get_quarter()}');"
 			) !== true){
