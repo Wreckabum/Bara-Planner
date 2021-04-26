@@ -64,7 +64,7 @@
 	//Update any potentially missing deadlines
 	add_missing_deadlines();
 	
-	$all_deadlines = get_all_deadlines();
+	$all_deadlines = get_all_semesters();
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -82,7 +82,7 @@
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] >= 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
 		</center>
-		<div style='width:40%;'>
+		<div style='width:50%;'>
 			<table id='filter_table' class='display'>
 				<thead>
 					<tr>
@@ -97,6 +97,9 @@
 						</th>
 						<th style='text-align:center;'>
 							Details
+						</th>
+						<th style='text-align:center;'>
+							Marking Scheme
 						</th>
 						<th style='text-align:center;'>
 							Archive
@@ -120,7 +123,20 @@
 									<input type='date' name='deadline' <?= ((is_null($semester->deadline)) ? "" : "value='{$semester->deadline}'") ?> style='width:97%;' required />
 								</td>
 								<td style='text-align:center;'>
-									<a href='view_semester?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View Details ]</a>
+									<a href='view_semester.php?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View Details ]</a>
+								</td>
+								<td style='text-align:center;'>
+									<?php
+										if(is_null($semester->marking_scheme) || $semester->marking_scheme == "null"){
+									?>
+											<a href='#?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ Update ]</a>
+									<?php
+										}else{
+									?>
+											<a href='view_marking_scheme.php?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View ]</a>
+									<?php
+										}
+									?>
 								</td>
 								<td style='text-align:center;'>
 									<a id='archive_link_<?= $semester->year ?>_<?= $semester->quarter ?>' href='#' onClick="show_archive(<?= $semester->year ?>, <?= $semester->quarter ?>);">

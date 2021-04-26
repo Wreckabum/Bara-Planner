@@ -56,7 +56,7 @@
 	//Update any potentially missing deadlines
 	add_missing_deadlines();
 	
-	$semester_details = get_semester_details($_GET['y'], $_GET['q']);
+	$semester_details = get_semester($_GET['y'], $_GET['q']);
 ?>
 <!DOCTYPE html>
 <html lang='en'>

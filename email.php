@@ -61,7 +61,7 @@
 							<td>
 								<select name='semester' style='width:97%;' required>
 									<?php
-										$available_semesters = get_semesters();
+										$available_semesters = get_all_semesters_quarters();
 										
 										foreach($available_semesters as $year => $quarter_array){
 											foreach($quarter_array as $quarter){

@@ -44,7 +44,7 @@
 	}
 	
 	//Ensure semester record exists
-	$semester_details = get_semester_details($_POST['year'], $_POST['quarter']);
+	$semester_details = get_semester($_POST['year'], $_POST['quarter']);
 	
 	//Semester does not exist
 	if(is_null($semester_details)){
@@ -67,12 +67,14 @@
 					(`year`, 
 					`quarter`, 
 					`deadline`, 
-					`details`) 
+					`details`, 
+					`marking_scheme`) 
 				VALUES 
 					('{$semester_details->year}', 
 					'{$semester_details->quarter}', 
 					'{$semester_details->deadline}', 
-					'{$semester_details->details}');"
+					'{$semester_details->details}', 
+					'{$semester_details->marking_scheme}');"
 		) !== true){
 			//If error
 			db_query("ROLLBACK;");
