@@ -151,7 +151,7 @@
 				</td>
 			</tr>
 			<?php
-				//For non admin acocunts, show extra details
+				//For non-admin acocunts, show extra details
 				if(!$view_account->is_admin()){
 					if($view_account->is_student()){
 			?>
@@ -183,6 +183,15 @@
 							</td>
 						</tr>
 			<?php
+						if($view_account->is_repeat()){
+			?>
+							<tr>
+								<td colspan='3' style='background-color:#DADADA; text-align:center;'>
+									Student record exists in archives
+								</td>
+							</tr>
+			<?php
+						}
 					}elseif($view_account->is_faculty()){
 			?>
 						<tr>

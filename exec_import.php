@@ -26,6 +26,7 @@
 	$majors = get_all_majors();
 	$import_data = json_decode($_POST['import_data']);
 	$errors = [];
+	$repeats = [];
 	$headers = [];
 	$success_count = 0;
 	
@@ -94,11 +95,21 @@
 		if($_POST['type'] == "student"){
 			if(count($major_array) == 1){
 				//If only 1 major attached to row
+				$major_found = false;
+				
 				foreach($majors as $major){
 					if($major->id == $row->major){
 						$row->type = $major->get_student_type();
+						$major_found = true;
 						break;
 					}
+				}
+				
+				if(!$major_found){
+					//Major not found
+					$row->error = "Invalid major.";
+					$errors[] = $row;
+					continue;
 				}
 			}else{
 				//Multiple majors
@@ -134,7 +145,6 @@
 				}
 			}
 			
-			
 			//There is a major in the list that is not found
 			if(count($major_array) != count($row->accepted_majors)){
 				$row->error = "Invalid major found.";
@@ -150,7 +160,7 @@
 		
 		//Ensure type exist (checking student)
 		if(!isset($row->type)){
-			$row->error = "Invalid major.";
+			$row->error = "Invalid account type.";
 			$errors[] = $row;
 			continue;
 		}
@@ -196,6 +206,13 @@
 		}else{
 			//Sucessfully added
 			$success_count++;
+			
+			//Check if student exists in archives
+			$archive_query = db_query("SELECT `sim_id` from `archive_accounts` WHERE `sim_email` = '{$row->sim_email}';");
+			
+			if(mysqli_num_rows($archive_query) >= 1){
+				$repeats[] = $row;
+			}
 		}
 	}
 	
@@ -220,7 +237,28 @@
 		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&y={$_POST['year']}&q={$_POST['quarter']}";
 	}
 	
-	header("location: import_result.php?c={$success_count}{$error_info}&t={$_POST['type']}");
+	$repeat_info = "";
+	
+	if(count($repeats) > 0){
+		//Clean the data sent back
+		foreach($errors as $row){
+			unset($row->sim_id);
+			unset($row->uow_id);
+			unset($row->name);
+			unset($row->sim_email);
+			unset($row->personal_email);
+			unset($row->major);
+			unset($row->type);
+			unset($row->phone);
+			unset($row->year);
+			unset($row->quarter);
+			unset($row->accepted_majors);
+		}
+		
+		$repeat_info = "&rep=". json_encode($repeats);
+	}
+	
+	header("location: import_result.php?c={$success_count}{$error_info}{$repeat_info}&t={$_POST['type']}");
 	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);

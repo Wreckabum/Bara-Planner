@@ -31,9 +31,6 @@
 		Items left to do:
 		<ul>
 			<li>
-				Highlight repeat student based on archives
-			</li>
-			<li>
 				Options page (allow import/addition only if semester exists first, etc)
 			</li>
 			<li>

@@ -96,6 +96,21 @@
 		public function is_part_time(){
 			return $this->account_type == 2;
 		}
+		
+		/*
+			Checks if the account has a record in the archives
+			
+			@return bool
+		*/
+		public function is_repeat(){
+			$query = db_query("SELECT `sim_id` from `archive_accounts` WHERE `sim_email` = '{$this->get_sim_email()}';");
+			
+			if(mysqli_num_rows($query) >= 1){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	}
 	
 	//Close connection

@@ -24,6 +24,7 @@
 	}
 	
 	$errors = ((isset($_GET['err'])) ? json_decode($_GET['err']) : []);
+	$repeats = ((isset($_GET['rep'])) ? json_decode($_GET['rep']) : []);
 	$headers = ((isset($_GET['h'])) ? json_decode($_GET['h']) : []);
 	$type = (($_GET['t'] == "student") ? "student" : "faculty");
 	$year = ((isset($_GET['y'])) ? str_clean($_GET['y']) : date('Y'));
@@ -42,18 +43,71 @@
 		<script src='include/js/dataTables.min.js'></script>
 	</head>
 	<body>
-		<?php include('include/templates/header.php'); ?>
-		<h4>
-			Successfully added: <?= $_GET['c'] ?> <?= (($_GET['t'] == "student") ? "Students" : "Faculty members") ?>
-			<br />
-			Errors: <?= count($errors) ?>
-		</h4>
+		<?php include('include/templates/header.php'); ?>		
+		<span style='float:left;'>
+			<h4>
+				Successfully added: <?= $_GET['c'] ?> <?= (($_GET['t'] == "student") ? "Students" : "Faculty members") ?>
+			</h4>
+		</span>
+		<span style='float:right;'>
+			<input type='button' id='toggle_repeats' value='Hide/Show students retaking FYP' />
+		</span>
+		<br />
 		<?php
+			if(count($repeats) > 0){
+		?>
+				<div id='repeats_container'>
+					<hr />
+					<hr />
+					<h4>
+						Students retaking FYP: <?= count($repeats) ?>
+					</h4>
+					<table id='repeats' class='display'>
+						<thead>
+							<tr>
+								<?php
+									foreach($headers as $header){
+								?>
+										<th>
+											<?= $header ?>
+										</th>
+								<?php
+									}
+								?>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								foreach($repeats as $repeat){
+							?>
+									<tr>
+										<?php
+											foreach($headers as $header){
+										?>
+												<td>
+													<?= $repeat->$header ?>
+												</td>
+										<?php
+											}
+										?>
+									</tr>
+							<?php
+								}
+							?>
+						</tbody>
+					</table>
+				</div>
+		<?php
+			}
+			
 			if(count($errors) > 0){
 		?>
-				<br />
+				<hr />
+				<hr />
 				<h4>
-					Students for: Year <?= $year ?>, Quarter <?= $quarter ?>
+					Errors: <?= count($errors) ?>
+					<br />
+					--> Students for: Year <?= $year ?>, Quarter <?= $quarter ?>
 				</h4>
 				<table id='filter_table' class='display'>
 					<thead>
@@ -107,11 +161,21 @@
 		<a href='home.php'>Back to main page</a>
 	</body>
 	<script>
+		var repeats = $("#repeats").DataTable({
+			/* Disable initial sort */
+			"aaSorting": [],
+			"paging": false
+		});
+		
 		var dt = $("#filter_table").DataTable({
 			/* Disable initial sort */
 			"aaSorting": [],
 			"paging": false
 		});
+		
+		$("#toggle_repeats").click(function(){
+			$("#repeats_container").toggle();
+		});		
 		
 		$("#resubmit").click(function(){
 			let all_rows = {};
