@@ -305,7 +305,7 @@
 									$third_choice[$this_member_id] = $current_group[$this_member_id];
 								}
 								
-								unset($current_group[$this_member_id]); //Exclude if not first choice
+								unset($current_group[$this_member_id]); //Clear current group
 							}
 							
 							//Which weight to attemp to distribute (prevents distributing too early)
@@ -317,11 +317,16 @@
 								$current_group = $third_choice;
 							}
 							
-							//Try to distribute (first choice)
+							//Try to distribute
 							foreach($current_group as $this_member_id => $this_member_choices){
+								$student_distributed = false;
+								
 								//Ensure project already has a group
 								if(isset($groups[$project_id])){
 									foreach($groups[$project_id] as $total_weight_key => $weighted_groups){
+										if($student_distributed){
+											break;
+										}
 										//Count and check if there are slots available for even distribution
 										$total_number_of_groups_in_weight = 0;
 										$total_members_in_project_weight = 0;
@@ -337,6 +342,10 @@
 											($total_number_of_groups_in_weight * $max) - ($total_members_in_project_weight + count($current_group)) > 0 //If remainder can fit within existing groups
 										){
 											foreach($weighted_groups as $weighted_group_key => $weighted_group_members){
+												if($student_distributed){
+													break;
+												}
+												
 												//If an existing group still has slots available
 												if(count($weighted_group_members) < $max){
 													//Add this student to the group
@@ -344,6 +353,8 @@
 													
 													//Remove from students array
 													unset($student_choices_weight[$this_member_id]);
+													
+													$student_distributed = true;
 												}
 											}
 										}
