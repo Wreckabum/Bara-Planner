@@ -59,11 +59,6 @@
 				display: inline-table;
 			}
 			
-			#marking_scheme tr:not(:first-child) td {
-				padding-top: 6px;
-				padding-bottom: 6px;
-			}
-			
 			.basic_table td {
 				text-align: center;
 				white-space: nowrap;
