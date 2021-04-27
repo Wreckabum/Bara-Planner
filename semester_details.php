@@ -129,7 +129,7 @@
 									<?php
 										if(is_null($semester->marking_scheme) || $semester->marking_scheme == "null"){
 									?>
-											<a href='#?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ Update ]</a>
+											<a href='update_marking_scheme.php?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ Update ]</a>
 									<?php
 										}else{
 									?>

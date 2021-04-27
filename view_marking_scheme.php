@@ -44,8 +44,7 @@
 	//Update any potentially missing deadlines
 	add_missing_deadlines();
 	
-	$semester_details = get_semester($_GET['y'], $_GET['q']);
-	$marking_scheme = json_decode($semester_details->marking_scheme);
+	$marking_scheme_table = print_marking_scheme($_GET['y'], $_GET['q']);
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -87,114 +86,10 @@
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
-		<table class='basic_table' style='width:auto%;'>
-			<tr>
-				<td colspan='2'>
-					Item
-				</td>
-				<td>
-					Assignment Items & Format
-				</td>
-				<td>
-					Week Due
-				</td>
-				<td>
-					Max Marks (%)
-				</td>
-				<td>
-					Supervisor
-				</td>
-				<td>
-					Assessor
-				</td>
-				<td>
-					Total
-				</td>
-				<td>
-					Average
-				</td>
-			</tr>
-			<?php
-				foreach($marking_scheme->faculty as $section => $section_details){
-			?>
-					<tr>
-						<td colspan='2'>
-							<?= $section ?>
-						</td>
-						<td>
-							<?= $section_details->desc ?>
-						</td>
-						<?php
-							if($section_details->desc == "Penalty"){
-						?>
-									<td class='due penalty'>-</td>
-									<td class='weight penalty'>-%</td>
-									<td class='supervisor penalty'></td>
-									<td class='assessor penalty'></td>
-									<td class='total penalty'></td>
-									<td class='average penalty'></td>
-								</tr>
-						<?php
-							}else{
-						?>
-								<td class='due' <?= ((isset($section_details->parts)) ? "rowspan='". (count((array)$section_details->parts) + 1) ."'" : "") ?>>
-									<?= $section_details->week_due ?>
-								</td>
-								<?php
-									if(isset($section_details->parts)){
-								?>
-											<td colspan='5' class='empty'>-</td>
-										</tr>
-										<?php
-											foreach($section_details->parts as $part => $part_details){
-										?>
-												<tr>
-													<td class='empty'>-</td>
-													<td>
-														<?= $part ?>
-													</td>
-													<td>
-														<?= $part_details->desc ?>
-													</td>
-													<td class='weight'>
-														<?= $part_details->weight ?>%
-													</td>
-													<td class='supervisor'></td>
-													<td class='assessor'></td>
-													<td class='total'></td>
-													<td class='average'></td>
-												</tr>
-										<?php
-											}
-										?>
-								<?php
-									}else{
-								?>
-											<td class='weight'>
-												<?= $section_details->weight ?>%
-											</td>
-											<td class='supervisor'></td>
-											<td class='assessor'></td>
-											<td class='total'></td>
-											<td class='average'></td>
-										</tr>
-			<?php
-									}
-							}
-				}
-			?>
-			<tr>
-				<td colspan='2' class='empty'>-</td>
-				<td>
-					Individual Student
-				</td>
-				<td class='empty'>-</td>
-				<td>
-					<?= $marking_scheme->student->weight ?>%
-				</td>
-				<td colspan='4' class='empty'>-</td>
-			</tr>
-		</table>
+		<?= $marking_scheme_table ?>
+		<br />
+		<a href='update_marking_scheme.php?y=<?= $_GET['y'] ?>&q=<?= $_GET['q'] ?>'>Update marking scheme</a>
+		<br />
 		<br />
 		<a href='semester_details.php'>Back to all semester details</a>
 		<br />

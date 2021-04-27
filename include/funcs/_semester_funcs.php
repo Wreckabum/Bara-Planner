@@ -219,7 +219,7 @@
 					'weight' => 5,
 				  ],
 				];
-		}else{
+		}elseif($type == "json"){
 			return 
 				'{
 					"faculty": {
@@ -279,5 +279,136 @@
 					}
 				}';
 		}
+	}
+	
+	/*
+		Returns HTML code for the marking scheme
+		
+		@param	int
+		@param	int
+		@param	string
+		@return HTML table
+	*/
+	function print_marking_scheme($year, $quarter, $type = "view", $use_default = false){
+		if($use_default){
+			$marking_scheme = json_decode(get_default_marking_scheme("json"));
+		}else{
+			$json_marking_scheme = mysqli_fetch_assoc(db_query("SELECT `marking_scheme` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';"))['marking_scheme'];
+			
+			//If no marking scheme
+			if(is_null($json_marking_scheme) || $json_marking_scheme == "null"){
+				return false;
+			}
+			
+			$marking_scheme = json_decode($json_marking_scheme);
+		}
+		
+		$output = 
+			"<table class='basic_table' style='width:auto%;'>
+				<tr>
+					<td colspan='2'>
+						Item
+					</td>
+					<td>
+						Assignment Items & Format
+					</td>
+					<td>
+						Week Due
+					</td>
+					<td>
+						Max Marks (%)
+					</td>
+					<td>
+						Supervisor
+					</td>
+					<td>
+						Assessor
+					</td>
+					<td>
+						Total
+					</td>
+					<td>
+						Average
+					</td>
+				</tr>";
+		
+		foreach($marking_scheme->faculty as $section => $section_details){
+			$output .=
+				"<tr>
+					<td colspan='2'>
+						{$section}
+					</td>
+					<td>
+						{$section_details->desc}
+					</td>";
+			
+			if($section_details->desc == "Penalty"){
+				$output .=
+					"<td class='due penalty'>-</td>
+					<td class='weight penalty'>-%</td>
+					<td class='supervisor penalty'></td>
+					<td class='assessor penalty'></td>
+					<td class='total penalty'></td>
+					<td class='average penalty'></td>
+				</tr>";
+			}else{
+				$output .=
+					"<td class='due' ". ((isset($section_details->parts)) ? "rowspan='". (count((array)$section_details->parts) + 1) ."'" : "") .">
+						{$section_details->week_due}
+					</td>";
+					
+				if(isset($section_details->parts)){
+					$output .=
+						"<td colspan='5' class='empty'>-</td>
+					</tr>";
+				
+						foreach($section_details->parts as $part => $part_details){
+							$output .=
+								"<tr>
+									<td class='empty'>-</td>
+									<td>
+										{$part}
+									</td>
+									<td>
+										{$part_details->desc}
+									</td>
+									<td class='weight'>
+										{$part_details->weight}%
+									</td>
+									<td class='supervisor'></td>
+									<td class='assessor'></td>
+									<td class='total'></td>
+									<td class='average'></td>
+								</tr>";
+						}
+				}else{
+					$output .=
+						"<td class='weight'>
+							{$section_details->weight}%
+						</td>
+						<td class='supervisor'></td>
+						<td class='assessor'></td>
+						<td class='total'></td>
+						<td class='average'></td>
+					</tr>";
+				}
+			}
+		}
+		
+		$output .=
+				"<tr>
+					<td colspan='2' class='empty'>-</td>
+					<td>
+						Individual Student
+					</td>
+					<td class='empty'>-</td>
+					<td>
+						{$marking_scheme->student->weight}%
+					</td>
+					<td colspan='4' class='empty'>-</td>
+				</tr>
+			</table>";
+		
+		return $output;
 	}
 ?>
