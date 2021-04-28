@@ -405,8 +405,9 @@
 															<select name='group<?= $counter ?>[project]' style='width:97%;' required>
 																<?php
 																	foreach($all_projects as $project){
+																		$selected = (($project_id == $project->id) ? "selected" : "");
 																?>
-																		<option value='<?= $project->id ?>'>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+																		<option value='<?= $project->id ?>' <?= $selected ?>>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
 																<?php
 																	}
 																?>
@@ -422,7 +423,6 @@
 																	</td>
 																	<?php
 																		foreach($all_projects as $project){
-																			
 																	?>
 																			<td style='width:30px; padding:0; text-align:center;'>
 																				<?= $project->id ?>
