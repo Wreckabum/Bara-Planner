@@ -31,6 +31,10 @@
 				$err = "Unexpected error.";
 				break;
 			
+			case 1:
+				$err = "Total marks do not add up to 100%.";
+				break;
+			
 			case 9:
 				$err = "Successfully updated.";
 				break;
@@ -68,8 +72,12 @@
 				background-color: #E4E4E4;
 			}
 			
+			.item_desc {
+				width: 450px;
+			}
+			
 			.supervisor, .assessor, .total, .average {
-				width: 125px;
+				width: 112px;
 			}
 			
 			.supervisor {
@@ -102,91 +110,96 @@
 				<input type='button' id='add_new_row' value='Add Item' />
 				<br />
 				<br />
-				<div id='marking_scheme_container'>
-					<table id='marking_scheme' class='basic_table' style='width:auto%;'>
-						<tr class='header'>
-							<td colspan='2'>
-								Item
-							</td>
-							<td>
-								Assignment Items & Format
-							</td>
-							<td>
-								Week Due
-							</td>
-							<td>
-								Max Marks (%)
-							</td>
-							<td>
-								Supervisor
-							</td>
-							<td>
-								Assessor
-							</td>
-							<td>
-								Total
-							</td>
-							<td>
-								Average
-							</td>
-						</tr>
-						<tr id='row_1' class='new_item'>
-							<td colspan='2'>
-								1
-							</td>
-							<td class='item_desc'>
-								<input type='text' name='~~~' style='width:97%;' required />
-							</td>
-							<td class='due'>
-								<input type='number' name='~~~' min='1' max='20'>
-							</td>
-							<td class='weight'>
-								<input type='number' name='~~~' min='1' max='100'>%
-							</td>
-							<td class='supervisor'></td>
-							<td class='assessor'></td>
-							<td class='total'></td>
-							<td class='average'></td>
-						</tr>
-						<tr class='fixed'>
-							<td colspan='2' class='empty'>
-								-
-							</td>
-							<td>
-								Penalty
-							</td>
-							<td class='due penalty'>-</td>
-							<td class='weight penalty'>-%</td>
-							<td class='supervisor penalty'></td>
-							<td class='assessor penalty'></td>
-							<td class='total penalty'></td>
-							<td class='average penalty'></td>
-						</tr>
-						<tr class='fixed'>
-							<td colspan='2' class='empty'>-</td>
-							<td>
-								Individual Student
-							</td>
-							<td class='empty'>-</td>
-							<td>
-								<input type='number' name='~~~' min='1' max='100'>%
-							</td>
-							<td colspan='4' class='empty'>-</td>
-						</tr>
-					</table>
-					<table id='actions_table' class='basic_table'>
-						<tr>
-							<td>
-								Actions
-							</td>
-						</tr>
-						<tr id='actions_1' class='actions_row'>
-							<td>
-								<input type='button' id='add_sub_1' class='add_sub' value='Add Sub-item' /> <input type='button' id='del_1' class='del_row' value='Delete Item' />
-							</td>
-						</tr>
-					</table>
-				</div>
+				<form id='marking_scheme_form' action='exec_marking_scheme.php' method='POST'>
+					<div id='marking_scheme_container'>
+						<table id='marking_scheme' class='basic_table' style='width:auto%;'>
+							<tr class='header'>
+								<td colspan='2'>
+									Item
+								</td>
+								<td>
+									Assignment Items & Format
+								</td>
+								<td>
+									Week Due
+								</td>
+								<td>
+									Marks (%)
+								</td>
+								<td>
+									Supervisor
+								</td>
+								<td>
+									Assessor
+								</td>
+								<td>
+									Total
+								</td>
+								<td>
+									Average
+								</td>
+							</tr>
+							<tr id='row_1' class='new_item'>
+								<td colspan='2'>
+									1
+								</td>
+								<td class='item_desc'>
+									<input type='text' name='desc[1][main]' style='width:97%;' required />
+								</td>
+								<td class='due'>
+									<input type='number' name='due[1]' min='1' max='20' required>
+								</td>
+								<td class='weight'>
+									<input type='number' name='weight[1][main]' min='1' max='100' required>%
+								</td>
+								<td class='supervisor'></td>
+								<td class='assessor'></td>
+								<td class='total'></td>
+								<td class='average'></td>
+							</tr>
+							<tr class='fixed'>
+								<td colspan='2' class='empty'>
+									-
+								</td>
+								<td>
+									Penalty
+								</td>
+								<td class='due penalty'>-</td>
+								<td class='weight penalty'>-%</td>
+								<td class='supervisor penalty'></td>
+								<td class='assessor penalty'></td>
+								<td class='total penalty'></td>
+								<td class='average penalty'></td>
+							</tr>
+							<tr class='fixed'>
+								<td colspan='2' class='empty'>-</td>
+								<td>
+									Individual Student
+								</td>
+								<td class='empty'>-</td>
+								<td>
+									<input id='student_weight' type='number' name='student' min='1' max='100' required>%
+								</td>
+								<td colspan='4' class='empty'>-</td>
+							</tr>
+						</table>
+						<table id='actions_table' class='basic_table'>
+							<tr>
+								<td>
+									Actions
+								</td>
+							</tr>
+							<tr id='actions_1' class='actions_row'>
+								<td>
+									<input type='button' id='add_sub_1' class='add_sub' value='Add Sub-item' /> <input type='button' id='del_1' class='del_row' value='Delete Item' />
+								</td>
+							</tr>
+						</table>
+					</div>
+					<input type='hidden' name='year' value='<?= $_GET['y'] ?>'/>
+					<input type='hidden' name='quarter' value='<?= $_GET['q'] ?>'/>
+					<input type='submit' value='Update Marking Scheme'>
+				</form>
 		<?php
 			}else{
 				echo $marking_scheme_table;
@@ -215,16 +228,17 @@
 		});
 		
 		let new_row = $("#row_1").clone().get(0).outerHTML;
-		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td></td><td class='item_desc'><input type='text' name='~~~' style='width:97%;' required /></td><td class='weight'><input type='number' name='~~~' min='1' max='100'>%</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
+		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td>a</td><td class='item_desc'><input type='text' name='desc[1][sub][a]' style='width:97%;' required /></td><td class='weight'><input type='number' name='weight[1][sub][a]' min='1' max='100' required>%</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
 		let action_row = $("#actions_1").clone().get(0).outerHTML;
 		let counter = 1;
 		
 		$("#add_new_row").click(function(){
 			$("#marking_scheme").find('tr:nth-last-child(3)').after(new_row.replace(/1/g, ++counter));
+			$("#marking_scheme").find('tr:nth-last-child(3)').find('td.due input').attr('min', 1);
 			$("#actions_table tr").last().after(action_row.replace(/1/g, counter));
 		});
 		
-		//Update all row meta-data + item number when row is deleted
+		//Update all main-item row meta-data + item number when main-item is deleted
 		$(document).on("click", ".del_row", function(){
 			let row_id = $(this)[0].id.substr(4);
 			
@@ -237,17 +251,26 @@
 				$('#marking_scheme tr[main_item=' + row_id + ']').remove();
 				$('#actions_table tr[main_item=' + row_id + ']').remove();
 				
+				//Update all main-item rows
 				let recount = 1;
 				
 				$(".new_item").each(function(e, val){
+					//If main-item
 					if(typeof $(this).attr('main_item') === "undefined"){
 						$(this).attr('id', 'row_' + recount);
-						$(this).children('td').first().text(recount++);
+						$(this).children('td').first().text(recount);
+						$(this).children('td.item_desc').children('input').attr('name', 'desc[' + recount + '][main]');
+						$(this).children('td.due').children('input').attr('name', 'due[' + recount + ']');
+						$(this).children('td.weight').children('input').attr('name', 'weight[' + recount++ + '][main]');
 					}else{
+						//If sub-item
 						$(this).attr('main_item', (recount - 1));
+						$(this).children('td.item_desc').children('input').attr('name', $(this).children('td.item_desc').children('input').attr('name').replace(/desc\[(\d+)]\[sub]\[(\d+)]/g, 'desc[' + (recount - 1) + '][sub][$2]'));
+						$(this).children('td.weight').children('input').attr('name', $(this).children('td.weight').children('input').attr('name').replace(/weight\[(\d+)]\[sub]\[(\d+)]/g, 'weight[' + (recount - 1) + '][sub][$2]'));
 					}
 				});
 				
+				//Update all action rows
 				recount = 1;
 				
 				$(".actions_row").each(function(e, val){
@@ -263,7 +286,7 @@
 			}
 		});
 		
-		//Update all row meta-data + item number when row is deleted
+		//Update all sub-item row meta-data + item number when sub-item is deleted
 		$(document).on("click", ".del_sub_row", function(){
 			let main_id = $($(this)[0]).attr('main_item');
 			let sub_id = $($(this)[0]).attr('sub_item');
@@ -280,7 +303,9 @@
 				let recount = 1;
 				
 				$('#marking_scheme tr[main_item=' + main_id + ']').each(function(e, val){
-					$(this).attr('sub_item', recount++);
+					$(this).attr('sub_item', recount);
+					$(this).children('td.item_desc').children('input').attr('name', 'desc[' + main_id + '][sub][' + alphabet[(recount - 1)] + ']');
+					$(this).children('td.weight').children('input').attr('name', 'weight[' + main_id + '][sub][' + alphabet[(recount++ - 1)] + ']');
 				});
 				
 				recount = 1;
@@ -308,18 +333,37 @@
 			$("#row_" + row_id).find('td:nth-child(n+5)').remove(); //Remove excess columns
 			
 			if(row_span == 2){
+				//First sub-item
 				$("#row_" + row_id).after($($.parseHTML(new_sub_row)).attr('main_item', row_id).attr('sub_item', row_span - 1)); //Add new sub-item with proper meta-data
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().find('td:nth-child(2)').text(alphabet[(row_span - 2)]); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('input').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.weight').children('input').attr('name', 'weight[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$("#actions_" + row_id).after("<tr class='actions_row' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "'><td><input type='button' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "' class='del_sub_row' value='Delete Item' /></td></tr>"); //Add new action row
 			}else{
+				//Next consecutive sub-items
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().after($($.parseHTML(new_sub_row)).attr('main_item', row_id).attr('sub_item', row_span - 1)); //Add new sub-item with proper meta-data
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().find('td:nth-child(2)').text(alphabet[(row_span - 2)]); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('input').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.weight').children('input').attr('name', 'weight[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$('#actions_table tr[main_item=' + row_id + ']').last().after("<tr class='actions_row' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "'><td><input type='button' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "' class='del_sub_row' value='Delete Item' /></td></tr>"); //Add new action row
 			}
+		});
+		
+		$("#marking_scheme_form").submit(function(e){
+			let total_weight = 0;
 			
-			let recount = 0;
-			
-			$('#marking_scheme tr[main_item=' + row_id + ']').each(function(e, val){
-				$(this).find('td:nth-child(2)').text(alphabet[recount++]);
+			$('#marking_scheme input[name^=weight]').each(function(){
+				total_weight += parseInt($(this).val());
 			});
+			
+			total_weight += parseInt($("#student_weight").val());
+			
+			if(isNaN(total_weight) || total_weight != 100){
+				alert("All marks must total up to 100.");
+				e.preventDefault();
+				
+				return false;
+			}
 		});
 	</script>
 </html>
