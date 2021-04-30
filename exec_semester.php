@@ -42,12 +42,14 @@
 					(`year`,
 					`quarter`, 
 					`deadline`, 
-					`details`)
+					`details`, 
+					`marking_scheme`)
 				VALUES
 					('{$_POST['year']}', 
 					'{$_POST['quarter']}', 
 					'{$_POST['deadline']}', 
-					'". htmlspecialchars($_POST['details'], ENT_QUOTES) ."');"
+					'". htmlspecialchars($_POST['details'], ENT_QUOTES) ."', 
+					'null');"
 		) !== true){
 			//Error when adding
 			header("location: view_semester.php?y={$_POST['year']}&q={$_POST['quarter']}&err=4");
