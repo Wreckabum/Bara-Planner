@@ -23,12 +23,12 @@
 		exit();
 	}
 	
-	$errors = ((isset($_GET['err'])) ? json_decode($_GET['err']) : []);
-	$repeats = ((isset($_GET['rep'])) ? json_decode($_GET['rep']) : []);
-	$headers = ((isset($_GET['h'])) ? json_decode($_GET['h']) : []);
-	$type = (($_GET['t'] == "student") ? "student" : "faculty");
-	$year = ((isset($_GET['y'])) ? str_clean($_GET['y']) : date('Y'));
-	$quarter = ((isset($_GET['q'])) ? str_clean($_GET['q']) : ceil(date('n') / 3));
+	$errors = ((isset($_POST['err'])) ? json_decode($_POST['err']) : []);
+	$repeats = ((isset($_POST['rep'])) ? json_decode($_POST['rep']) : []);
+	$headers = ((isset($_POST['h'])) ? json_decode($_POST['h']) : []);
+	$type = (($_POST['t'] == "student") ? "student" : "faculty");
+	$year = ((isset($_POST['y'])) ? str_clean($_POST['y']) : date('Y'));
+	$quarter = ((isset($_POST['q'])) ? str_clean($_POST['q']) : ceil(date('n') / 3));
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +46,7 @@
 		<?php include('include/templates/header.php'); ?>		
 		<span style='float:left;'>
 			<h4>
-				Successfully added: <?= $_GET['c'] ?> <?= (($_GET['t'] == "student") ? "Students" : "Faculty members") ?>
+				Successfully added: <?= $_POST['c'] ?> <?= (($_POST['t'] == "student") ? "Students" : "Faculty members") ?>
 			</h4>
 		</span>
 		<span style='float:right;'>
@@ -141,9 +141,6 @@
 										}
 									?>
 									<td>
-										<input type='hidden' name='type' value='<?= $type ?>' />
-										<input type='hidden' name='year' value='<?= $year ?>' />
-										<input type='hidden' name='quarter' value='<?= $quarter ?>' />
 										<?= $error->error ?>
 									</td>
 								</tr>
@@ -192,37 +189,82 @@
 				all_rows[start++] = row_array;
 			});
 			
-			$("body").append($("<form/>", {
-				id: "jquery_form",
-				method: "POST",
-				action: "exec_import.php"
-			}));
+			$.ajax({
+				url: "exec_import.php",
+				type: "POST",
+				data: {
+					import_data: JSON.stringify(all_rows), 
+					type: '<?= $type ?>', 
+					year: <?= $year ?>, 
+					quarter: <?= $quarter ?>
+				},
+				success: function(data){
+					data = JSON.parse(data);
+					
+					if(data['error']){
+						if(typeof data['redirect'] === 'undefined'){
+							$("#error_text").show().text(data['text']);
+						}else{
+							//Show error
+							window.location.href = data['redirect'];
+						}
+					}else{
+						$("body").append($("<form/>", {
+							id: "jquery_form",
+							method: "POST",
+							action: data['redirect']
+						}));
 
-			$("#jquery_form").append($("<input/>", {
-				type: "hidden",
-				name: "import_data",
-				value: JSON.stringify(all_rows)
-			}));
-			
-			$("#jquery_form").append($("<input/>", {
-				type: "hidden",
-				name: "type",
-				value: "<?= $type ?>"
-			}));
-			
-			$("#jquery_form").append($("<input/>", {
-				type: "hidden",
-				name: "year",
-				value: <?= $year ?>
-			}));
-			
-			$("#jquery_form").append($("<input/>", {
-				type: "hidden",
-				name: "quarter",
-				value: <?= $quarter ?>
-			}));
-			
-			$("#jquery_form").submit();
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "c",
+							value: data['c']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "err",
+							value: JSON.stringify(data['err'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "h",
+							value: JSON.stringify(data['h'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "y",
+							value: data['y']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "q",
+							value: data['q']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "rep",
+							value: JSON.stringify(data['rep'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "t",
+							value: data['t']
+						}));
+						
+						$("#jquery_form").submit();
+					}
+				},
+				error: function(jqXHR,textStatus,errorThrown){
+					console.log("Error with AJAX request.");
+					//console.log(jqXHR); console.log(textStatus); console.log(errorThrown); //For testing
+				}
+			});
 		});
 	</script>
 </html>

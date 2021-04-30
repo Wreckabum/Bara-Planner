@@ -100,6 +100,9 @@
 	</head>
 	<body>
 		<?php include('include/templates/header.php'); ?>
+		<center>
+			<div id='error_text' style='display:none; color:#E22C2C; padding:10px;'></div>
+		</center>
 		<h4>
 			<?php
 				if($_POST['type'] == "student"){
@@ -149,21 +152,94 @@
 			</tbody>
 		</table>
 		<br />
-		<form action='exec_import.php' method='POST'>
-			<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the details above for import.</label>
-			<br />
-			<input type='hidden' name='import_data' value='<?= json_encode($import_data) ?>'/>
-			<input type='hidden' name='type' value='<?= $_POST['type'] ?>'/>
-			<input type='hidden' name='year' value='<?= $_POST['year'] ?>'/>
-			<input type='hidden' name='quarter' value='<?= $_POST['quarter'] ?>'/>
-			<input type='submit' name='import' value='Import'>
-		</form>
+		<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the details above for import.</label>
+		<br />
+		<input id='import' type='button' name='import' value='Import'>
 	</body>
 	<script>
 		$("#filter_table").DataTable({
 			/* Disable initial sort */
 			"aaSorting": [],
 			"paging": false
+		});
+		
+		$("#import").click(function(){
+			$.ajax({
+				url: "exec_import.php",
+				type: "POST",
+				data: {
+					import_data: <?= json_encode($import_data) ?>, 
+					type: '<?= $_POST['type'] ?>', 
+					year: <?= $_POST['year'] ?>, 
+					quarter: <?= $_POST['quarter'] ?>
+				},
+				success: function(data){
+					data = JSON.parse(data);
+					
+					if(data['error']){
+						if(typeof data['redirect'] === 'undefined'){
+							$("#error_text").show().text(data['text']);
+						}else{
+							//Show error
+							window.location.href = data['redirect'];
+						}
+					}else{
+						$("body").append($("<form/>", {
+							id: "jquery_form",
+							method: "POST",
+							action: data['redirect']
+						}));
+
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "c",
+							value: data['c']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "err",
+							value: JSON.stringify(data['err'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "h",
+							value: JSON.stringify(data['h'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "y",
+							value: data['y']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "q",
+							value: data['q']
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "rep",
+							value: JSON.stringify(data['rep'])
+						}));
+						
+						$("#jquery_form").append($("<input/>", {
+							type: "hidden",
+							name: "t",
+							value: data['t']
+						}));
+						
+						$("#jquery_form").submit();
+					}
+				},
+				error: function(jqXHR,textStatus,errorThrown){
+					console.log("Error with AJAX request.");
+					//console.log(jqXHR); console.log(textStatus); console.log(errorThrown); //For testing
+				}
+			});
 		});
 	</script>
 </html>

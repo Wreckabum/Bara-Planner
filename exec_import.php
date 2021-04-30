@@ -4,7 +4,7 @@
 	
 	//If there is no session
 	if(!isset($_SESSION["loggedin"])){
-		header("location: index.php");
+		echo json_encode(["error" => true, "text" => "No session.", "redirect" => "index.php"]);
 		exit();
 	}
 	
@@ -18,13 +18,18 @@
 	
 	//If not admin
 	if(!$account->is_admin()){
-		header("location: home.php");
+		echo json_encode(["error" => true, "text" => "Not administrator.", "redirect" => "home.php"]);
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
 	$majors = get_all_majors();
-	$import_data = json_decode($_POST['import_data']);
+	$import_data = json_decode(json_encode($_POST['import_data']));
+	
+	if(!is_object($import_data)){
+		$import_data = json_decode($import_data);
+	}
+	
 	$errors = [];
 	$repeats = [];
 	$headers = [];
@@ -36,7 +41,7 @@
 	
 	//Check type
 	if($_POST['type'] != "student" && $_POST['type'] != "faculty"){
-		header("location: import.php?t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}&err=3");
+		echo json_encode(["error" => true, "text" => "Wrong type.", "redirect" => "import.php?t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}&err=3"]);
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
@@ -216,7 +221,11 @@
 		}
 	}
 	
-	$error_info = "";
+	$err = "";
+	$h = "";
+	$y = "";
+	$q = "";
+	$rep = "";
 	
 	if(count($errors) > 0){
 		//Clean the data sent back
@@ -234,10 +243,11 @@
 			unset($row->accepted_majors);
 		}
 		
-		$error_info = "&err=". json_encode($errors) ."&h=". json_encode($headers) ."&y={$_POST['year']}&q={$_POST['quarter']}";
+		$err = $errors;
+		$h = $headers;
+		$y = $_POST['year'];
+		$q = $_POST['quarter'];
 	}
-	
-	$repeat_info = "";
 	
 	if(count($repeats) > 0){
 		//Clean the data sent back
@@ -255,16 +265,22 @@
 			unset($row->accepted_majors);
 		}
 		
-		$repeat_info = "&rep=". json_encode($repeats);
+		$rep = $repeats;
 	}
 	
-	header("location: import_result.php?c={$success_count}{$error_info}{$repeat_info}&t={$_POST['type']}");
+	echo json_encode([
+		"error" => false, 
+		"text" => "Success.", 
+		"redirect" => "import_result.php", 
+		"c" => $success_count, 
+		"t" => $_POST['type'], 
+		"err" => $errors, 
+		"h" => $headers, 
+		"y" => $_POST['year'], 
+		"q" => $_POST['quarter'], 
+		"rep" => $repeats
+	]);
 	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);
 ?>
-<script>
-	if(window.history.replaceState){
-		window.history.replaceState(null, null, window.location.href);
-	}
-</script>
