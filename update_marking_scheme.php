@@ -103,7 +103,7 @@
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<?php
-			if($marking_scheme_table === false){
+			if($marking_scheme_table === false || (isset($_GET['update']) && $_GET['update'] == true)){
 		?>
 				<h4>
 					Create new marking scheme
@@ -205,13 +205,19 @@
 					<br />
 					<input type='hidden' name='year' value='<?= $_GET['y'] ?>'/>
 					<input type='hidden' name='quarter' value='<?= $_GET['q'] ?>'/>
-					<input id='submit_marking_scheme' type='submit' name='submit' value='Update Marking Scheme'>
+					<input id='submit_marking_scheme' type='submit' name='submit' value='Update Marking Scheme' />
 				</form>
 		<?php
 			}else{
-				echo $marking_scheme_table;
+		?>
+			<?= $marking_scheme_table ?>
+			<br />
+			<br />
+			<input id='update_existing' type='button' value='New Marking Scheme' />
+		<?php
 			}
 		?>
+		<br />
 		<br />
 		<a href='semester_details.php'>Back to all semester details</a>
 		<br />
@@ -236,6 +242,10 @@
 				
 				$("#marking_scheme_container").html(<?= json_encode(print_marking_scheme(0, 0, 0, true), JSON_HEX_TAG) ?>);
 			}
+		});
+		
+		$("#update_existing").click(function(){
+			window.location.href = "update_marking_scheme.php?y=<?= $_GET['y'] ?>&q=<?= $_GET['q'] ?>&update=true";
 		});
 		
 		let new_row = $("#row_1").clone().get(0).outerHTML;

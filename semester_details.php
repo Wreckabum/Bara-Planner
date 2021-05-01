@@ -133,7 +133,7 @@
 									<?php
 										}else{
 									?>
-											<a href='view_marking_scheme.php?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View ]</a>
+											<a href='update_marking_scheme.php?y=<?= $semester->year ?>&q=<?= $semester->quarter ?>'>[ View ]</a>
 									<?php
 										}
 									?>
