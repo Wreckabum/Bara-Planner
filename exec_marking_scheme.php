@@ -30,6 +30,29 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	//If using default
+	if(isset($_POST['submit'])){
+		if($_POST['submit'] == "Use Default"){
+			if(db_query(
+				"UPDATE `semester_details` 
+				SET
+					`marking_scheme` = '". get_default_marking_scheme('json') ."'
+				WHERE
+					`year` = '{$_POST['year']}' AND
+					`quarter` = '{$_POST['quarter']}';"
+			) !== true){
+				//Error when updating
+				header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}&err=0");
+			}else{
+				//Sucessfully edited
+				header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}");
+			}
+			
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
+	}
+	
 	//Support multi-line descriptions
 	array_walk_recursive($_POST['desc'], function(&$value, $key){
 		$value = str_replace("\r\n", "<br>", $value);

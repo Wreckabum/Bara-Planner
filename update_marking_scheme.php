@@ -111,9 +111,11 @@
 				<input type='button' id='toggle_default' value='Load Default Marking Scheme' />
 				<br />
 				<br />
-				<input type='button' id='add_new_row' value='Add Item' />
-				<br />
-				<br />
+				<div id='add_new_row_container'>
+					<input type='button' id='add_new_row' value='Add Item' />
+					<br />
+					<br />
+				</div>
 				<form id='marking_scheme_form' action='exec_marking_scheme.php' method='POST'>
 					<div id='marking_scheme_container'>
 						<table id='marking_scheme' class='basic_table' style='width:auto%;'>
@@ -200,9 +202,10 @@
 							</tr>
 						</table>
 					</div>
+					<br />
 					<input type='hidden' name='year' value='<?= $_GET['y'] ?>'/>
 					<input type='hidden' name='quarter' value='<?= $_GET['q'] ?>'/>
-					<input type='submit' value='Update Marking Scheme'>
+					<input id='submit_marking_scheme' type='submit' name='submit' value='Update Marking Scheme'>
 				</form>
 		<?php
 			}else{
@@ -222,8 +225,12 @@
 			if($("#toggle_default").val() == "Revert"){
 				$("#toggle_default").val("Load Default Marking Scheme");
 				$("#marking_scheme_container").html(saved_table);
+				$("#submit_marking_scheme").val("Update Marking Scheme");
+				$("#add_new_row_container").show();
 			}else{
 				$("#toggle_default").val("Revert");
+				$("#submit_marking_scheme").val("Use Default");
+				$("#add_new_row_container").hide();
 				
 				saved_table = $("#marking_scheme_container").html();
 				
@@ -354,19 +361,23 @@
 		});
 		
 		$("#marking_scheme_form").submit(function(e){
-			let total_weight = 0;
-			
-			$('#marking_scheme input[name^=weight]').each(function(){
-				total_weight += parseInt($(this).val());
-			});
-			
-			total_weight += parseInt($("#student_weight").val());
-			
-			if(isNaN(total_weight) || total_weight != 100){
-				alert("All marks must total up to 100.");
-				e.preventDefault();
+			if($("#submit_marking_scheme").val() == "Use Default"){
 				
-				return false;
+			}else{
+				let total_weight = 0;
+				
+				$('#marking_scheme input[name^=weight]').each(function(){
+					total_weight += parseInt($(this).val());
+				});
+				
+				total_weight += parseInt($("#student_weight").val());
+				
+				if(isNaN(total_weight) || total_weight != 100){
+					alert("All marks must total up to 100.");
+					e.preventDefault();
+					
+					return false;
+				}
 			}
 		});
 	</script>

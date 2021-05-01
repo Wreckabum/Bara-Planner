@@ -295,7 +295,7 @@
 		}else{
 			$json_marking_scheme = mysqli_fetch_assoc(db_query("SELECT `marking_scheme` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';"))['marking_scheme'];
 			
-			//If no marking scheme
+			//If no marking scheme, return default
 			if(is_null($json_marking_scheme) || $json_marking_scheme == "null"){
 				return false;
 			}
