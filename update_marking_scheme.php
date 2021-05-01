@@ -297,7 +297,7 @@
 			
 			//If removing the last sub-item
 			if($("#row_" + main_id).find('td:nth-child(3)').attr('rowspan') == 1){
-				$("#row_" + main_id).find('td:nth-child(4)').attr('colspan', 1).attr('class', "weight").html("<input type='number' name='~~~' min='1' max='100'>%"); //Revert weight cell
+				$("#row_" + main_id).find('td:nth-child(4)').attr('colspan', 1).attr('class', "weight").html("<input type='number' name='weight[" + main_id + "][main]' min='1' max='100'>%"); //Revert weight cell
 				$("#row_" + main_id).find('td:nth-child(4)').after("<td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td>"); //Readd missing cols
 			}else{
 				let recount = 1;
