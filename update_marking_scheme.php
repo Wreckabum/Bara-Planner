@@ -91,6 +91,10 @@
 			.penalty {
 				background-color: #FFCECE;
 			}
+			
+			#marking_scheme .new_item, #actions_table .actions_row {
+				height: 61px;
+			}
 		</style>
 	</head>
 	<body>
@@ -144,7 +148,7 @@
 									1
 								</td>
 								<td class='item_desc'>
-									<input type='text' name='desc[1][main]' style='width:97%;' required />
+									<textarea name='desc[1][main]' rows='2' style='width:97%; resize:none; vertical-align:middle;' required></textarea>
 								</td>
 								<td class='due'>
 									<input type='number' name='due[1]' min='1' max='20' required>
@@ -228,7 +232,7 @@
 		});
 		
 		let new_row = $("#row_1").clone().get(0).outerHTML;
-		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td>a</td><td class='item_desc'><input type='text' name='desc[1][sub][a]' style='width:97%;' required /></td><td class='weight'><input type='number' name='weight[1][sub][a]' min='1' max='100' required>%</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
+		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td>a</td><td class='item_desc'><textarea name='desc[1][sub][a]' rows='2' style='width:97%; resize:none; vertical-align:middle;' required></textarea></td><td class='weight'><input type='number' name='weight[1][sub][a]' min='1' max='100' required>%</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
 		let action_row = $("#actions_1").clone().get(0).outerHTML;
 		let counter = 1;
 		
@@ -259,13 +263,13 @@
 					if(typeof $(this).attr('main_item') === "undefined"){
 						$(this).attr('id', 'row_' + recount);
 						$(this).children('td').first().text(recount);
-						$(this).children('td.item_desc').children('input').attr('name', 'desc[' + recount + '][main]');
+						$(this).children('td.item_desc').children('textarea').attr('name', 'desc[' + recount + '][main]');
 						$(this).children('td.due').children('input').attr('name', 'due[' + recount + ']');
 						$(this).children('td.weight').children('input').attr('name', 'weight[' + recount++ + '][main]');
 					}else{
 						//If sub-item
 						$(this).attr('main_item', (recount - 1));
-						$(this).children('td.item_desc').children('input').attr('name', $(this).children('td.item_desc').children('input').attr('name').replace(/desc\[(\d+)]\[sub]\[(\d+)]/g, 'desc[' + (recount - 1) + '][sub][$2]'));
+						$(this).children('td.item_desc').children('input').attr('name', $(this).children('td.item_desc').children('textarea').attr('name').replace(/desc\[(\d+)]\[sub]\[(\d+)]/g, 'desc[' + (recount - 1) + '][sub][$2]'));
 						$(this).children('td.weight').children('input').attr('name', $(this).children('td.weight').children('input').attr('name').replace(/weight\[(\d+)]\[sub]\[(\d+)]/g, 'weight[' + (recount - 1) + '][sub][$2]'));
 					}
 				});
@@ -304,7 +308,7 @@
 				
 				$('#marking_scheme tr[main_item=' + main_id + ']').each(function(e, val){
 					$(this).attr('sub_item', recount);
-					$(this).children('td.item_desc').children('input').attr('name', 'desc[' + main_id + '][sub][' + alphabet[(recount - 1)] + ']');
+					$(this).children('td.item_desc').children('textarea').attr('name', 'desc[' + main_id + '][sub][' + alphabet[(recount - 1)] + ']');
 					$(this).children('td.weight').children('input').attr('name', 'weight[' + main_id + '][sub][' + alphabet[(recount++ - 1)] + ']');
 				});
 				
@@ -336,14 +340,14 @@
 				//First sub-item
 				$("#row_" + row_id).after($($.parseHTML(new_sub_row)).attr('main_item', row_id).attr('sub_item', row_span - 1)); //Add new sub-item with proper meta-data
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().find('td:nth-child(2)').text(alphabet[(row_span - 2)]); //Update the row details
-				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('input').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('textarea').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.weight').children('input').attr('name', 'weight[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$("#actions_" + row_id).after("<tr class='actions_row' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "'><td><input type='button' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "' class='del_sub_row' value='Delete Item' /></td></tr>"); //Add new action row
 			}else{
 				//Next consecutive sub-items
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().after($($.parseHTML(new_sub_row)).attr('main_item', row_id).attr('sub_item', row_span - 1)); //Add new sub-item with proper meta-data
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().find('td:nth-child(2)').text(alphabet[(row_span - 2)]); //Update the row details
-				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('input').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
+				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.item_desc').children('textarea').attr('name', 'desc[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$('#marking_scheme tr[main_item=' + row_id + ']').last().children('td.weight').children('input').attr('name', 'weight[' + row_id + '][sub][' + alphabet[((row_span - 2))] + ']'); //Update the row details
 				$('#actions_table tr[main_item=' + row_id + ']').last().after("<tr class='actions_row' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "'><td><input type='button' main_item='" + row_id + "' sub_item='" + (row_span - 1) + "' class='del_sub_row' value='Delete Item' /></td></tr>"); //Add new action row
 			}

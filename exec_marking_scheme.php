@@ -30,6 +30,11 @@
 		$value = htmlspecialchars($value);
 	});
 	
+	//Support multi-line descriptions
+	array_walk_recursive($_POST['desc'], function(&$value, $key){
+		$value = str_replace("\r\n", "<br>", $value);
+	});
+	
 	$final = [
 		"faculty" => [],
 		"student" => [
