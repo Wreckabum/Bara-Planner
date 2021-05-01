@@ -48,7 +48,7 @@
 	//Update any potentially missing deadlines
 	add_missing_deadlines();
 	
-	$marking_scheme_table = print_marking_scheme($_GET['y'], $_GET['q']);
+	$marking_scheme_table = print_base_marking_scheme($_GET['y'], $_GET['q']);
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -58,44 +58,6 @@
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
-		<style>
-			.basic_table {
-				display: inline-table;
-			}
-			
-			.basic_table td {
-				text-align: center;
-				white-space: nowrap;
-			}
-			
-			.basic_table td.empty {
-				background-color: #E4E4E4;
-			}
-			
-			.item_desc {
-				width: 450px;
-			}
-			
-			.supervisor, .assessor, .total, .average {
-				width: 112px;
-			}
-			
-			.supervisor {
-				background-color: #E6ffE6;
-			}
-			
-			.assessor {
-				background-color: #CFCFFF;
-			}
-			
-			.penalty {
-				background-color: #FFCECE;
-			}
-			
-			#marking_scheme .new_item, #actions_table .actions_row {
-				height: 61px;
-			}
-		</style>
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
@@ -240,7 +202,7 @@
 				
 				saved_table = $("#marking_scheme_container").html();
 				
-				$("#marking_scheme_container").html(<?= json_encode(print_marking_scheme(0, 0, 0, true), JSON_HEX_TAG) ?>);
+				$("#marking_scheme_container").html(<?= json_encode(print_base_marking_scheme(0, 0, true), JSON_HEX_TAG) ?>);
 			}
 		});
 		
@@ -371,9 +333,7 @@
 		});
 		
 		$("#marking_scheme_form").submit(function(e){
-			if($("#submit_marking_scheme").val() == "Use Default"){
-				
-			}else{
+			if($("#submit_marking_scheme").val() != "Use Default"){
 				let total_weight = 0;
 				
 				$('#marking_scheme input[name^=weight]').each(function(){

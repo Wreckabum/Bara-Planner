@@ -214,19 +214,13 @@
 										}
 									}
 								?>
-							<?php
-								if($group->is_assessor($account->sim_id)){
-							?>
-									<tr>
-										<td colspan='3'>
-											<a href="grade_group.php?g=<?= $group->id ?>">
-												[ Grade ]
-											</a>
-										</td>
-									</tr>
-							<?php
-								}
-							?>
+								<tr>
+									<td colspan='3'>
+										<a href="grade_group.php?g=<?= $group->id ?>">
+											[ Grade ]
+										</a>
+									</td>
+								</tr>
 						</table>
 					</div>
 		<?php
@@ -367,6 +361,17 @@
 										<input type='checkbox' id='confirm_checkbox' name='delete_id' value='<?= $group->id ?>' required/>
 										<input type='submit' name='delete_account' id='delete_submit' value='Delete' disabled/>
 									</form>
+								</td>
+							</tr>
+					<?php
+						}
+						if($group->is_assessor($account->sim_id) || $group->is_supervisor($account->sim_id)){
+					?>
+							<tr>
+								<td colspan='3'>
+									<a href="grade_group.php?g=<?= $group->id ?>">
+										[ Grade ]
+									</a>
 								</td>
 							</tr>
 					<?php

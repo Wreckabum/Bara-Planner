@@ -154,6 +154,33 @@
 	}
 	
 	/*
+		Returns the deadline for a semester
+		
+		@param	int
+		@param	int
+		@return Null / JSON
+	*/
+	function get_marking_scheme($year, $quarter){
+		str_clean($year);
+		str_clean($quarter);
+		
+		$query = db_query("SELECT `marking_scheme` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';");
+		
+		if(mysqli_num_rows($query) <= 0){
+			return NULL;
+		}else{
+			$marking_scheme = mysqli_fetch_assoc($query)['marking_scheme'];
+			
+			if(is_null($marking_scheme) || $marking_scheme == "null"){
+				return NULL;
+			}else{
+				return $marking_scheme;
+			}
+		}
+		
+	}
+	
+	/*
 		Returns the default marking scheme
 		
 		@param	string (opt)
@@ -282,20 +309,20 @@
 	}
 	
 	/*
-		Returns HTML code for the marking scheme
+		Returns HTML code for a marking scheme
 		
 		@param	int
 		@param	int
-		@param	string
 		@return HTML table
 	*/
-	function print_marking_scheme($year, $quarter, $type = "view", $use_default = false){
+	function print_base_marking_scheme($year, $quarter, $use_default = false){
+		//Check which marking scheme type to return
 		if($use_default){
 			$marking_scheme = json_decode(get_default_marking_scheme("json"));
 		}else{
 			$json_marking_scheme = mysqli_fetch_assoc(db_query("SELECT `marking_scheme` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';"))['marking_scheme'];
 			
-			//If no marking scheme, return default
+			//If no marking scheme, return false
 			if(is_null($json_marking_scheme) || $json_marking_scheme == "null"){
 				return false;
 			}
@@ -303,8 +330,49 @@
 			$marking_scheme = json_decode($json_marking_scheme);
 		}
 		
+		$style =
+			"<style>
+					.basic_table {
+						display: inline-table;
+					}
+					
+					.basic_table td {
+						text-align: center;
+						white-space: nowrap;
+					}
+					
+					.basic_table td.empty {
+						background-color: #E4E4E4;
+					}
+					
+					.item_desc {
+						width: 450px;
+					}
+					
+					.supervisor, .assessor, .total, .average {
+						width: 112px;
+					}
+					
+					.supervisor {
+						background-color: #E6ffE6;
+					}
+					
+					.assessor {
+						background-color: #CFCFFF;
+					}
+					
+					.penalty {
+						background-color: #FFCECE;
+					}
+					
+					#marking_scheme .new_item, #actions_table .actions_row {
+						height: 61px;
+					}
+				</style>";
+		
 		$output = 
-			"<table class='basic_table' style='width:auto%;'>
+			"{$style}
+			<table class='basic_table' style='width:auto%;'>
 				<tr>
 					<td colspan='2'>
 						Item

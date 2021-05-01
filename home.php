@@ -31,7 +31,7 @@
 		Items left to do:
 		<ul>
 			<li>
-				Marking scheme upgrade (left with editing, and using)
+				Marking scheme upgrade -> Exec for faculty / All of student / Final calculation + display / Other fields?
 			</li>
 			<li>
 				Options page (allow import/addition only if semester exists first, etc)

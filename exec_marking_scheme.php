@@ -45,6 +45,24 @@
 				header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}&err=0");
 			}else{
 				//Sucessfully edited
+				
+				//Reset all groups for the semester
+				$semester_groups = get_all_groups($_POST['year'], $_POST['quarter']);
+				
+				$all_ids = [];
+				
+				foreach($semester_groups as $this_group){
+					$all_ids[] = $this_group->id;
+				}
+				
+				db_query(
+						"UPDATE
+							`groups`
+						SET
+							`grading` = 'null'
+						WHERE
+							`id` IN ('". implode("', '", $all_ids) ."');");
+				
 				header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}");
 			}
 			
@@ -119,6 +137,24 @@
 		header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}&err=0");
 	}else{
 		//Sucessfully edited
+		
+		//Reset all groups for the semester
+		$semester_groups = get_all_groups($_POST['year'], $_POST['quarter']);
+		
+		$all_ids = [];
+		
+		foreach($semester_groups as $this_group){
+			$all_ids[] = $this_group->id;
+		}
+		
+		db_query(
+				"UPDATE
+					`groups`
+				SET
+					`grading` = 'null'
+				WHERE
+					`id` IN ('". implode("', '", $all_ids) ."');");
+		
 		header("location: update_marking_scheme.php?y={$_POST['year']}&q={$_POST['quarter']}");
 	}
 	
