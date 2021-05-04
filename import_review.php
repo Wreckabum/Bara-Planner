@@ -69,7 +69,9 @@
 				if($row == 0){
 					$headers[] = $data[$col];
 				}else{
-					$import_data[$row][$headers[$col]] = $data[$col];
+					if(!is_null($data[$col])){
+						$import_data[$row][$headers[$col]] = $data[$col];
+					}
 				}
 			}
 			
