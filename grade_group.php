@@ -43,7 +43,6 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<?= var_dump($_POST) ?>
 		<?= $group->print_marking_scheme($account->sim_id) ?>
 		<a href='view_group.php?g=<?= $group->id ?>'>Back to group details</a>
 		<br />

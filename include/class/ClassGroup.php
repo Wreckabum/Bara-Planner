@@ -270,12 +270,41 @@
 								background-color: #CFCFFF;
 							}
 							
+							#grading_table .total {
+								background-color: #C8E0F1;
+							}
+							
+							#grading_table .average {
+								background-color: #E8E15F;
+							}
+							
+							#grading_table .final {
+								background-color: #FB9929;
+								font-weight:bold;
+							}
+							
 							#grading_table .penalty {
 								background-color: #FFCECE;
 							}
 							
+							#grading_table .table_header {
+								background-color:#B0D8EA;
+								font-weight: bold;
+							}
+							
 							#grading_table input {
 								width: 97%;
+								text-align: center;
+							}
+							
+							#grading_table input::-webkit-outer-spin-button,
+							#grading_table input::-webkit-inner-spin-button {
+								-webkit-appearance: none;
+								margin: 0;
+							}
+							
+							#grading_table input[type=number] {
+								-moz-appearance: textfield;
 							}
 						</style>";
 				
@@ -404,6 +433,8 @@
 							</td>
 						</tr>";
 				
+				$total_average = 0;
+				
 				foreach($this->marking_scheme->faculty as $section => $section_details){
 					$marking_section .=
 						"<tr>
@@ -415,16 +446,17 @@
 							</td>";
 					
 					if($section_details->desc == "Penalty"){
-						$supervisor_penalty = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[penalty]' min='0' max='100' />" : "");
-						$assessor_penalty = (($this->is_assessor($id)) ? "<input type='number' name='assessor[penalty]' min='0' max='100' />" : "");
+						$supervisor_penalty = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[penalty]' min='0' max='100' value='{$section_details->supervisor}' />" : $section_details->supervisor);
+						$assessor_penalty = (($this->is_assessor($id)) ? "<input type='number' name='assessor[penalty]' min='0' max='100' value='{$section_details->assessor}' />" : $section_details->assessor);
+						$total_average -= (($section_details->supervisor + $section_details->assessor) / 2);
 						
 						$marking_section .=
 							"<td class='due penalty'>-</td>
 							<td class='weight penalty'>-%</td>
 							<td class='supervisor penalty'>{$supervisor_penalty}</td>
 							<td class='assessor penalty'>{$assessor_penalty}</td>
-							<td class='total penalty'></td>
-							<td class='average penalty'></td>
+							<td class='total penalty'>". ($section_details->supervisor + $section_details->assessor) ."</td>
+							<td class='average penalty'>". (($section_details->supervisor + $section_details->assessor) / 2) ."</td>
 						</tr>";
 					}else{
 						$marking_section .=
@@ -438,9 +470,10 @@
 							</tr>";
 						
 								foreach($section_details->parts as $part => $part_details){
-									$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[{$section}][{$part}]' min='0' max='{$part_details->weight}' />" : "");
-									$assessor_input = (($this->is_assessor($id)) ? "<input type='number' name='assessor[{$section}][{$part}]' min='0' max='{$part_details->weight}' />" : "");
-								
+									$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[{$section}][{$part}]' min='0' max='{$part_details->weight}' value='{$part_details->supervisor}' />" : $part_details->supervisor);
+									$assessor_input = (($this->is_assessor($id)) ? "<input type='number' name='assessor[{$section}][{$part}]' min='0' max='{$part_details->weight}' value='{$part_details->assessor}' />" : $part_details->assessor);
+									$total_average += (($part_details->supervisor + $part_details->assessor) / 2);
+									
 									$marking_section .=
 										"<tr>
 											<td class='empty'>-</td>
@@ -455,22 +488,23 @@
 											</td>
 											<td class='supervisor'>{$supervisor_input}</td>
 											<td class='assessor'>{$assessor_input}</td>
-											<td class='total'></td>
-											<td class='average'></td>
+											<td class='total'>". ($part_details->supervisor + $part_details->assessor) ."</td>
+											<td class='average'>". (($part_details->supervisor + $part_details->assessor) / 2) ."</td>
 										</tr>";
 								}
 						}else{
-							$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[{$section}]' min='0' max='{$section_details->weight}' />" : "");
-							$assessor_input = (($this->is_assessor($id)) ? "<input type='number' name='assessor[{$section}]' min='0' max='{$section_details->weight}' />" : "");
-						
+							$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[{$section}]' min='0' max='{$section_details->weight}' value='{$section_details->supervisor}'  />" : $section_details->supervisor);
+							$assessor_input = (($this->is_assessor($id)) ? "<input type='number' name='assessor[{$section}]' min='0' max='{$section_details->weight}' value='{$section_details->assessor}' />" : $section_details->assessor);
+							$total_average += (($section_details->supervisor + $section_details->assessor) / 2);
+							
 							$marking_section .=
 								"<td class='weight'>
 									{$section_details->weight}%
 								</td>
 								<td class='supervisor'>{$supervisor_input}</td>
 								<td class='assessor'>{$assessor_input}</td>
-								<td class='total'></td>
-								<td class='average'></td>
+								<td class='total'>". ($section_details->supervisor + $section_details->assessor) ."</td>
+								<td class='average'>". (($section_details->supervisor + $section_details->assessor) / 2) ."</td>
 							</tr>";
 						}
 					}
@@ -478,16 +512,42 @@
 				
 				$marking_section .=
 						"<tr>
-							<td colspan='6' style='background-color:#F5E6FF;'>
+							<td colspan='8' class='final'>
+								Total
+							</td>
+							<td colspan='8' class='final'>
+								{$total_average} / ". (100 - $this->marking_scheme->student->weight) ."
+							</td>
+						</tr>
+						<tr>
+							<td colspan='6' style='background-color:#F5E6FF; padding:10px 5px; font-weight:bold;'>
 								Individual Students
 							</td>
 							<td colspan='3' class='empty'>-</td>
+						</tr>
+						<tr>
+							<td colspan='2' class='table_header'>
+								#
+							</td>
+							<td class='table_header'>
+								Name / SIM ID
+							</td>
+							<td class='table_header'>
+								Contribution
+							</td>
+							<td class='table_header'>
+								Individual (%)
+							</td>
+							<td class='table_header'>
+								Supervisor
+							</td>
+							<td colspan='4' class='empty'>-</td>
 						</tr>";
 				
 				$count = 1;
 				
 				foreach($this->get_members() as $member){
-					$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[student][{$member->details->sim_id}]' min='0' max='{$this->marking_scheme->student->weight}' />" : "");
+					$supervisor_input = (($this->is_supervisor($id)) ? "<input type='number' name='supervisor[student][{$member->details->sim_id}]' min='0' max='{$this->marking_scheme->student->weight}' value='{$this->marking_scheme->student->individual->{$member->details->sim_id}}' />" : $this->marking_scheme->student->individual->{$member->details->sim_id});
 					
 					$marking_section .=
 						"<tr>
@@ -530,7 +590,7 @@
 						{$style}
 						{$group_details}
 						<br />
-						<form id='grade_group' action='' method='POST'>
+						<form id='grade_group' action='exec_grade_group.php' method='POST'>
 							{$marking_section}
 							<input type='hidden' name='group_id' value='{$this->id}'>
 						</form>

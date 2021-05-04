@@ -67,6 +67,44 @@
 		<?php
 			if($marking_scheme_table === false || (isset($_GET['update']) && $_GET['update'] == true)){
 		?>
+				<style>
+					.basic_table {
+						display: inline-table;
+					}
+					
+					.basic_table td {
+						text-align: center;
+						white-space: nowrap;
+					}
+					
+					.basic_table td.empty {
+						background-color: #E4E4E4;
+					}
+					
+					.item_desc {
+						width: 450px;
+					}
+					
+					.supervisor, .assessor, .total, .average {
+						width: 112px;
+					}
+					
+					.supervisor {
+						background-color: #E6ffE6;
+					}
+					
+					.assessor {
+						background-color: #CFCFFF;
+					}
+					
+					.penalty {
+						background-color: #FFCECE;
+					}
+					
+					#marking_scheme .new_item, #actions_table .actions_row {
+						height: 61px;
+					}
+				</style>
 				<h4>
 					Create new marking scheme
 				</h4>
@@ -80,7 +118,7 @@
 				</div>
 				<form id='marking_scheme_form' action='exec_marking_scheme.php' method='POST'>
 					<div id='marking_scheme_container'>
-						<table id='marking_scheme' class='basic_table' style='width:auto%;'>
+						<table id='marking_scheme' class='basic_table' style='width:auto;'>
 							<tr class='header'>
 								<td colspan='2'>
 									Item
@@ -118,7 +156,7 @@
 									<input type='number' name='due[1]' min='1' max='20' required>
 								</td>
 								<td class='weight'>
-									<input type='number' name='weight[1][main]' min='1' max='100' required>%
+									<input type='number' name='weight[1][main]' min='1' max='100' required> %
 								</td>
 								<td class='supervisor'></td>
 								<td class='assessor'></td>
@@ -146,7 +184,7 @@
 								</td>
 								<td class='empty'>-</td>
 								<td>
-									<input id='student_weight' type='number' name='student' min='1' max='100' required>%
+									<input id='student_weight' type='number' name='student' min='1' max='100' required> %
 								</td>
 								<td colspan='4' class='empty'>-</td>
 							</tr>
@@ -211,7 +249,7 @@
 		});
 		
 		let new_row = $("#row_1").clone().get(0).outerHTML;
-		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td>a</td><td class='item_desc'><textarea name='desc[1][sub][a]' rows='2' style='width:97%; resize:none; vertical-align:middle;' required></textarea></td><td class='weight'><input type='number' name='weight[1][sub][a]' min='1' max='100' required>%</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
+		let new_sub_row = "<tr class='new_item' main_item='1' sub_item='1'><td class='empty'>-</td><td>a</td><td class='item_desc'><textarea name='desc[1][sub][a]' rows='2' style='width:97%; resize:none; vertical-align:middle;' required></textarea></td><td class='weight'><input type='number' name='weight[1][sub][a]' min='1' max='100' required> %</td><td class='supervisor'></td><td class='assessor'></td><td class='total'></td><td class='average'></td></tr>";
 		let action_row = $("#actions_1").clone().get(0).outerHTML;
 		let counter = 1;
 		

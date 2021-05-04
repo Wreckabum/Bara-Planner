@@ -372,7 +372,7 @@
 		
 		$output = 
 			"{$style}
-			<table class='basic_table' style='width:auto%;'>
+			<table class='basic_table' style='width:auto;'>
 				<tr>
 					<td colspan='2'>
 						Item

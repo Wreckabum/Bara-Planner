@@ -18,17 +18,12 @@
 	$scores = [];
 	
 	//Prepare the strings for SQL insertion
-	array_walk($_POST, function(&$value, $key) use (&$scores){
-		str_clean($value);
-		$value = htmlspecialchars($value);
-		
-		if(substr($key, 0, 6) == "score_"){
-			$scores[substr($key, 6)] = (int)$value;
-		}
+	array_walk_recursive($_POST, function(&$value, $key) use (&$scores){
+		$value = (int)$value;
 	});
 	
 	try{
-		$group = get_group($_POST['id']);
+		$group = get_group($_POST['group_id']);
 	}catch(Exception $e){
 		header("location: view_all.php?t=groups");
 		@mysqli_close($GLOBALS['mysql_link']);
@@ -36,35 +31,67 @@
 	}
 	
 	//If not assessor
-	if(!$group->is_assessor($account->sim_id)){
+	if(!$group->is_assessor($account->sim_id) && !$group->is_supervisor($account->sim_id)){
 		header("location: view_group.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
-	//Get current scores
-	$members = json_decode(mysqli_fetch_assoc(db_query("SELECT `members` FROM `groups` WHERE `id` = '{$_POST['id']}';"))['members']);
+	//Remove unused fields
+	unset($_POST['grade']);
+	unset($_POST['group_id']);
 	
-	//Update the scores
-	array_walk($members, function(&$value, $key) use (&$scores){
-		if(array_key_exists($value->id, $scores)){
-			$value->score = $scores[$value->id];
+	//If contains mroe than 1 type
+	if(count($_POST) > 1){
+		header("location: view_group.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	//Parse the grades
+	foreach($_POST as $submitter_type => $score_array){
+		//For each submitted score
+		foreach($score_array as $item => $score){
+		//If handling faculty
+			if($submitter_type == 'supervisor' || $submitter_type == 'assessor'){
+				//Handle penalty
+				if($item == 'penalty'){
+					(end($group->get_marking_scheme()->faculty))->{$submitter_type} = $score;
+				}elseif($item == 'student' && $group->is_supervisor($account->sim_id)){
+					//Handle individual student scores if supervisor
+					foreach($score as $student_id => $student_score){
+						$group->get_marking_scheme()->student->individual->{$student_id} = $student_score;
+					}
+				}else{
+					////Handle main/sub items
+					
+					//If there are sub-items
+					if(is_array($score)){
+						foreach($score as $sub_item => $sub_score){
+							$group->get_marking_scheme()->faculty->{$item}->parts->{$sub_item}->{$submitter_type} = $sub_score;
+						}
+					}else{
+						//If no sub-items
+						$group->get_marking_scheme()->faculty->{$item}->{$submitter_type} = $score;
+					}
+				}
+			}
 		}
-	});
+	}	
 	
 	if(db_query(
 		"UPDATE 
 			`groups`
 		SET
-			`members` = '". addslashes(json_encode($members)) ."'
+			`grading` = '". addslashes(json_encode($group->get_marking_scheme())) ."'
 		WHERE
-			`id` = '{$_POST['id']}';"
+			`id` = '{$group->id}';"
 	) !== true){
 		//Error when adding
-		header("location: grade_group.php?g={$_POST['id']}");
+		header("location: grade_group.php?g={$group->id}");
 	}else{
 		//Sucessfully added
-		header("location: view_group.php?g={$_POST['id']}");
+		header("location: grade_group.php?g={$group->id}");
 	}
 	
 	//Close connection
