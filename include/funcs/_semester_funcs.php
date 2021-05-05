@@ -184,128 +184,105 @@
 		Returns the default marking scheme
 		
 		@param	string (opt)
-		@return Multidimensional array / JSON
+		@return JSON
 	*/
-	function get_default_marking_scheme($type = "array"){
-		if($type == "array"){
-			return
-				[
-				  'faculty' => [
-					1 => [
-					  'desc' => 'Project requirements documentation',
-					  'weight' => 10,
-					  'week_due' => 5,
-					],
-					2 => [
-					  'desc' => 'Project progress presentation (Prototype demonstration]',
-					  'weight' => 10,
-					  'week_due' => 11,
-					],
-					3 => [
-					  'desc' => 'Project progress report',
-					  'weight' => 15,
-					  'week_due' => 11,
-					],
-					4 => [
-					  'desc' => 'Final product and documentation',
-					  'weight' => 45,
-					  'week_due' => 19,
-					  'parts' => [
-						'a' => [
-						  'desc' => 'Source code',
-						  'weight' => 10,
-						],
-						'b' => [
-						  'desc' => 'Technical report/manual',
-						  'weight' => 10,
-						],
-						'c' => [
-						  'desc' => 'User manual',
-						  'weight' => 10,
-						],
-						'd' => [
-						  'desc' => 'Testing documentation',
-						  'weight' => 10,
-						],
-						'e' => [
-						  'desc' => 'Project website',
-						  'weight' => 5,
-						],
-					  ],
-					],
-					5 => [
-					  'desc' => 'Final Presentation',
-					  'weight' => 15,
-					  'week_due' => 20,
-					],
-					6 => [
-					  'desc' => 'Penalty',
-					],
-				  ],
-				  'student' => [
-					'weight' => 5,
-				  ],
-				];
-		}elseif($type == "json"){
-			return 
-				'{
-					"faculty": {
-						"1": {
-							"desc": "Project requirements documentation", 
-							"weight": 10, 
-							"week_due": 5
-						},
-						"2": {
-							"desc": "Project progress presentation (Prototype demonstration)", 
-							"weight": 10, 
-							"week_due": 11
-						},
-						"3": {
-							"desc": "Project progress report", 
-							"weight": 15, 
-							"week_due": 11
-						},
-						"4": {
-							"desc": "Final product and documentation", 
-							"week_due": 19,
-							"parts": {
-								"a": {
-									"desc": "Source code", 
-									"weight": 10
-								},
-								"b": {
-									"desc": "Technical report/manual", 
-									"weight": 10
-								},
-								"c": {
-									"desc": "User manual", 
-									"weight": 10
-								},
-								"d": {
-									"desc": "Testing documentation", 
-									"weight": 10
-								},
-								"e": {
-									"desc": "Project website", 
-									"weight": 5
-								}
-							}
-							
-						},
-						"5": {
-							"desc": "Final Presentation", 
-							"weight": 15, 
-							"week_due": 20
-						},
-						"6": {
-							"desc": "Penalty"
-						}
+	function get_default_marking_scheme(){
+		return 
+			'{
+				"faculty": {
+					"1": {
+						"desc": "Project requirements documentation", 
+						"weight": 10, 
+						"week_due": 5
 					},
-					"student": {
-						"weight": 5
+					"2": {
+						"desc": "Project progress presentation<br>(Prototype demonstration)", 
+						"weight": 10, 
+						"week_due": 11
+					},
+					"3": {
+						"desc": "Project progress report", 
+						"weight": 15, 
+						"week_due": 11
+					},
+					"4": {
+						"desc": "Final product and documentation", 
+						"week_due": 19,
+						"parts": {
+							"a": {
+								"desc": "Source code", 
+								"weight": 10
+							},
+							"b": {
+								"desc": "Technical report/manual", 
+								"weight": 10
+							},
+							"c": {
+								"desc": "User manual", 
+								"weight": 10
+							},
+							"d": {
+								"desc": "Testing documentation", 
+								"weight": 10
+							},
+							"e": {
+								"desc": "Project website", 
+								"weight": 5
+							}
+						}
+						
+					},
+					"5": {
+						"desc": "Final Presentation", 
+						"weight": 15, 
+						"week_due": 20
+					},
+					"6": {
+						"desc": "Penalty"
 					}
-				}';
-		}
+				},
+				"student": {
+					"weight": 5
+				},
+				"feedback": {
+					"1": {
+						"desc": "Research", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					},
+					"2": {
+						"desc": "Project management and activity planning", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					},
+					"3": {
+						"desc": "Software development and quality of software", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					},
+					"4": {
+						"desc": "Problem solving ability and teamwork<br>Ideas and originality", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					},
+					"5": {
+						"desc": "Documentation", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					},
+					"6": {
+						"desc": "Penalty", 
+						"supervisor": "", 
+						"assessor": "", 
+						"agreed": false
+					}
+				}
+			}';
 	}
 	
 	/*
@@ -318,7 +295,7 @@
 	function print_base_marking_scheme($year, $quarter, $use_default = false){
 		//Check which marking scheme type to return
 		if($use_default){
-			$marking_scheme = json_decode(get_default_marking_scheme("json"));
+			$marking_scheme = json_decode(get_default_marking_scheme());
 		}else{
 			$json_marking_scheme = mysqli_fetch_assoc(db_query("SELECT `marking_scheme` FROM `semester_details` WHERE `year` = '{$year}' AND `quarter` = '{$quarter}';"))['marking_scheme'];
 			
@@ -475,7 +452,44 @@
 					</td>
 					<td colspan='4' class='empty'>-</td>
 				</tr>
-			</table>";
+			</table>
+			<br />
+			<br />
+			<table class='basic_table' style='width:auto;'>
+				<tr>
+					<td>
+						#
+					</td>
+					<td>
+						Feedback subject
+					</td>
+					<td>
+						Supervisor feedback
+					</td>
+					<td>
+						Agreed by assessor
+					</td>
+					<td>
+						Assessor feedback
+					</td>
+				</tr>";
+		
+		foreach($marking_scheme->feedback as $section => $feedback){
+			$output .= 
+				"<tr>
+					<td>
+						{$section}
+					</td>
+					<td>
+						{$feedback->desc}
+					</td>
+					<td class='supervisor'></td>
+					<td class='assessor'></td>
+					<td class='assessor'></td>
+				</tr>";
+		}
+		
+		$output .= "</table>";
 		
 		return $output;
 	}

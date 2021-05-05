@@ -15,11 +15,11 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-	$scores = [];
 	
 	//Prepare the strings for SQL insertion
-	array_walk_recursive($_POST, function(&$value, $key) use (&$scores){
-		$value = (int)$value;
+	array_walk_recursive($_POST, function(&$value, $key){
+		str_clean($value);
+		$value = htmlspecialchars($value);
 	});
 	
 	try{
@@ -41,43 +41,59 @@
 	unset($_POST['grade']);
 	unset($_POST['group_id']);
 	
-	//If contains mroe than 1 type
-	if(count($_POST) > 1){
+	//If contains more than 1 type + feedback
+	if(count($_POST) > 2){
 		header("location: view_group.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
 	
 	//Parse the grades
-	foreach($_POST as $submitter_type => $score_array){
-		//For each submitted score
-		foreach($score_array as $item => $score){
-		//If handling faculty
-			if($submitter_type == 'supervisor' || $submitter_type == 'assessor'){
-				//Handle penalty
-				if($item == 'penalty'){
-					(end($group->get_marking_scheme()->faculty))->{$submitter_type} = $score;
-				}elseif($item == 'student' && $group->is_supervisor($account->sim_id)){
-					//Handle individual student scores if supervisor
-					foreach($score as $student_id => $student_score){
-						$group->get_marking_scheme()->student->individual->{$student_id} = $student_score;
+	foreach($_POST as $type => $score_array){
+		if($type == 'feedback'){
+			foreach($score_array as $feedback_type => $feedback_array){
+				if($feedback_type == 'supervisor' || $feedback_type == 'assessor'){
+					foreach($feedback_array as $feedback_id => $feedback_string){
+						//Update supervisor/assessor comments
+						$group->get_marking_scheme()->feedback->{$feedback_id}->{$feedback_type} = $feedback_string;
+						
+						//Update agreed bool here to get all records
+						if($feedback_type == 'assessor'){							
+							$group->get_marking_scheme()->feedback->{$feedback_id}->agreed = (isset($score_array['agreed'][$feedback_id]) ? (bool)$score_array['agreed'][$feedback_id] : false);
+						}
 					}
-				}else{
-					////Handle main/sub items
-					
-					//If there are sub-items
-					if(is_array($score)){
-						foreach($score as $sub_item => $sub_score){
-							$group->get_marking_scheme()->faculty->{$item}->parts->{$sub_item}->{$submitter_type} = $sub_score;
+				}
+			}
+		}else{
+			//For each submitted score
+			foreach($score_array as $item => $score){
+			//If handling faculty
+				if($type == 'supervisor' || $type == 'assessor'){
+					//Handle penalty
+					if($item == 'penalty'){
+						(end($group->get_marking_scheme()->faculty))->{$type} = (int)$score;
+					}elseif($item == 'student' && $group->is_supervisor($account->sim_id)){
+						//Handle individual student scores if supervisor
+						foreach($score as $student_id => $student_score){
+							$group->get_marking_scheme()->student->individual->{$student_id} = (int)$student_score;
 						}
 					}else{
-						//If no sub-items
-						$group->get_marking_scheme()->faculty->{$item}->{$submitter_type} = $score;
+						////Handle main/sub items
+						
+						//If there are sub-items
+						if(is_array($score)){
+							foreach($score as $sub_item => $sub_score){
+								$group->get_marking_scheme()->faculty->{$item}->parts->{$sub_item}->{$type} = (int)$sub_score;
+							}
+						}else{
+							//If no sub-items
+							$group->get_marking_scheme()->faculty->{$item}->{$type} = (int)$score;
+						}
 					}
 				}
 			}
 		}
-	}	
+	}
 	
 	if(db_query(
 		"UPDATE 

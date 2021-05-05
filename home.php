@@ -31,7 +31,7 @@
 		Items left to do (? - denotes optional):
 		<ul>
 			<li>
-				Marking scheme upgrade -> View/exec/edit for students / ?-Feedback
+				Marking scheme upgrade -> View/exec/edit for students
 			</li>
 			<li>
 				Clean deprecated grading (can use for final grade for viewing)

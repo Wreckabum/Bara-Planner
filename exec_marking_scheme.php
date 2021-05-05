@@ -36,7 +36,7 @@
 			if(db_query(
 				"UPDATE `semester_details` 
 				SET
-					`marking_scheme` = '". get_default_marking_scheme('json') ."'
+					`marking_scheme` = '". get_default_marking_scheme() ."'
 				WHERE
 					`year` = '{$_POST['year']}' AND
 					`quarter` = '{$_POST['quarter']}';"
@@ -110,6 +110,11 @@
 		
 		//Handle due dates
 		$final['faculty'][$item_num]['week_due'] = (int)$_POST['due'][$item_num];
+	}
+	
+	//Handle feedback
+	foreach($_POST['feedback'] as $feedback_key => $desc){
+		$final['feedback'][$feedback_key] = $desc;
 	}
 	
 	//Add Penalty row
