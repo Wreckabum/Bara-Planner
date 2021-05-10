@@ -429,7 +429,7 @@
 																	[ View ]
 																</a>
 															<?php
-																if($account->is_admin()){
+																if($account->is_super()){
 															?>
 																	<br />
 																	<a href='edit_admin.php?a=<?= $admin->sim_id ?>'>
