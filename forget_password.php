@@ -3,7 +3,7 @@
 	session_start();
 	
 	//If already logged in
-	if(!isset($_SESSION["loggedin"])){
+	if(isset($_SESSION["loggedin"])){
 		header("location: home.php");
 		exit();
 	}
@@ -14,7 +14,7 @@
 	//Connect to database
 	sql_connect();
 	
-	$account = get_account($_SESSION["id"]);
+	
 	
 	//Define variables and initialize with empty values
 	$email = "";
@@ -35,7 +35,7 @@
 				$to_reset = get_account_by_email($email);
 				
 				//Allow reset of self only
-				if($to_reset->sim_id == $account->sim_id){
+				if(!empty($to_reset)){
 					//Set new password
 					db_query("START TRANSACTION;");
 					
@@ -90,23 +90,20 @@
 						if(mail($email, $subject, $message, $headers)){
 							//E-mail successfully sent
 							db_query("COMMIT;");
-?>
-							<script>
-								window.alert("Password has been succesfuly reset.\nPlease check your E-mail and login with new password.");
-								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
-							</script>
-<?php
+							echo 
+							("<script LANGUAGE='JavaScript'>
+								window.alert('Password has been succesfully reset.\\nPlease check your E-mail and login with new password.');
+								window.location.href='index.php';
+							</script>");
 							@mysqli_close($GLOBALS['mysql_link']);
 							exit();
 						}else{
 							//E-mail failure; revert password change
 							db_query("ROLLBACK;");
-?>
-							<script>
-								window.alert("There was an error with the sending of the E-mail.\nThe password reset was reverted.");
-								window.location.href = "view_account.php?a=" + <?= $account->sim_id ?>;
-							</script>
-<?php
+							echo (" <script LANGUAGE='JavaScript'>
+								window.alert('There was an error with the sending of the E-mail.\\nThe password reset was reverted.');
+								window.location.href='index.php';
+							</script>");
 							@mysqli_close($GLOBALS['mysql_link']);
 							exit();
 						}
@@ -140,7 +137,6 @@
 		</style>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
 		<div class='wrapper' style='padding:0 20px;'>
 			<h2>Reset Password</h2>
 			<p>Please fill in your E-Mail to reset password.</p>
