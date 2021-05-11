@@ -45,7 +45,7 @@
 	}
 	
 	//Check type
-	if($_POST['type'] != "student" && $_POST['type'] != "faculty"){
+	if($_POST['type'] != "student" && $_POST['type'] != "faculty" && $_POST['type'] != "project"){
 		header("location: import.php?t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}&err=3");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
@@ -111,9 +111,13 @@
 			?>
 					Students for: Year <?= $_POST['year'] ?>, Quarter <?= $_POST['quarter'] ?>
 			<?php
-				}else{
+				}elseif($_POST['type'] == "faculty"){
 			?>
 					Faculty members
+			<?php
+				}elseif($_POST['type'] == "project"){
+			?>
+					Projects for: Year <?= $_POST['year'] ?>, Quarter <?= $_POST['quarter'] ?>
 			<?php
 				}
 			?>

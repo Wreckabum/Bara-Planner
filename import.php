@@ -78,6 +78,7 @@
 				<select id='account_type' name='type' class='form-control' required>
 					<option value='student' <?= ((isset($_GET['t'])) ? (($_GET['t'] == "student") ? "selected" : "") : "") ?>>Student</option>
 					<option value='faculty' <?= ((isset($_GET['t'])) ? (($_GET['t'] == "faculty") ? "selected" : "") : "") ?>>Faculty</option>
+					<option value='project' <?= ((isset($_GET['t'])) ? (($_GET['t'] == "project") ? "selected" : "") : "") ?>>Project</option>
 				</select>
 				</div>
 				<div id='year' class='form-group'>
@@ -101,7 +102,7 @@
 </html>
 <script>
 	$("#account_type").on("change", function(){
-		if($(this).val() == "student"){
+		if($(this).val() == "student" || $(this).val() == "project"){
 			$("#year").show();
 			$("#quarter").show();
 		}else{

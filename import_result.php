@@ -26,7 +26,7 @@
 	$errors = ((isset($_POST['err'])) ? json_decode($_POST['err']) : []);
 	$repeats = ((isset($_POST['rep'])) ? json_decode($_POST['rep']) : []);
 	$headers = ((isset($_POST['h'])) ? json_decode($_POST['h']) : []);
-	$type = (($_POST['t'] == "student") ? "student" : "faculty");
+	$type = (($_POST['t'] == "student") ? "student" : (($_POST['t'] == "faculty") ? "faculty" : "project"));
 	$year = ((isset($_POST['y'])) ? str_clean($_POST['y']) : date('Y'));
 	$quarter = ((isset($_POST['q'])) ? str_clean($_POST['q']) : ceil(date('n') / 3));
 ?>
@@ -46,7 +46,7 @@
 		<?php include('include/templates/header.php'); ?>		
 		<span style='float:left;'>
 			<h4>
-				Successfully added: <?= $_POST['c'] ?> <?= (($_POST['t'] == "student") ? "Students" : "Faculty members") ?>
+				Successfully added: <?= $_POST['c'] ?> <?= (($_POST['t'] == "student") ? "Students" : (($_POST['t'] == "faculty") ? "Faculty members" : "Projects")) ?>
 			</h4>
 		</span>
 		<span style='float:right;'>
@@ -54,7 +54,7 @@
 		</span>
 		<br />
 		<?php
-			if(count($repeats) > 0){
+			if($type != "project" && count($repeats) > 0){
 		?>
 				<div id='repeats_container'>
 					<hr />
@@ -107,7 +107,21 @@
 				<h4>
 					Errors: <?= count($errors) ?>
 					<br />
-					--> Students for: Year <?= $year ?>, Quarter <?= $quarter ?>
+					<?php
+						if($type == "student"){
+					?>
+							--> Students for: Year <?= $year ?>, Quarter <?= $quarter ?>
+					<?php
+						}elseif($type == "faculty"){
+					?>
+							--> Faculty members
+					<?php
+						}elseif($type == "project"){
+					?>
+							--> Projects for: Year <?= $year ?>, Quarter <?= $quarter ?>
+					<?php
+						}
+					?>
 				</h4>
 				<table id='filter_table' class='display'>
 					<thead>

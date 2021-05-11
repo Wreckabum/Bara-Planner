@@ -40,7 +40,7 @@
 	str_clean($_POST['quarter']);
 	
 	//Check type
-	if($_POST['type'] != "student" && $_POST['type'] != "faculty"){
+	if($_POST['type'] != "student" && $_POST['type'] != "faculty" && $_POST['type'] != "project"){
 		echo json_encode(["error" => true, "text" => "Wrong type.", "redirect" => "import.php?t={$_POST['type']}&y={$_POST['year']}&q={$_POST['quarter']}&err=3"]);
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
@@ -56,167 +56,224 @@
 		$headers[] = $key;
 	}
 	
-	//Process each row
-	foreach($import_data as $row){
-		//Prepare the strings for SQL insertion
-		foreach($row as $key => &$value){
-			str_clean($value);
-			
-			if($key == "Programme"){
-				$row->major = $value;
-			}elseif($key == "UOW ID"){
-				$row->uow_id = $value;
-			}elseif($key == "SIM ID"){
-				$row->sim_id = $value;
-			}elseif($key == "Name"){
-				$row->name = htmlspecialchars($value, ENT_QUOTES);
-			}elseif($key == "Mobile No."){
-				$row->phone = $value;
-			}elseif($key == "SIM Email"){
-				$row->sim_email = $value;
-			}elseif($key == "Personal Email"){
-				$row->personal_email = $value;
+	//For students/faculty
+	if($_POST['type'] == "student" || $_POST['type'] == "faculty"){
+		//Process each row
+		foreach($import_data as $row){
+			//Prepare the strings for SQL insertion
+			foreach($row as $key => &$value){
+				str_clean($value);
+				
+				if($key == "Programme"){
+					$row->major = $value;
+				}elseif($key == "UOW ID"){
+					$row->uow_id = $value;
+				}elseif($key == "SIM ID"){
+					$row->sim_id = $value;
+				}elseif($key == "Name"){
+					$row->name = htmlspecialchars($value, ENT_QUOTES);
+				}elseif($key == "Mobile No."){
+					$row->phone = $value;
+				}elseif($key == "SIM Email"){
+					$row->sim_email = $value;
+				}elseif($key == "Personal Email"){
+					$row->personal_email = $value;
+				}
 			}
-		}
-		
-		//Do not proceed with SQL insertion if any of the following fields are missing
-		if(
-			!isset($row->{'Programme'}) || 
-			!isset($row->{'UOW ID'}) || 
-			!isset($row->{'SIM ID'}) || 
-			!isset($row->{'Name'}) || 
-			!isset($row->{'SIM Email'})
-		){
-			$row->error = "Missing required field.";
-			$errors[] = $row;
-			continue;
-		}
-		
-		//////Check if major(s) exists
-		////
-		$major_array = explode(",", $row->major);
-		
-		//For students
-		if($_POST['type'] == "student"){
-			if(count($major_array) == 1){
-				//If only 1 major attached to row
-				$major_found = false;
-				
-				foreach($majors as $major){
-					if($major->id == $row->major){
-						$row->type = $major->get_student_type();
-						$major_found = true;
-						break;
-					}
-				}
-				
-				if(!$major_found){
-					//Major not found
-					$row->error = "Invalid major.";
-					$errors[] = $row;
-					continue;
-				}
-			}else{
-				//Multiple majors
-				$row->error = "Student cannot have multiple majors.";
+			
+			//Do not proceed with SQL insertion if any of the following fields are missing
+			if(
+				!isset($row->{'Programme'}) || 
+				!isset($row->{'UOW ID'}) || 
+				!isset($row->{'SIM ID'}) || 
+				!isset($row->{'Name'}) || 
+				!isset($row->{'SIM Email'})
+			){
+				$row->error = "Missing required field.";
 				$errors[] = $row;
 				continue;
 			}
 			
-			$sql_year = "'{$_POST['year']}'";
-			$sql_quarter = "'{$_POST['quarter']}'";
-			$sql_major = "'[\"{$row->major}\"]'";
-		}else{
-			//For faculty
-			$row->type = 0;
-			$row->accepted_majors = [];
+			//////Check if major(s) exists
+			////
+			$major_array = explode(",", $row->major);
 			
-			foreach($majors as $major){
-				//If only 1 major attached to row
+			//For students
+			if($_POST['type'] == "student"){
 				if(count($major_array) == 1){
-					if($major->id == $row->major){
-						$row->accepted_majors[] = $row->major;
-						break;
+					//If only 1 major attached to row
+					$major_found = false;
+					
+					foreach($majors as $major){
+						if($major->id == $row->major){
+							$row->type = $major->get_student_type();
+							$major_found = true;
+							break;
+						}
+					}
+					
+					if(!$major_found){
+						//Major not found
+						$row->error = "Invalid major.";
+						$errors[] = $row;
+						continue;
 					}
 				}else{
 					//Multiple majors
-					foreach($major_array as $check_major){
-						$check_major = trim($check_major);
-						
-						if($major->id == $check_major){
-							$row->accepted_majors[] = $major->id;
+					$row->error = "Student cannot have multiple majors.";
+					$errors[] = $row;
+					continue;
+				}
+				
+				$sql_year = "'{$_POST['year']}'";
+				$sql_quarter = "'{$_POST['quarter']}'";
+				$sql_major = "'[\"{$row->major}\"]'";
+			}else{
+				//For faculty
+				$row->type = 0;
+				$row->accepted_majors = [];
+				
+				foreach($majors as $major){
+					//If only 1 major attached to row
+					if(count($major_array) == 1){
+						if($major->id == $row->major){
+							$row->accepted_majors[] = $row->major;
+							break;
+						}
+					}else{
+						//Multiple majors
+						foreach($major_array as $check_major){
+							$check_major = trim($check_major);
+							
+							if($major->id == $check_major){
+								$row->accepted_majors[] = $major->id;
+							}
 						}
 					}
 				}
+				
+				//There is a major in the list that is not found
+				if(count($major_array) != count($row->accepted_majors)){
+					$row->error = "Invalid major found.";
+					$errors[] = $row;
+					continue;
+				}
+				
+				$sql_year = "NULL";
+				$sql_quarter = "NULL";
+				$sql_major = "'". addslashes(json_encode($row->accepted_majors)) ."'";
 			}
 			
-			//There is a major in the list that is not found
-			if(count($major_array) != count($row->accepted_majors)){
-				$row->error = "Invalid major found.";
+			
+			//Ensure type exist (checking student)
+			if(!isset($row->type)){
+				$row->error = "Invalid account type.";
+				$errors[] = $row;
+				continue;
+			}
+			////
+			//////
+			
+			$password = generate_password();
+			$phone = ((isset($row->phone))? "'{$row->phone}'" : NULL);
+			$personal_email = ((isset($row->personal_email))? "'{$row->personal_email}'" : NULL);
+			
+			if(db_query(
+				"INSERT INTO
+					`accounts`
+						(`sim_id`, 
+						`uow_id`, 
+						`name`, 
+						`sim_email`, 
+						`personal_email`, 
+						`type`, 
+						`majors`, 
+						`year`, 
+						`quarter`,
+						`phone`,
+						`password`
+						)
+					VALUES
+						('{$row->sim_id}', 
+						'{$row->uow_id}', 
+						'{$row->name}', 
+						'{$row->sim_email}', 
+						{$personal_email}, 
+						'{$row->type}', 
+						{$sql_major}, 
+						{$sql_year}, 
+						{$sql_quarter}, 
+						{$phone},
+						'{$password}')"
+			) !== true){
+				//Error when adding
+				$row->error = "Duplicate account.";
+				$errors[] = $row;
+				continue;
+			}else{
+				//Sucessfully added
+				$success_count++;
+				
+				//Check if student exists in archives
+				$archive_query = db_query("SELECT `sim_id` from `archive_accounts` WHERE `sim_email` = '{$row->sim_email}';");
+				
+				if(mysqli_num_rows($archive_query) >= 1){
+					$repeats[] = $row;
+				}
+			}
+		}
+	}elseif($_POST['type'] == "project"){
+		//Process each row
+		foreach($import_data as $row){
+			//Prepare the strings for SQL insertion
+			foreach($row as $key => &$value){
+				str_clean($value);
+				
+				if($key == "Project ID"){
+					$row->proj_id = $value;
+				}elseif($key == "Name"){
+					$row->name = $value;
+				}elseif($key == "Description"){
+					$row->description = htmlspecialchars($value, ENT_QUOTES);
+				}
+			}
+			
+			//Do not proceed with SQL insertion if any of the following fields are missing
+			if(
+				!isset($row->{'Project ID'}) || 
+				!isset($row->{'Name'}) || 
+				!isset($row->{'Description'})
+			){
+				$row->error = "Missing required field.";
 				$errors[] = $row;
 				continue;
 			}
 			
-			$sql_year = "NULL";
-			$sql_quarter = "NULL";
-			$sql_major = "'". addslashes(json_encode($row->accepted_majors)) ."'";
-		}
-		
-		
-		//Ensure type exist (checking student)
-		if(!isset($row->type)){
-			$row->error = "Invalid account type.";
-			$errors[] = $row;
-			continue;
-		}
-		////
-		//////
-		
-		$password = generate_password();
-		$phone = ((isset($row->phone))? "'{$row->phone}'" : NULL);
-		$personal_email = ((isset($row->personal_email))? "'{$row->personal_email}'" : NULL);
-		
-		if(db_query(
-			"INSERT INTO
-				`accounts`
-					(`sim_id`, 
-					`uow_id`, 
-					`name`, 
-					`sim_email`, 
-					`personal_email`, 
-					`type`, 
-					`majors`, 
-					`year`, 
-					`quarter`,
-					`phone`,
-					`password`
-					)
-				VALUES
-					('{$row->sim_id}', 
-					'{$row->uow_id}', 
-					'{$row->name}', 
-					'{$row->sim_email}', 
-					{$personal_email}, 
-					'{$row->type}', 
-					{$sql_major}, 
-					{$sql_year}, 
-					{$sql_quarter}, 
-					{$phone},
-					'{$password}')"
-		) !== true){
-			//Error when adding
-			$row->error = "Duplicate account.";
-			$errors[] = $row;
-			continue;
-		}else{
-			//Sucessfully added
-			$success_count++;
-			
-			//Check if student exists in archives
-			$archive_query = db_query("SELECT `sim_id` from `archive_accounts` WHERE `sim_email` = '{$row->sim_email}';");
-			
-			if(mysqli_num_rows($archive_query) >= 1){
-				$repeats[] = $row;
+			if(db_query(
+				"INSERT INTO
+					`projects`
+						(`id`, 
+						`proj_id`, 
+						`name`, 
+						`description`, 
+						`year`, 
+						`quarter`
+						)
+					VALUES
+						(NULL, 
+						'{$row->proj_id}', 
+						'{$row->name}', 
+						'{$row->description}', 
+						'{$_POST['year']}', 
+						'{$_POST['quarter']}')"
+			) !== true){
+				//Error when adding
+				$row->error = "Duplicate project.";
+				$errors[] = $row;
+				continue;
+			}else{
+				//Sucessfully added
+				$success_count++;
 			}
 		}
 	}
@@ -241,6 +298,9 @@
 			unset($row->year);
 			unset($row->quarter);
 			unset($row->accepted_majors);
+			unset($row->proj_id);
+			unset($row->name);
+			unset($row->description);
 		}
 		
 		$err = $errors;
