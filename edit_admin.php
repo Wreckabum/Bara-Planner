@@ -66,9 +66,6 @@
 						<span style='float:left;'>
 							<?= (($account->sim_id == $admin->sim_id) ? "Edit your account details" : "Edit administrator") ?>
 						</span>
-						<span style='float:right;'>
-							<?= (($account->sim_id == $admin->sim_id) ? "<a href='forget_password.php'>Reset password</a>" : "") ?>
-						</span>
 					</td>
 				</tr>
 				<tr>
