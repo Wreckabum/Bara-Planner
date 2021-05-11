@@ -642,7 +642,7 @@
 															?>
 														</td>
 														<td style='text-align:left;'>
-															<?= (is_null($group->get_project()) ? "" : "{$group->get_project()->id} - ({$group->get_project()->get_name()})") ?>
+															<?= (is_null($group->get_project()) ? "" : "({$group->get_project()->proj_id}) - {$group->get_project()->get_name()}") ?>
 														</td>
 														<td style='text-align:center;'>
 																<a href='view_group.php?g=<?= $group->id ?>'>
@@ -873,7 +873,7 @@
 															?>
 														</td>
 														<td style='text-align:left;'>
-															<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
+															(<?= $group->get_project()->proj_id ?>) - <?= $group->get_project()->get_name() ?>
 														</td>
 														<td style='text-align:center;'>
 															<?= $group->get_year() ?>

@@ -286,7 +286,7 @@
 														foreach($all_projects as $project){
 															$selected = ((is_null($group->get_project())) ? "" : (($group->is_project($project->id)) ? "selected" : ""));
 													?>
-															<option value='<?= $project->proj_id ?>' <?= $selected ?>>(<?= $project->id ?>) - <?= $project->get_name() ?></option>
+															<option value='<?= $project->id ?>' <?= $selected ?>>(<?= $project->proj_id ?>) - <?= $project->get_name() ?></option>
 													<?php
 														}
 													?>

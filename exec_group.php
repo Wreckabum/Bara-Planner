@@ -300,7 +300,7 @@
 				"DELETE FROM
 					`groups`
 				WHERE
-					`id` IN ('". implode("', '", $delete_group_ids) ."');"
+					`id` IN ('". implode("', '", $delete_group_ids) ."');");
 		}
 		
 		header("location: view_all.php?t=groups");
