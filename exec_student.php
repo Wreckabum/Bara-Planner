@@ -146,6 +146,9 @@
 				}
 			}
 			
+			//Log changes
+			account_log($_POST['new_sim_id']);
+			
 			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{

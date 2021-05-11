@@ -106,6 +106,10 @@
 			header("location: edit_admin.php?a={$_POST['old_sim_id']}err=1");
 		}else{
 			//Sucessfully edited
+			
+			//Log changes
+			account_log($_POST['new_sim_id']);
+			
 			header("location: view_account.php?a={$_POST['new_sim_id']}");
 		}
 	}else{

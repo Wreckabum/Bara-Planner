@@ -168,7 +168,18 @@
 							<a href="forget_password_admin.php" class="btn btn-primary">Send</a>
 						</div>
 					</div>
-			<?php
+					<?php
+						if($account->is_admin()){
+					?>
+							<div class="card" style="width: 33%;">
+								<div class="card-body">
+									<h5 class="card-title">View Logs</h5>
+									<p class="card-text">View all logs</p>
+									<a href="view_logs.php" class="btn btn-primary">View</a>
+								</div>
+							</div>
+					<?php
+						}
 				}
 			?>
 		</div>
