@@ -47,7 +47,7 @@
 						foreach($all_logs['current'] as $log){
 					?>
 						<li>
-							<a target='_blank' href='<?= "{$all_logs['base_path']}/{$log}" ?>' download='<?= $log ?>'><?= $log ?></a>
+							<a target='_blank' href='<?= "logs/{$log}" ?>' download='<?= $log ?>'><?= $log ?></a>
 						</li>
 					<?php
 						}
@@ -61,7 +61,7 @@
 						foreach($all_logs['archive'] as $archive_log){
 					?>
 						<li>
-							<a target='_blank' href='<?= "{$all_logs['base_path']}/archive_logs/{$archive_log}" ?>' download='<?= $archive_log ?>'><?= $archive_log ?></a>
+							<a target='_blank' href='<?= "logs/archive_logs/{$archive_log}" ?>' download='<?= $archive_log ?>'><?= $archive_log ?></a>
 						</li>
 					<?php
 						}
