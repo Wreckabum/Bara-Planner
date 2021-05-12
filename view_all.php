@@ -655,6 +655,10 @@
 																	<a href="edit_group.php?g=<?= $group->id ?>">
 																		[ Edit ]
 																	</a>
+																	<br />
+																	<a href="edit_group_multiple.php?semester=<?= $group->get_year() ?>_<?= $group->get_quarter() ?>&type=<?= $group->get_type() ?>#<?= $group->id ?>">
+																		[ Edit All ]
+																	</a>
 															<?php
 																}
 															?>

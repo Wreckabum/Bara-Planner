@@ -352,6 +352,10 @@
 									<a href="edit_group.php?g=<?= $group->id ?>">
 										Edit Group
 									</a>
+									/
+									<a href="edit_group_multiple.php?semester=<?= $group->get_year() ?>_<?= $group->get_quarter() ?>&type=<?= $group->get_type() ?>#<?= $group->id ?>">
+										[ Edit All ]
+									</a>
 								</td>
 								<td colspan='2'>
 									<a id='delete_link' href='#' onClick="show_delete();">
