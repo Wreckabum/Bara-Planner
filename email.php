@@ -49,9 +49,10 @@
 				<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 			</head>
 			<body>
-				<?php include("include/templates/header.php"); ?>
+				<?php include("include/templates/header.php"); ?><div class='container'>
+				
 				<form action='' method='GET'>
-					<table id='choose_semester' class='basic_table' style='width:400px;'>
+					<table id='choose_semester' class='basic_table' >
 						<tr>
 							<td colspan='2'>
 								Choose semester and type
@@ -141,8 +142,8 @@
 				<script src='include/js/dataTables.min.js'></script>
 			</head>
 			<body>
-				<?php include("include/templates/header.php"); ?>
-				<center>
+				<?php include("include/templates/header.php"); ?><div class='container'>
+				<div class='container'><center>
 					<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 				</center>
 				<h4>
@@ -219,6 +220,8 @@
 				</form>
 				<br />
 				<a href='home.php'>Back to main page</a>
+				</div>
+			    </div>
 			</body>
 			<script>
 				var dt = $("#students").DataTable({

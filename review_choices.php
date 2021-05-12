@@ -73,7 +73,7 @@
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
+		<?php include("include/templates/header.php"); ?><div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
@@ -185,6 +185,7 @@
 		</form>
 		<br />
 		<a href='home.php'>Back to main page</a>
+		</div>
 	</body>
 </html>
 <?php

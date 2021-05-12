@@ -36,6 +36,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
+		<div class='container'>
 		<h5>
 			Click to traverse/download logs.
 		</h5>
@@ -88,6 +89,7 @@
 		</ul>
 		<br />
 		<a href='home.php'>Back to main page</a>
+	    </div>
 	</body>
 	<script>
 		$("#current, #archive").click(function(e){

@@ -68,11 +68,11 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<center>
+		<div class='container'><center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_semester.php' method='POST'>
-			<table id='update_semester' class='basic_table' style='width:auto;'>
+			<table id='update_semester' class='basic_table' >
 				<tr>
 					<td colspan='2'>
 						Semester details
@@ -123,6 +123,7 @@
 		<a href='semester_details.php'>Back to all semester details</a>
 		<br />
 		<a href='home.php'>Back to main page</a>
+		</div>
 	</body>
 </html>
 <?php

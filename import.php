@@ -60,7 +60,7 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include('include/templates/header.php'); ?>
+		<?php include('include/templates/header.php'); ?><div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
@@ -98,6 +98,7 @@
 		</div>
 		<br />
 		<a href='home.php'>Back to main page</a>
+        </div>
 	</body>
 </html>
 <script>

@@ -64,11 +64,12 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
+		<div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_semester.php' method='POST'>
-			<table id='add_semester' class='basic_table' style='width:40%;'>
+			<table id='add_semester' class='basic_table' >
 				<tr>
 					<td colspan='2'>
 						Add a new semester
@@ -115,6 +116,7 @@
 		</form>
 		<br />
 		<a href='home.php'>Back to main page</a>
+        </div>
 	</body>
 </html>
 <?php

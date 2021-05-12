@@ -165,8 +165,8 @@
 		</style>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
-		<div class='wrapper' style='padding:0 20px;'>
+		<?php include("include/templates/header.php"); ?><div class='container'>
+		<div class='wrapper' style='padding:0 20px;margin:auto;'>
 			<h2>Reset Password</h2>
 			<p>Please fill in the following user details to reset their password.</p>
 			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
@@ -183,9 +183,11 @@
 					<input type='submit' name='reset' class='btn btn-primary' value='Reset Password'>
 				</div>
 			</form>
+			<br />
+		    <a href='home.php'>Back to main page</a>
 		</div>
-		<br />
-		<a href='home.php'>Back to main page</a>
+
+		</div>
 	</body>
 </html>
 <?php

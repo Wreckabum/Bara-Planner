@@ -43,7 +43,7 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
+		<?php include("include/templates/header.php"); ?><div class='container'>
 		<form id='grade_form' action='exec_grade_group.php' method='POST'>
 			<table id='grade_group_table' class='basic_table' style='width:40%;'>
 				<tr>
@@ -147,6 +147,7 @@
 				</tr>
 			</table>
 		</form>
+		</div>
 	</body>
 	<script>
 		$("#confirm_checkbox").change(function(){

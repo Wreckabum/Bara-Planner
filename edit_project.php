@@ -56,11 +56,11 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<center>
+		<div class='container'><center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<form action='exec_project.php' method='POST'>
-			<table id='edit_project' class='basic_table' style='width:40%;'>
+			<table id='edit_project' class='basic_table' >
 				<tr>
 					<td colspan='2'>
 						Edit a project
@@ -116,6 +116,7 @@
 		</form>
 		<br />
 		<a href='home.php'>Back to main page</a>
+		</div>
 	</body>
 </html>
 <?php

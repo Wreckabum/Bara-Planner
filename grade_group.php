@@ -42,13 +42,14 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
+		<?php include("include/templates/header.php"); ?><div class='container'>
 		<?= $group->print_marking_scheme($account->sim_id) ?>
 		<a href='view_group.php?g=<?= $group->id ?>'>Back to group details</a>
 		<br />
 		<a href='view_group.php'>View all assigned groups</a>
 		<br />
 		<a href='home.php'>Back to main page</a>
+		</div>
 	</body>
 </html>
 <?php

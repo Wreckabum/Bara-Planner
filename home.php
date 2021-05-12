@@ -25,6 +25,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
+		<div class='container'>
 		<h2>To implement dashboard based on user type</h2>
 		<br />
 		<br />
@@ -49,6 +50,7 @@
 				?-Use classes for setters for updating where possible
 			</li>
 		</ul>
+		</div>
 	</body>
 </html>
 <?php

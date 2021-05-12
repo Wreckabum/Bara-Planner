@@ -78,11 +78,11 @@
 		<script src='include/js/dataTables.min.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?>
+		<?php include("include/templates/header.php"); ?><div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] >= 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
 		</center>
-		<div style='width:50%;'>
+		<div style='width:100%;'>
 			<table id='filter_table' class='display'>
 				<thead>
 					<tr>
@@ -157,6 +157,7 @@
 			</table>
 		</div>
 		<input type='button' id='update_all' name='update_all' value='Update' /> <input type='button' id='add' name='add' value='Add New' onClick="window.location.href='add_semester.php'" />
+		</div>
 	</body>
 	<script>
 		function show_archive(year, quarter){

@@ -92,7 +92,7 @@
 	</head>
 	<body>
 		<?php include("include/templates/header.php"); ?>
-		<center>
+		<div class='container'><center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
 		<div id='students_container' style='display:inline-block; width:49%; vertical-align:top;'>
@@ -290,6 +290,7 @@
 		</div>
 		<br />
 		<a href='home.php'>Back to main page</a>
+		</div>
 	</body>
 	<script>
 		$.fn.dataTable.ext.type.order['rank-pre'] = function(r){
