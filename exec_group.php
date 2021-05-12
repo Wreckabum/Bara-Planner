@@ -304,6 +304,96 @@
 		}
 		
 		header("location: view_all.php?t=groups");
+	}elseif(isset($_POST['edit_single'])){
+		$header_link = "edit_group.php?g={$_POST['id']}";
+
+		try{
+			get_account($_POST['supervisor']);
+		}catch(Exception $e){
+			header("location: {$header_link}&err=1");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
+
+		try{
+			get_account($_POST['assessor']);
+		}catch(Exception $e){
+			header("location: {$header_link}&err=2");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
+
+		try{
+			$project = get_project($_POST['project'], 'proj_id');
+		}catch(Exception $e){
+			header("location: {$header_link}&err=3");
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}
+
+		$check_year = "";
+		$check_quarter = "";
+		$check_type = "";
+		$members = [];
+
+		foreach($_GET['student'] as $student){
+			try{
+				$check_account = get_account($student);
+			}catch(Exception $e){
+				header("location: {$header_link}&err=4");
+				@mysqli_close($GLOBALS['mysql_link']);
+				exit();
+			}
+
+			//For first student, set initial year/quarter
+			if($check_year == "" && $check_year == ""){
+				$check_year = $check_account->get_year();
+				$check_quarter = $check_account->get_quarter();
+			}else{
+				//Check each subsequent student
+				if($check_year != $check_account->get_year() || $check_quarter != $check_account->get_quarter()){
+					header("location: {$header_link}&err=5");
+					@mysqli_close($GLOBALS['mysql_link']);
+					exit();
+				}
+			}
+
+			//For first student, set initial type
+			if($check_type == ""){
+				$check_type = $check_account->get_account_type();
+			}else{
+				//Check each subsequent student
+				if($check_type != $check_account->get_account_type()){
+					header("location: {$header_link}&err=6");
+					@mysqli_close($GLOBALS['mysql_link']);
+					exit();
+				}
+			}
+
+			//Populate the members array
+			$temp = [];
+			$temp['id'] = $check_account->sim_id;
+			$temp['score'] = null;
+			$members[] = $temp;
+		}
+		
+		if(db_query(
+			"UPDATE `groups` 
+				SET
+					`name` = '{$_POST['name']}', 
+					`supervisor` = '{$_POST['supervisor']}', 
+					`assessor` = '{$_POST['assessor']}', 
+					`members` = '". addslashes(json_encode($members)) ."', 
+					`project` = '{$project->id}'
+				WHERE
+					`id` = '{$_POST['id']}';"
+		) !== true){
+			//Error when updating
+			header("location: {$header_link}&err=0");
+		}else{
+			//Sucessfully edited
+			header("location: view_group.php?g={$_POST['id']}");
+		}
 	}else{
 		//Unknown error
 		header("location: home.php");
