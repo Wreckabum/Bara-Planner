@@ -42,26 +42,43 @@
 		<ul>
 			<li id='current' style='cursor:pointer;'>
 				Active
-				<ul style='display:none;'>
+				<ul>
 					<?php
-						foreach($all_logs['current'] as $log){
+						if(count($all_logs['current']) > 0){
+							foreach($all_logs['current'] as $log){
+					?>
+								<li>
+									<a target='_blank' href='<?= "logs/{$log}" ?>' download='<?= $log ?>'><?= $log ?></a>
+								</li>
+					<?php
+							}
+						}else{
 					?>
 						<li>
-							<a target='_blank' href='<?= "logs/{$log}" ?>' download='<?= $log ?>'><?= $log ?></a>
+							No active logs
 						</li>
 					<?php
 						}
-				?>
+					?>
 				</ul>
 			</li>
+			<hr />
 			<li id='archive' style='cursor:pointer;'>
 				Archive
 				<ul style='display:none;'>
 					<?php
-						foreach($all_logs['archive'] as $archive_log){
+						if(count($all_logs['archive']) > 0){
+							foreach($all_logs['archive'] as $archive_log){
+					?>
+							<li>
+								<a target='_blank' href='<?= "logs/archive_logs/{$archive_log}" ?>' download='<?= $archive_log ?>'><?= $archive_log ?></a>
+							</li>
+					<?php
+							}
+						}else{
 					?>
 						<li>
-							<a target='_blank' href='<?= "logs/archive_logs/{$archive_log}" ?>' download='<?= $archive_log ?>'><?= $archive_log ?></a>
+							No archived logs
 						</li>
 					<?php
 						}
