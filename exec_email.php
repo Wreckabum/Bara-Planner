@@ -129,7 +129,7 @@
 				global $config;
 				
 				//Server settings
-				$mail->SMTPDebug = 3;
+				$mail->SMTPDebug = 0;
 				$mail->isSMTP();
 				$mail->Host = 'mboxhosting.com';
 				$mail->SMTPAuth = true;
