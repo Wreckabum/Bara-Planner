@@ -1,2 +1,4 @@
 vendor/*
 include/funcs/config.php
+logs
+logs/*
