@@ -164,7 +164,7 @@
 		
 		//If there are logs
 		if(is_dir("{$config['logs']}")){
-			$main_directory = array_diff(scandir($config['logs']), array(".", "..", "archive_logs"));
+			$main_directory = array_diff(scandir($config['logs']), array(".", "..", ".htaccess", "archive_logs"));
 			
 			foreach($main_directory as $log){
 				$output['current'][] = $log;
