@@ -122,7 +122,6 @@
 					</body>
 				</html>";
 			
-			
 			$mail = new PHPMailer(true);
 			
 			try{
@@ -131,7 +130,7 @@
 				//Server settings
 				$mail->SMTPDebug = 0;
 				$mail->isSMTP();
-				$mail->Host = 'mboxhosting.com';
+				$mail->Host = $config['email_host'];
 				$mail->SMTPAuth = true;
 				$mail->Username = $config['email'];
 				$mail->Password = $config['email_pass'];
@@ -139,7 +138,7 @@
 				$mail->Port = 465;
 
 				//Recipients
-				$mail->setFrom($config['email'], 'UOW FYP Administration');
+				$mail->setFrom($config['email'], "UOW FYP Administration");
 				$mail->addAddress($email, $to_email->get_name());
 
 				//Content

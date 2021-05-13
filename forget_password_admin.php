@@ -8,8 +8,14 @@
 		exit();
 	}
 	
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\Exception;
+	
 	//Include main functions
 	require_once("include/funcs/sql_funcs.php");
+	require_once("PHPMailer/src/Exception.php");
+	require_once("PHPMailer/src/PHPMailer.php");
+	require_once("PHPMailer/src/SMTP.php");
 	
 	//Connect to database
 	sql_connect();
@@ -66,9 +72,7 @@
 					$update = $to_reset->set_password($password);
 					
 					if($update === true){
-						$sender = "noreply@fyp.com";
 						$subject = "Reset Password";
-						$headers = "From:{$sender}\r\nCC:{$to_reset->get_personal_email()}";
 						$message = 
 							"<html lang='en'>
 								<body>
@@ -104,15 +108,40 @@
 										</tr>
 									</table>
 									<h5>
-										Your password has been manually. reset by an 
+										Your password has been manually reset by an 
 										<br />administrator. Please
 										E-Mail the <a href='mailto:Bernardsin@sim.edu.sg?subject=Manual reset of password'>FYP coordinator</a> 
 										<br />for any enquiries.
 									</h5>
 								</body>
 							</html>";
+						
+						$mail = new PHPMailer(true);
+			
+						try{
+							global $config;
+							
+							//Server settings
+							$mail->SMTPDebug = 0;
+							$mail->isSMTP();
+							$mail->Host = $config['email_host'];
+							$mail->SMTPAuth = true;
+							$mail->Username = $config['email'];
+							$mail->Password = $config['email_pass'];
+							$mail->SMTPSecure = 'ssl';
+							$mail->Port = 465;
 
-						if(mail($email, $subject, $message, $headers)){
+							//Recipients
+							$mail->setFrom($config['email'], "UOW FYP Administration");
+							$mail->addAddress($to_reset->get_sim_email(), $to_reset->get_name());
+
+							//Content
+							$mail->isHTML(true);
+							$mail->Subject = $subject;
+							$mail->Body	= $message;
+
+							$mail->send();
+							
 							//E-mail successfully sent
 							db_query("COMMIT;");
 ?>
@@ -123,7 +152,7 @@
 <?php
 							@mysqli_close($GLOBALS['mysql_link']);
 							exit();
-						}else{
+						}catch(Exception $e){
 							//E-mail failure; revert password change
 							db_query("ROLLBACK;");
 ?>
