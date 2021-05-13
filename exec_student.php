@@ -124,7 +124,7 @@
 				$query = db_query("SELECT * FROM `groups` WHERE JSON_CONTAINS(`members`, '{\"id\" : \"{$_POST['old_sim_id']}\"}')");
 				
 				//If student is in a group
-				if(mysqli_num_rows == 1){
+				if(mysqli_num_rows($query) == 1){
 					$group = mysqli_fetch_assoc($query);
 					$group_members = json_decode($group['members']);
 					
