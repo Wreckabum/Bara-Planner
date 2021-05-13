@@ -122,7 +122,7 @@
 		if($email_sim !== true){
 			//Error sending email
 			db_query("ROLLBACK;"); //Revert password change
-			$errors[] = $student;
+			$errors[] = $to_email->sim_id;
 			continue;
 		}else{
 			//Sucessfully added

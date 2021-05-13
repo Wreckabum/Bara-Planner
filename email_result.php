@@ -82,6 +82,7 @@
 					<tbody>
 						<?php
 							foreach($errors as $error){
+								$student = get_account($error);
 						?>
 								<tr>
 									<td style='padding-right:0;'>
