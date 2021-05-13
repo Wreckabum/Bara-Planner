@@ -182,6 +182,7 @@
 								<tr>
 									<td style='padding-right:0;'>
 										<?= $student->sim_id ?>
+										<input type='hidden' name='sim_id' value='<?= $student->sim_id ?>'/>
 									</td>
 									<td style='padding-right:0;'>
 										<?= $student->uow_id ?>
@@ -208,14 +209,11 @@
 					</tbody>
 				</table>
 				<br />
-				<form action='exec_email.php' method='POST'>
+				<form id='send_email' action='exec_email.php' method='POST'>
 					<label><input type='checkbox' id='confirm_details' value='0' required/> I have checked and confirmed the students to be E-Mailed with their new passwords.</label>
 					<br />
 					<label><input type='checkbox' id='confirm_password' value='0' required/> I understand that passwords for ALL of the shown accounts will be reset.</label>
 					<br />
-					<input type='hidden' name='students' value='<?= json_encode($students) ?>'/>
-					<input type='hidden' name='year' value='<?= $year ?>'/>
-					<input type='hidden' name='quarter' value='<?= $quarter ?>'/>
 					<input type='submit' name='email' value='E-Mail Students'>
 				</form>
 				<br />
@@ -227,6 +225,42 @@
 				var dt = $("#students").DataTable({
 					/* Disable initial sort */
 					"aaSorting": []
+				});
+				
+				$("#send_email").submit(function(e){
+					let all_rows = {};
+					let start = 1;
+					
+					dt.rows().nodes().each(function(row){
+						let row_inputs = ($(row).find(":input").serializeArray());
+						let row_array = {};
+						
+						row_inputs.forEach(function(pair){
+							row_array[pair.name] = pair.value;
+						});
+						
+						all_rows[start++] = row_array;
+					});
+					
+					$("#send_email").append($("<input/>", {
+						type: "hidden",
+						name: "students",
+						value: JSON.stringify(all_rows)
+					}));
+					
+					$("#send_email").append($("<input/>", {
+						type: "hidden",
+						name: "year",
+						value: <?= $year ?>
+					}));
+					
+					$("#send_email").append($("<input/>", {
+						type: "hidden",
+						name: "quarter",
+						value: <?= $quarter ?>
+					}));
+					
+					$("#send_email").submit();
 				});
 			</script>
 		</html>

@@ -143,7 +143,7 @@
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
 							<h5 class="card-title">Import</h5>
-							<p class="card-text">Import student via CSV</p>
+							<p class="card-text">Import students/faculty/projects via CSV</p>
 							<a href="import.php" class="btn btn-primary">Import</a>
 						</div>
 					</div>

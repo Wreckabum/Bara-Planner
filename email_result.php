@@ -87,6 +87,7 @@
 								<tr>
 									<td style='padding-right:0;'>
 										<?= $student->sim_id ?>
+										<input type='hidden' name='sim_id' value='<?= $student->sim_id ?>'/>
 									</td>
 									<td style='padding-right:0;'>
 										<?= $student->uow_id ?>
@@ -145,7 +146,7 @@
 			$("body").append($("<form/>", {
 				id: "jquery_form",
 				method: "POST",
-				action: "exec_import.php"
+				action: "exec_email.php"
 			}));
 
 			$("#jquery_form").append($("<input/>", {
