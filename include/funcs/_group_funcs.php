@@ -40,7 +40,7 @@
 		@param	int (optional)
 		@return	Array of Group Objects
 	*/
-	function get_all_groups($year = "*", $quarter = "*"){		
+	function get_all_groups($year = "*", $quarter = "*"){
 		$query = db_query("SELECT `id` FROM `groups` ORDER BY `id` ASC;");
 		
 		$output = [];

@@ -399,8 +399,8 @@
 			</form>
 			<br />
 			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='cleme.tanby@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='OQGJrSSz6D'>
+				<input type='hidden' name='email' value='tobia.bum@mymail.sim.edu.sg'>
+				<input type='hidden' name='password' value='MDEcSDnQTP'>
 				<input type='submit' value='Full-time Student'>
 			</form>
 			<br />
