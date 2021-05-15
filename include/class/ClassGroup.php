@@ -15,6 +15,7 @@
 		private	$supervisor;
 		private	$assessor;
 		
+		private	$raw_members;
 		private	$members = [];
 		
 		private	$marking_scheme;
@@ -62,6 +63,8 @@
 						
 						$this->members[] = $member;
 					}
+					
+					$this->raw_members = $result['members'];
 				}else{
 					db_query(
 						"DELETE FROM
@@ -170,6 +173,13 @@
 		*/
 		public function get_members(){
 			return $this->members;
+		}
+		
+		/*
+			Get the raw members field as per the DB
+		*/
+		public function get_raw_members(){
+			return $this->raw_members;
 		}
 		
 		/*

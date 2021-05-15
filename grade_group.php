@@ -388,7 +388,7 @@
 								<td colspan='8' class='final'>
 									Total
 								</td>
-								<td colspan='8' class='final'>
+								<td class='final'>
 									<?= $total_average ?> / <?= (100 - $group->get_marking_scheme()->student->weight) ?>
 								</td>
 							</tr>
@@ -437,10 +437,15 @@
 											"Contribution ratings submitted" :
 											"Contribution ratings <strong>NOT</strong> submitted");
 									
+									$member_rating_colspan = "3";
 									$member_rating_class = "student";
+									$member_rating_grade = "";
 								}else{
-									$member_rating_done = "FINAL";
+									//(Total average * Own Contribution Rate / Max Contribution Rate) + Individual Score (also found in the $group->get_raw_members()
+									$member_rating_done = round((((int)$total_average * (int)$group->get_contribution_percentage()[$member->details->sim_id]) / (int)max($group->get_contribution_percentage()) + (int)$group->get_marking_scheme()->student->individual->{$member->details->sim_id}), 2);
+									$member_rating_colspan = "2";									
 									$member_rating_class = "empty";
+									$member_rating_grade = "<td class='{$member_rating_class}'>". Grades::get_grade($member_rating_done) ."</td>";
 								}
 								
 						?>
@@ -460,9 +465,10 @@
 									<td class='supervisor'>
 										<?= $supervisor_input ?>
 									</td>
-									<td colspan='3' class='<?= $member_rating_class ?>'>
+									<td colspan='<?= $member_rating_colspan ?>' class='<?= $member_rating_class ?>'>
 										<?= $member_rating_done ?>
 									</td>
+									<?= $member_rating_grade ?>
 								</tr>
 						<?php
 								++$count;
@@ -530,6 +536,45 @@
 							}
 						?>
 						<tr>
+							<td colspan='9' class='empty'>
+								-
+							</td>
+						</tr>
+						<tr>
+							<td colspan='9'>
+								<table class='basic_table' style='width:100%;'>
+									<tr>
+										<td>
+											Supervisor
+										</td>
+										<td>
+											Assessor
+										</td>
+									</tr>
+									<tr>
+										<td style='width:50%; background-color:#FFD5C2;'>
+											<?=
+												(
+													($group->is_supervisor($account->sim_id)) ? 
+														"<label style=' margin:.5rem;'><input type='checkbox' name='approve[supervisor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->supervisor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
+														(($group->get_marking_scheme()->approve->supervisor) ? "Approved" : "<strong>NOT</strong> Approved")
+												)
+											?>
+										</td>
+										<td style='width:50%; background-color:#FFD5C2;'>
+											<?=
+												(
+													($group->is_assessor($account->sim_id)) ? 
+														"<label style=' margin:.5rem;'><input type='checkbox' name='approve[assessor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->assessor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
+														(($group->get_marking_scheme()->approve->assessor) ? "Approved" : "<strong>NOT</strong> Approved")
+												);
+											?>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
 							<td colspan='9' style='padding:10px 5px;'>
 								<input type='submit' name='grade' value='Submit Grading' />
 							</td>
@@ -537,7 +582,6 @@
 					</table>
 					<input type='hidden' name='group_id' value='<?= $group->id ?>'>
 				</form>
-				<br />
 				<br />
 			</div>
 			<a href='view_group.php?g=<?= $group->id ?>'>Back to group details</a>

@@ -281,6 +281,10 @@
 						"assessor": "", 
 						"agreed": false
 					}
+				},
+				"approve" : {
+					"supervisor": false, 
+					"assessor": false 
 				}
 			}';
 	}

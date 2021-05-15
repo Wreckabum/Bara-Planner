@@ -41,12 +41,16 @@
 	unset($_POST['grade']);
 	unset($_POST['group_id']);
 	
-	//If contains more than 1 type + feedback
-	if(count($_POST) > 2){
+	//If contains more than 1 type + feedback + approve
+	if(count($_POST) > 3){
 		header("location: view_group.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
+	
+	//Save original JSON for comparison (do not check the "approve")
+	$original_json = unserialize(serialize($group->get_marking_scheme()));
+	unset($original_json->approve);
 	
 	//Parse the grades
 	foreach($_POST as $type => $score_array){
@@ -95,10 +99,90 @@
 		}
 	}
 	
+	//Comparison JSON (do not check the "approve")
+	$compare_json = unserialize(serialize($group->get_marking_scheme()));
+	unset($compare_json->approve);
+	
+	//If the grades have been changed
+	if($original_json != $compare_json){
+		//Reset both
+		$group->get_marking_scheme()->approve->supervisor = false;
+		$group->get_marking_scheme()->approve->assessor = false;
+	}
+	
+	//Check if the submitted form has been approved
+	if(isset($_POST['approve'])){
+		//If there is a approval
+		if(isset($_POST['approve']['supervisor'])){
+			if($_POST['approve']['supervisor'] == 1){
+				$group->get_marking_scheme()->approve->supervisor = true;
+			}
+		}elseif(isset($_POST['approve']['assessor'])){
+			if($_POST['approve']['assessor'] == 1){
+				$group->get_marking_scheme()->approve->assessor = true;
+			}
+		}
+	}
+	
+	//If students have not all submitted their contribution scores, block approval
+	if($group->get_contribution_percentage() === false){
+		$group->get_marking_scheme()->approve->supervisor = false;
+		$group->get_marking_scheme()->approve->assessor = false;
+	}
+	
+	$member_scores = json_decode($group->get_raw_members());
+	
+	//If both supervisor and assessor have approved, and students have all submitted their contribution percentages, update the grades
+	if($group->get_marking_scheme()->approve->supervisor == true && $group->get_marking_scheme()->approve->assessor == true && $group->get_contribution_percentage() !== false){
+		$total_average = 0;
+		
+		foreach($group->get_marking_scheme()->faculty as $item){
+			//If handling penalties
+			if($item->desc == "Penalty"){
+				$total_average -= $item->supervisor;
+				$total_average -= $item->assessor;
+			}else{
+				//If there are sub-items
+				if(isset($item->parts)){
+					foreach($item->parts as $sub_item){
+						$total_average += $sub_item->supervisor;
+						$total_average += $sub_item->assessor;
+					}
+				}else{
+					//There are no subitems
+					$total_average += $item->supervisor;
+					$total_average += $item->assessor;
+				}
+			}
+		}
+		
+		$total_average /= 2;
+		
+		foreach($member_scores as $member){
+			//(Total average * Own Contribution Rate / Max Contribution Rate) + Individual Score
+			$individual_score = 
+				round((
+					(int)$total_average * 
+					(int)$group->get_contribution_percentage()[$member->id]  / 
+					(int)max($group->get_contribution_percentage()) + 
+					(int)$group->get_marking_scheme()->student->individual->{$member->id}
+				), 2);
+			
+			$member->score= $individual_score;
+		}
+	}else{
+		//Reset the grades if not all 3 are done
+		foreach($member_scores as $member){			
+			$member->score= "null";
+		}
+	}
+	
+	//If there are changes made to the grading
 	if(db_query(
 		"UPDATE 
 			`groups`
 		SET
+			`members` = '". addslashes(json_encode($member_scores)) ."', 
 			`grading` = '". addslashes(json_encode($group->get_marking_scheme())) ."'
 		WHERE
 			`id` = '{$group->id}';"
@@ -114,7 +198,7 @@
 	@mysqli_close($GLOBALS['mysql_link']);
 ?>
 <script>
-	if(window.history.replaceState){
+	/* if(window.history.replaceState){
 		window.history.replaceState(null, null, window.location.href);
-	}
+	} */
 </script>

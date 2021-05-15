@@ -91,116 +91,105 @@
 					</tr>
 				</table>
 				<br />
-		<?php
-				foreach($group_array as $group){
-					$supervisor_background = "";
-					$assessor_background = "";
-					$supervisor_field = "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})";
-					$assessor_field = "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})";
-					$filter_type = "unknown";
-					
-					if($group->is_supervisor($account->sim_id)){
-						$supervisor_background = "background-color:#BCE2BE";
-						$filter_type = "supervisor";
-					}else{
-						$supervisor_field = "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
-					}
-					
-					if($group->is_assessor($account->sim_id)){
-						$assessor_background = "background-color:#BCE2BE";
-						$filter_type = "assessor";
-					}else{
-						$assessor_field = "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
-					}
-					
-		?>
-					<div class='<?= $filter_type ?>' style='margin-bottom:20px;'>
-						<table id='view_group' class='basic_table' style='width:40%;'>
-							<tr>
-								<td colspan='3'>
-									Group #<?= $group->id ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='width:25%;'>
-									Name:
-								</td>
-								<td colspan='2'>
-									<?= $group->get_name() ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='width:25%;'>
-									Type:
-								</td>
-								<td colspan='2'>
-									<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='<?= $supervisor_background ?>'>
-									Supervisor:
-								</td>
-								<td colspan='2' style='<?= $supervisor_background ?>'>
-										<?= $supervisor_field ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='<?= $assessor_background ?>'>
-									Assessor:
-								</td>
-								<td colspan='2'style='<?= $assessor_background ?>'>
-									<?= $assessor_field ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='width:25%;'>
-									Project:
-								</td>
-								<td colspan='2'>
-									<?php
-										if(!is_null($group->get_project())){
-									?>
-											<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
-												<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
-											</a>
-									<?php
-										}
-									?>
-								</td>
-							</tr>
-							<tr>
-								<td rowspan='<?= count($group->get_members()) ?>'style='width:25%;'>
-									Members:
-								</td>
-								<?php
-									$first = true;
-									
-									foreach($group->get_members() as $member){
-										$score = "";
-										
-										if(is_null($member->score)){
-											$score = "N/A";
-										}else{
-											$score = (int)$member->score ." (". Grades::get_grade($member->score) .")";
-										}
-										
-										if($first){
-								?>
-											<td>
-												<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
-													<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+				<?php
+					foreach($group_array as $group){
+						$supervisor_background = "";
+						$assessor_background = "";
+						$supervisor_field = "{$group->get_supervisor()->get_name()} ({$group->get_supervisor()->sim_id})";
+						$assessor_field = "{$group->get_assessor()->get_name()} ({$group->get_assessor()->sim_id})";
+						$filter_type = "unknown";
+						$supervisor_approval = "";
+						$assessor_approval = "";
+						
+						if($group->is_supervisor($account->sim_id)){
+							$filter_type = "supervisor";
+							$supervisor_background = (($group->get_marking_scheme()->approve->supervisor) ? "background-color:#BCE2BE;" : "background-color:#FFCECE;");
+							$supervisor_approval = (($group->get_marking_scheme()->approve->supervisor) ? "" : "<span style='float:right; font-weight:bold;'>(Not approved)</span>");
+						}else{
+							$supervisor_field = "<a href='view_account.php?a={$group->get_supervisor()->sim_id}'>{$supervisor_field}</a>";
+						}
+						
+						if($group->is_assessor($account->sim_id)){
+							$filter_type = "assessor";
+							$assessor_background = (($group->get_marking_scheme()->approve->assessor) ? "background-color:#BCE2BE;" : "background-color:#FFCECE;");
+							$assessor_approval = (($group->get_marking_scheme()->approve->assessor) ? "" : "<span style='float:right; font-weight:bold;'>(Not approved)</span>");
+						}else{
+							$assessor_field = "<a href='view_account.php?a={$group->get_assessor()->sim_id}'>{$assessor_field}</a>";
+						}
+				?>
+						<div class='<?= $filter_type ?>' style='margin-bottom:20px;'>
+							<table id='view_group' class='basic_table' style='width:40%;'>
+								<tr>
+									<td colspan='3'>
+										Group #<?= $group->id ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Name:
+									</td>
+									<td colspan='2'>
+										<?= $group->get_name() ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Type:
+									</td>
+									<td colspan='2'>
+										<?= (($group->get_type() == 1) ? "Full-Time" : "Part-Time") ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='<?= $supervisor_background ?>'>
+										Supervisor:
+									</td>
+									<td colspan='2' style='<?= $supervisor_background ?>'>
+											<?= $supervisor_field ?> <?= $supervisor_approval ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='<?= $assessor_background ?>'>
+										Assessor:
+									</td>
+									<td colspan='2'style='<?= $assessor_background ?>'>
+										<?= $assessor_field ?>  <?= $assessor_approval ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Project:
+									</td>
+									<td colspan='2'>
+										<?php
+											if(!is_null($group->get_project())){
+										?>
+												<a href='view_project.php?p=<?= $group->get_project()->id ?>'>
+													<?= $group->get_project()->id ?> - <?= $group->get_project()->get_name() ?>
 												</a>
-											</td>
-											<td style='text-align:center;' >
-												<?= $score ?>
-											</td>
-										</tr>
-								<?php
-											$first = false;
-										}else{
-								?>
-											<tr>
+										<?php
+											}
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td rowspan='<?= count($group->get_members()) ?>'style='width:25%;'>
+										Members:
+									</td>
+									<?php
+										$first = true;
+										
+										foreach($group->get_members() as $member){
+											$score = "";
+											
+											if(is_null($member->score)){
+												$score = "N/A";
+											}else{
+												$score = (int)$member->score ." (". Grades::get_grade($member->score) .")";
+											}
+											
+											if($first){
+									?>
 												<td>
 													<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
 														<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
@@ -210,22 +199,36 @@
 													<?= $score ?>
 												</td>
 											</tr>
-								<?php
+									<?php
+												$first = false;
+											}else{
+									?>
+												<tr>
+													<td>
+														<a href='view_account.php?a=<?= $member->details->sim_id ?>'>
+															<?= $member->details->get_name() ?> (<?= $member->details->sim_id ?>)
+														</a>
+													</td>
+													<td style='text-align:center;' >
+														<?= $score ?>
+													</td>
+												</tr>
+									<?php
+											}
 										}
-									}
-								?>
-								<tr>
-									<td colspan='3'>
-										<a href="grade_group.php?g=<?= $group->id ?>">
-											[ Grade ]
-										</a>
-									</td>
-								</tr>
-						</table>
-					</div>
-		<?php
-				}
-		?>
+									?>
+									<tr>
+										<td colspan='3'>
+											<a href="grade_group.php?g=<?= $group->id ?>">
+												[ Grade ]
+											</a>
+										</td>
+									</tr>
+							</table>
+						</div>
+				<?php
+					}
+				?>
 				<a href='home.php'>Back to main page</a>
 		<?php
 			}else{

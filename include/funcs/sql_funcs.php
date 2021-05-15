@@ -50,6 +50,17 @@
 	}
 	
 	/*
+		Returns number of rows affected by the last non-SELECT query
+		
+		@return	SQL query result / error
+	*/
+	function db_affected_rows(){
+		//$GLOBALS['mysql_link'] =  mysqli_connect("localhost", "root", "", "majproj_active", 3306); //For PHPUnit
+		
+		return mysqli_affected_rows($GLOBALS['mysql_link']);
+	}
+	
+	/*
 		Returns the details for a semester
 		
 		@param	int ($year)

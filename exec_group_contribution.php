@@ -43,6 +43,9 @@
 		exit();
 	}
 	
+	//Save original JSON for comparison (do not check the "approve")
+	$original_json = unserialize(serialize($group->get_marking_scheme()->student->contribution->{$account->sim_id}));
+	
 	//Parse the contribution rates
 	foreach($_POST['member'] as $member_id => $rate){
 		if(property_exists($group->get_marking_scheme()->student->contribution->{$account->sim_id}, $member_id)){
@@ -55,10 +58,29 @@
 		}
 	}
 	
+	//Comparison JSON (do not check the "approve")
+	$compare_json = unserialize(serialize($group->get_marking_scheme()->student->contribution->{$account->sim_id}));
+	
+	//Get original member scores
+	$member_scores = json_decode($group->get_raw_members());
+	
+	//If the contribution percentages have been changed
+	if($original_json != $compare_json){
+		//Reset the grades if not all 3 are done
+		foreach($member_scores as $member){			
+			$member->score= "null";
+		}
+		
+		//Reset approved status
+		$group->get_marking_scheme()->approve->supervisor = false;
+		$group->get_marking_scheme()->approve->assessor = false;
+	}
+	
 	if(db_query(
 		"UPDATE 
 			`groups`
 		SET
+			`members` = '". addslashes(json_encode($member_scores)) ."', 
 			`grading` = '". addslashes(json_encode($group->get_marking_scheme())) ."'
 		WHERE
 			`id` = '{$group->id}';"
