@@ -33,6 +33,9 @@
 		Items left to do (? - denotes optional):
 		<ul>
 			<li>
+				Move PHPMailer & dompdf to vendor folder
+			</li>
+			<li>
 				?-Options page (allow import/addition only if semester exists first, etc)
 			</li>
 			<li>
