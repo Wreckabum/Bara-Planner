@@ -43,6 +43,13 @@
 		exit();
 	}
 	
+	//If already approved by both supervisor and assessor
+	if($group->get_marking_scheme()->approve->supervisor == true && $group->get_marking_scheme()->approve->assessor == true){
+		header("location: rate_contribution.php?err=3");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	//Save original JSON for comparison (do not check the "approve")
 	$original_json = unserialize(serialize($group->get_marking_scheme()->student->contribution->{$account->sim_id}));
 	

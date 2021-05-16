@@ -175,6 +175,13 @@
 							<a href="forget_password_admin.php" class="btn btn-primary">Send</a>
 						</div>
 					</div>
+					<div class="card" style="width: 33%;">
+						<div class="card-body">
+							<h5 class="card-title">TEST EXPORT</h5>
+							<p class="card-text">TEST</p>
+							<a href="test_download.php" class="btn btn-primary">TEST</a>
+						</div>
+					</div>
 					<?php
 						if($account->is_admin()){
 					?>

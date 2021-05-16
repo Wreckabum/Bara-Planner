@@ -41,6 +41,10 @@
 				$err = "Unknown member found.";
 				break;
 			
+			case 3:
+				$err = "Grades have already been approved and set by both the supervisor and assessor.";
+				break;
+			
 			case 9:
 				$err = "Successfully updated.";
 				break;

@@ -10,6 +10,7 @@
 	
 	// Include main functions
 	require_once("include/funcs/sql_funcs.php");
+	require_once("dompdf/autoload.inc.php");
 	
 	//Connect to database
 	sql_connect();
