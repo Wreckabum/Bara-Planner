@@ -157,7 +157,7 @@
 					<div class="card" style="width: 33%;">
 						<div class="card-body">
 							<h5 class="card-title">Update Semesters</h5>
-							<p class="card-text">View/Update choice deadlines, semester details, and archiving options.</p>
+							<p class="card-text">View/Update student choice deadlines, semester details, marking schemes, and archiving options.</p>
 							<a href="semester_details.php" class="btn btn-primary">View</a>
 						</div>
 					</div>

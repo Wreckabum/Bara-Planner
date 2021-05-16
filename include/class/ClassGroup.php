@@ -58,6 +58,7 @@
 				if(count($all_members) > 0){
 					foreach($all_members as $member){
 						$member->details = get_account($member->id); //Create student object
+						$member->score = ((is_null($member->score) || $member->score = "null") ? null : (int)$member->score);
 						
 						unset($member->id); //Unset the ID variable
 						

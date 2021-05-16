@@ -32,7 +32,7 @@
 				break;
 			
 			case 1:
-				$err = "Deadline is not yet set.";
+				$err = "Choice deadline is not yet set.";
 				break;
 			
 			case 2:
@@ -70,7 +70,7 @@
 <html lang='en'>
 	<head>
 		<meta charset='UTF-8'>
-		<title>Set deadlines for student choices</title>
+		<title>Smester Details</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='stylesheet' href='include/css/dataTables.min.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
@@ -93,7 +93,7 @@
 							Quarter
 						</th>
 						<th style='text-align:center;'>
-							Deadline
+							Student Choice Deadline
 						</th>
 						<th style='text-align:center;'>
 							Details

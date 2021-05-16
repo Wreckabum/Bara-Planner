@@ -32,22 +32,10 @@
 		Items left to do (? - denotes optional):
 		<ul>
 			<li>
-				Marking scheme upgrade -> View/exec/edit for students
-			</li>
-			<li>
-				Clean deprecated grading (can use for final grade for viewing)
-			</li>
-			<li>
 				?-Options page (allow import/addition only if semester exists first, etc)
 			</li>
 			<li>
 				?-For add/edit groups, scroll to error
-			</li>
-		</ul>
-		Clean-up:
-		<ul>
-			<li>
-				?-Use classes for setters for updating where possible
 			</li>
 		</ul>
 		</div>
