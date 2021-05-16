@@ -2,3 +2,7 @@ vendor/*
 include/funcs/config.php
 logs
 logs/*
+PHPMailer
+PHPMailer/*
+dompdf
+dompdf/*
