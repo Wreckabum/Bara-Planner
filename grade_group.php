@@ -536,8 +536,8 @@
 							}
 						?>
 						<tr>
-							<td colspan='9' class='empty'>
-								-
+							<td colspan='9' style='background-color:#F5E6FF; padding:20px 5px; font-weight:bold;'>
+								Approval
 							</td>
 						</tr>
 						<tr>
