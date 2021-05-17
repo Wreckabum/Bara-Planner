@@ -31,6 +31,32 @@
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
+	
+	$err = "";
+	
+	if(isset($_GET['err'])){
+		switch($_GET['err']){
+			case 0:
+				$err = "Unknown error.";
+				break;
+			
+			case 1:
+				$err = "Changes can no longer be made.";
+				break;
+			
+			case 2:
+				$err = "Supervisor has not approved their grading yet.";
+				break;
+			
+			case 3:
+				$err = "Cannot approve; Not all students has submitted their contribution ratings yet.";
+				break;
+			
+			default:
+				$err = "";
+				break;
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -122,6 +148,9 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<div class='container'>
+			<center>
+				<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+			</center>
 			<div id='grading_container'>
 				<table id='grade_group_table' class='basic_table' style='display:table; width:auto; margin:0 auto;'>
 					<tr>
@@ -556,7 +585,7 @@
 											<?=
 												(
 													($group->is_supervisor($account->sim_id)) ? 
-														"<label style=' margin:.5rem;'><input type='checkbox' name='approve[supervisor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->supervisor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
+														"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[supervisor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->supervisor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
 														(($group->get_marking_scheme()->approve->supervisor) ? "Approved" : "<strong>NOT</strong> Approved")
 												)
 											?>
@@ -565,8 +594,15 @@
 											<?=
 												(
 													($group->is_assessor($account->sim_id)) ? 
-														"<label style=' margin:.5rem;'><input type='checkbox' name='approve[assessor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->assessor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
-														(($group->get_marking_scheme()->approve->assessor) ? "Approved" : "<strong>NOT</strong> Approved")
+														(($group->get_marking_scheme()->approve->supervisor) ?
+															"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[assessor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->assessor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
+															"Supervisor must approve first"
+														) :
+														(
+															($group->get_marking_scheme()->approve->assessor) ? 
+																"Approved" : 
+																"<strong>NOT</strong> Approved"
+														)
 												);
 											?>
 										</td>
@@ -592,7 +628,19 @@
 		</div>
 		<script>
 			$('#grade_group').submit(function(e){
-				return confirm('Confirm grades?\\nUpdates can be made at a later time.');
+				if($("#approve_grades").is(':checked')){
+					if(confirm('Confirm grades?\nUpdates CANNOT be made afterward.') === true){
+						if(confirm('Are you very sure?') === true){
+							return true;
+						}else{
+							return false;
+						}
+					}else{
+						return false;
+					}
+				}else{
+					return confirm('Confirm grades?\nUpdates can be made at a later time.');
+				}
 			});
 		</script>
 	</body>
