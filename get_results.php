@@ -223,6 +223,7 @@
 			register_shutdown_function("unlink", __DIR__ . "/{$full_path}");
 			register_shutdown_function("rmdir", __DIR__ . "/{$temp_name}");
 			
+			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
 		}
 	}

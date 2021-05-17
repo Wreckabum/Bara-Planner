@@ -16,8 +16,6 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
-	
-	 rmdir("C:\wamp64\www\Bara-Planner/temp_2021-05-17_15-53-49");
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -34,6 +32,9 @@
 		<br />
 		Items left to do (? - denotes optional):
 		<ul>
+			<li>
+				All markshets (PDFs) in zip
+			</li>
 			<li>
 				Move PHPMailer & dompdf to vendor folder
 			</li>
