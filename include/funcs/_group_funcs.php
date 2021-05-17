@@ -47,7 +47,7 @@
 		
 		while($row = mysqli_fetch_assoc($query)){
 			try{
-				$this_group = get_group($row['id']); //(int)$year
+				$this_group = get_group($row['id']);
 				
 				//If $year was given, and this group is not from said year, skip
 				if($year != "*" && $this_group->get_year() != (int)$year){
@@ -55,7 +55,7 @@
 				}
 				
 				//If $quarter was given, and this group is not from said quarter, skip
-				if($year != "*" && $this_group->get_quarter() != (int)$quarter){
+				if($quarter != "*" && $this_group->get_quarter() != (int)$quarter){
 					continue;
 				}
 				

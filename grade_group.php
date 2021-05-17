@@ -585,8 +585,16 @@
 											<?=
 												(
 													($group->is_supervisor($account->sim_id)) ? 
-														"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[supervisor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->supervisor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
-														(($group->get_marking_scheme()->approve->supervisor) ? "Approved" : "<strong>NOT</strong> Approved")
+														(
+															($group->get_marking_scheme()->approve->supervisor) ?
+																"<strong>Approved</strong>" : 
+																"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[supervisor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->supervisor) ? "" : " <strong>NOT</strong>") ." Approved)"
+														) :
+														(
+															($group->get_marking_scheme()->approve->supervisor) ? 
+																"<strong>Approved</strong>" : 
+																"<strong>NOT</strong> Approved"
+														)
 												)
 											?>
 										</td>
@@ -594,13 +602,18 @@
 											<?=
 												(
 													($group->is_assessor($account->sim_id)) ? 
-														(($group->get_marking_scheme()->approve->supervisor) ?
-															"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[assessor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->assessor) ? "" : " <strong>NOT</strong>") ." Approved)" : 
-															"Supervisor must approve first"
+														(
+															($group->get_marking_scheme()->approve->supervisor) ?
+																(
+																	($group->get_marking_scheme()->approve->assessor) ?
+																		"<strong>Approved</strong>" : 
+																		"<label style=' margin:.5rem;'><input type='checkbox' id='approve_grades' name='approve[assessor]' value='1' style='width:auto; vertical-align:middle;' /> Approve grades for group</label> (Currently". (($group->get_marking_scheme()->approve->assessor) ? "" : " <strong>NOT</strong>") ." Approved)"
+																) :
+																"Supervisor must approve first"
 														) :
 														(
 															($group->get_marking_scheme()->approve->assessor) ? 
-																"Approved" : 
+																"<strong>Approved</strong>" : 
 																"<strong>NOT</strong> Approved"
 														)
 												);

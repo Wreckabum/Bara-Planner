@@ -1,23 +1,42 @@
 <?php
+	// Initialize the session
+	session_start();
+	
+	//If there is no session
+	if(!isset($_SESSION["loggedin"])){
+		header("location: index.php");
+		exit();
+	}
+	
 	// Include main functions
 	require_once("include/funcs/sql_funcs.php");
+	require_once("dompdf/autoload.inc.php");
 	
 	//Connect to database
 	sql_connect();
 	
+	$account = get_account($_SESSION["id"]);
+	
+	//Clean parameter
+	str_clean($_GET['g']);
+	
 	try{
-		$group = get_group($this_group);
+		$group = get_group($_GET['g']);
 	}catch(Exception $e){
-?>
-<html>
-	<body>
-		Error getting details for <?= $this_group ?>
-	</body>
-</html>
-<?php
+		header("location: view_group.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
+	
+	//If not group supervisor/assessor/admin
+	if(!$group->is_supervisor($account->sim_id) && !$group->is_assessor($account->sim_id) && !$account->is_admin()){
+		header("location: view_group.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
+	//Get the output DOM
+	ob_start();
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -483,10 +502,10 @@
 								</tr>
 								<tr>
 									<td style='width:50%; background-color:#FFD5C2;'>
-										<?= (($group->get_marking_scheme()->approve->supervisor) ? "Approved" : "<strong>NOT</strong> Approved") ?>
+										<?= (($group->get_marking_scheme()->approve->supervisor) ? "<strong>Approved</strong>" : "<strong>NOT</strong> Approved") ?>
 									</td>
 									<td style='width:50%; background-color:#FFD5C2;'>
-										<?= (($group->get_marking_scheme()->approve->assessor) ? "Approved" : "<strong>NOT</strong> Approved") ?>
+										<?= (($group->get_marking_scheme()->approve->assessor) ? "<strong>Approved</strong>" : "<strong>NOT</strong> Approved") ?>
 									</td>
 								</tr>
 							</table>
@@ -499,6 +518,27 @@
 	</body>
 </html>
 <?php
+	$page = ob_get_contents();
+	ob_get_clean();
+
+	$doc = new DOMDocument();
+	$doc->loadHTML($page);
+	
+	//var_dump($doc->saveHTML());
+	
+	use Dompdf\Dompdf;
+	
+	$dompdf = new Dompdf();
+	$dompdf->loadHtml($doc->saveHTML());
+	$dompdf->setPaper('A3', 'landscape');
+	
+	/* $options = $dompdf->getOptions();
+	$options->isPhpEnabled(true);
+	$dompdf->setOptions($options); */
+
+	$dompdf->render();
+	$dompdf->stream($group->get_name());
+	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);
 ?>

@@ -175,13 +175,6 @@
 							<a href="forget_password_admin.php" class="btn btn-primary">Send</a>
 						</div>
 					</div>
-					<div class="card" style="width: 33%;">
-						<div class="card-body">
-							<h5 class="card-title">TEST EXPORT</h5>
-							<p class="card-text">TEST</p>
-							<a href="test_download.php" class="btn btn-primary">TEST</a>
-						</div>
-					</div>
 					<?php
 						if($account->is_admin()){
 					?>
@@ -190,6 +183,18 @@
 									<h5 class="card-title">View Logs</h5>
 									<p class="card-text">View all logs</p>
 									<a href="view_logs.php" class="btn btn-primary">View</a>
+								</div>
+							</div>
+					<?php
+						}
+						
+						if(!$account->is_student()){
+					?>
+							<div class="card" style="width: 33%;">
+								<div class="card-body">
+									<h5 class="card-title">Retrieve Results</h5>
+									<p class="card-text">Retrieve all results for a semester</p>
+									<a href="get_results.php" class="btn btn-primary">Get</a>
 								</div>
 							</div>
 					<?php

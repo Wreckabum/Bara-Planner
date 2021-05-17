@@ -30,8 +30,8 @@
 		exit();
 	}
 	
-	//If not assessor
-	if(!$group->is_assessor($account->sim_id) && !$group->is_supervisor($account->sim_id)){
+	//If not supervisor/assessor
+	if(!$group->is_supervisor($account->sim_id) && !$group->is_assessor($account->sim_id)){
 		header("location: view_group.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
@@ -81,8 +81,14 @@
 		exit();
 	}
 	
+	$approval_without_contributions = false;
+	
 	//If students have not all submitted their contribution scores, block approval
 	if($group->get_contribution_percentage() === false){
+		if($group->get_marking_scheme()->approve->supervisor == true || $group->get_marking_scheme()->approve->assessor == true){
+			$approval_without_contributions = true;
+		}
+		
 		$group->get_marking_scheme()->approve->supervisor = false;
 		$group->get_marking_scheme()->approve->assessor = false;
 	}
@@ -196,8 +202,8 @@
 	}else{
 		//Sucessfully added
 		
-		//If students have not all submitted their contribution scores, include error message
-		if($group->get_contribution_percentage() === false){
+		//If students have not all submitted their contribution scores, and approval was attempted, include error message
+		if($approval_without_contributions){
 			header("location: grade_group.php?g={$group->id}&err=3");
 		}else{
 			header("location: grade_group.php?g={$group->id}");

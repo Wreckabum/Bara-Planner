@@ -16,6 +16,8 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
+	
+	 rmdir("C:\wamp64\www\Bara-Planner/temp_2021-05-17_15-53-49");
 ?>
 <!DOCTYPE html>
 <html lang='en'>
