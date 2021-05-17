@@ -40,7 +40,7 @@
 	$dompdf->setOptions($options); */
 
 	$dompdf->render();
-	$dompdf->stream();
+	$dompdf->stream($group->get_name());
 	
 	//Close connection
 	@mysqli_close($GLOBALS['mysql_link']);
