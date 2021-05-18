@@ -33,9 +33,6 @@
 		Items left to do (? - denotes optional):
 		<ul>
 			<li>
-				All markshets (PDFs) in zip
-			</li>
-			<li>
 				Move PHPMailer & dompdf to vendor folder
 			</li>
 			<li>

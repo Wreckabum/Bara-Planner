@@ -182,45 +182,4 @@
 		
 		return $output;
 	}
-	
-	/*
-		Returns list of all groups by semester
-		
-		@return	TEST
-	*/
-	function test(){		
-		//Get all groups in the semester
-		$query = 
-			db_query(
-				"SELECT 
-					`groups`.`*`, 
-					`accounts`.`year`, 
-					`accounts`.`quarter`, 
-					IF(JSON_CONTAINS(`groups`.`grading`, 'true', '$.approve.supervisor') && JSON_CONTAINS(`groups`.`grading`, 'true', '$.approve.assessor'), '1', '0') AS `approved` 
-				FROM 
-					`groups`
-				LEFT JOIN
-					`accounts`
-				ON 
-					JSON_EXTRACT(`groups`.`members`, '$[1].id') = `accounts`.`sim_id`
-				WHERE
-					`accounts`.`year` = 2021 AND
-					`accounts`.`quarter` = 1
-				ORDER BY 
-					`approved` DESC,
-					`groups`.`id` ASC;");
-		
-		$all_groups['all_approved'] = [];
-		$all_groups['all_not_approved'] = [];
-		
-		while($group = mysqli_fetch_assoc($query)){
-			if($group['approved'] == 1){
-				$all_groups['all_approved'][] = $group;
-			}else{
-				$all_groups['all_not_approved'][] = $group;
-			}
-		}
-		
-		return $all_group;
-	}
 ?>

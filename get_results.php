@@ -10,6 +10,8 @@
 	
 	//Include main functions
 	require_once("include/funcs/sql_funcs.php");
+	require_once("dompdf/autoload.inc.php");
+	use Dompdf\Dompdf;
 	
 	//Connect to database
 	sql_connect();
@@ -222,6 +224,112 @@
 			register_shutdown_function("fclose", $handle);			
 			register_shutdown_function("unlink", __DIR__ . "/{$full_path}");
 			register_shutdown_function("rmdir", __DIR__ . "/{$temp_name}");
+			
+			@mysqli_close($GLOBALS['mysql_link']);
+			exit();
+		}else{
+			$query = 
+				db_query(
+					"SELECT 
+						`groups`.`*`, 
+						`accounts`.`year`, 
+						`accounts`.`quarter`, 
+						IF(JSON_CONTAINS(`groups`.`grading`, 'true', '$.approve.supervisor') && JSON_CONTAINS(`groups`.`grading`, 'true', '$.approve.assessor'), '1', '0') AS `approved` 
+					FROM 
+						`groups`
+					LEFT JOIN
+						`accounts`
+					ON 
+						JSON_EXTRACT(`groups`.`members`, '$[1].id') = `accounts`.`sim_id`
+					WHERE
+						`accounts`.`year` = 2021 AND
+						`accounts`.`quarter` = 1
+					ORDER BY 
+						`approved` DESC,
+						`groups`.`id` ASC;");
+			
+			//Create temp directory if not exists
+			$temp_dir = "temp_". date("Y-m-d_H-i-s");
+			
+			//Make temporary directory
+			mkdir($temp_dir, 0755, true);
+			
+			while($group = mysqli_fetch_assoc($query)){
+				if($group['approved'] == 1){
+					try{
+						$group = get_group($group['id']);
+						
+						//Get the output DOM
+						ob_start();
+						include "download_marking_sheet_content.php";
+						$page = ob_get_contents();
+						ob_get_clean();
+						
+						$doc = new DOMDocument();
+						$doc->loadHTML($page);
+						
+						//Set as PDF
+						$dompdf = new Dompdf();
+						$dompdf->loadHtml($doc->saveHTML());
+						$dompdf->setPaper('A3', 'landscape');
+
+						$dompdf->render();
+						$output_pdf = $dompdf->output();
+						file_put_contents("{$temp_dir}/{$group->get_name()}.pdf", $output_pdf);
+					}catch(Exception $e){
+						$all_groups['all_not_approved'][] = $group;
+						continue;
+					}
+				}else{
+					$all_groups['all_not_approved'][] = $group['name'];
+				}
+			}
+			
+			//Add error .txt if there are any
+			if(count($all_groups['all_not_approved']) > 0){
+				$error_file = var_export($all_groups['all_not_approved'], TRUE);
+				$error_file = str_replace("array (\n", '', $error_file);
+				$error_file = substr($error_file, 0, -1);
+				$error_file = preg_replace('/  \d* => \'(.*?)\',/', '$1', $error_file);
+				
+				file_put_contents("{$temp_dir}/marksheets_{$year}_{$quarter}_errors.txt", $error_file);
+			}
+			
+			//Prepare zip file
+			$zip_name = "marksheets_{$year}_{$quarter}.zip";
+			$zip = new ZipArchive;
+			$zip->open("{$temp_dir}/{$zip_name}", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+			
+			//Add files to archive
+			$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($temp_dir),RecursiveIteratorIterator::LEAVES_ONLY);
+			
+			foreach($files as $file){
+				if(is_dir($file->getRealPath()) || $file->getFileName() == $zip_name){
+					continue;
+				}
+				
+				$zip->addFile($file->getRealPath(), $file->getFileName());
+			}
+			
+			$zip->close();
+			
+			//Remove temporary files
+			foreach($files as $file){
+				if(is_dir($file->getRealPath()) || $file->getFileName() == $zip_name){
+					continue;
+				}
+				
+				unlink($file->getRealPath());
+			}
+			
+			//Download the zip file
+			header('Content-Type: application/zip');
+			header('Content-Disposition: attachment; filename="'. $zip_name .'";');
+			readfile("{$temp_dir}/{$zip_name}");
+			
+			//Remove zip file and temporary directory
+			register_shutdown_function("unlink", __DIR__ . "/{$temp_dir}/{$zip_name}");
+			register_shutdown_function("rmdir", __DIR__ . "/{$temp_dir}");
 			
 			@mysqli_close($GLOBALS['mysql_link']);
 			exit();
