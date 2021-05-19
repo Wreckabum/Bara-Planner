@@ -10,7 +10,13 @@
 	
 	// Include main functions
 	require_once("include/funcs/sql_funcs.php");
-	require_once("dompdf/autoload.inc.php");
+	
+	//Redirect to management if not local
+	if(!IS_LOCAL){
+		header("location: management.php.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
 	
 	//Connect to database
 	sql_connect();
@@ -32,9 +38,6 @@
 		<br />
 		Items left to do (? - denotes optional):
 		<ul>
-			<li>
-				Move PHPMailer & dompdf to vendor folder
-			</li>
 			<li>
 				?-Options page (allow import/addition only if semester exists first, etc)
 			</li>
