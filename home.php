@@ -13,7 +13,7 @@
 	
 	//Redirect to management if not local
 	if(!IS_LOCAL){
-		header("location: management.php.php");
+		header("location: management.php");
 		@mysqli_close($GLOBALS['mysql_link']);
 		exit();
 	}
