@@ -89,8 +89,8 @@
 										</td>
 										<td>
 											<select name='type' style='width:97%;' required>
-												<option value='1'>Results (CSV)</option>
-												<option value='2'>Marking Sheets (PDF)</option>
+												<option value='1'>Student Results</option>
+												<option value='2'>Group Marking Sheets</option>
 											</select>
 										</td>
 									</tr>
