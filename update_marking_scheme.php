@@ -60,7 +60,7 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?><div class='container'>
+		<?php include("include/templates/header.php"); ?>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>
@@ -68,8 +68,13 @@
 			if($marking_scheme_table === false || (isset($_GET['update']) && $_GET['update'] == true)){
 		?>
 				<style>
+					table {
+						margin: inherit;
+					}
+					
 					.basic_table {
 						display: inline-table;
+						width: auto;
 					}
 					
 					.basic_table td {
@@ -280,7 +285,6 @@
 		<a href='semester_details.php'>Back to all semester details</a>
 		<br />
 		<a href='home.php'>Back to main page</a>
-		</div>
 	</body>
 	<script>
 		var saved_table;
