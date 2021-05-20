@@ -250,7 +250,16 @@
 						<td colspan='3'>
 							Group #<?= $group->id ?>
 							<?php
-								if($group->get_marking_scheme()->approve->supervisor == true && $group->get_marking_scheme()->approve->assessor == true && $group->get_contribution_percentage() !== false){
+								if(
+									$group->get_marking_scheme()->approve->supervisor == true && 
+									$group->get_marking_scheme()->approve->assessor == true && 
+									$group->get_contribution_percentage() !== false &&
+									(
+										$group->is_supervisor($account->sim_id) || 
+										$group->is_assessor($account->sim_id) || 
+										$account->is_admin()
+									)
+								){
 							?>
 									<span style='float:right;'>
 										<a href="download_marking_sheet.php?g=<?= $group->id ?>">
