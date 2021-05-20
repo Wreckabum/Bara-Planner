@@ -249,6 +249,17 @@
 					<tr>
 						<td colspan='3'>
 							Group #<?= $group->id ?>
+							<?php
+								if($group->get_marking_scheme()->approve->supervisor == true && $group->get_marking_scheme()->approve->assessor == true && $group->get_contribution_percentage() !== false){
+							?>
+									<span style='float:right;'>
+										<a href="download_marking_sheet.php?g=<?= $group->id ?>">
+											[ Marking Sheet PDF ]
+										</a>
+									</span>
+							<?php
+								}
+							?>
 						</td>
 					</tr>
 					<tr>
