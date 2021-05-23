@@ -15,6 +15,7 @@
 	sql_connect();
 	
 	$account = get_account($_SESSION["id"]);
+	$has_group = ((is_null(get_group_by_member($account->sim_id))) ? false : true);
 	
 	$err = "";
 	
@@ -64,7 +65,7 @@
 			<?php
 				}
 				
-				if($account->is_student() || $account->is_faculty()){
+				if(($account->is_student() && $has_group) || $account->is_faculty()){
 					$s = ($account->is_faculty() ? "s" : "");
 			?>
 
@@ -88,7 +89,7 @@
 						</div>
 					</div>
 			<?php
-					if(!is_null(get_group_by_member($account->sim_id))){
+					if($has_group){
 			?>
 						<div class="card" style="width: 33%;">
 							<div class="card-body">
