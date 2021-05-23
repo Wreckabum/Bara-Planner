@@ -25,6 +25,12 @@
 	
 	$group = get_group_by_member($account->sim_id);
 	
+	if(is_null($group)){
+		header("location: home.php");
+		@mysqli_close($GLOBALS['mysql_link']);
+		exit();
+	}
+	
 	$err = "";
 	
 	if(isset($_GET['err'])){

@@ -87,14 +87,18 @@
 							<a href="view_choices.php" class="btn btn-primary">View</a>
 						</div>
 					</div>
-					<div class="card" style="width: 33%;">
-						<div class="card-body">
-							<h5 class="card-title">Rate Group Members Contributions</h5>
-							<p class="card-text">Rate the contributions each member provided.</p>
-							<a href="rate_contribution.php" class="btn btn-primary">Rate</a>
-						</div>
-					</div>
 			<?php
+					if(!is_null(get_group_by_member($account->sim_id))){
+			?>
+						<div class="card" style="width: 33%;">
+							<div class="card-body">
+								<h5 class="card-title">Rate Group Members Contributions</h5>
+								<p class="card-text">Rate the contributions each member provided.</p>
+								<a href="rate_contribution.php" class="btn btn-primary">Rate</a>
+							</div>
+						</div>
+			<?php
+					}
 				}
 				
 				if($account->is_admin()){
