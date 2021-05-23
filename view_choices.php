@@ -33,6 +33,11 @@
 		<title>View Choices</title>
 		<link rel='stylesheet' href='include/css/main.css' />
 		<link rel='shortcut icon' href='#' /> <!-- Resolving favicon.ico error -->
+		<style>
+			table {
+				margin: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<?php
@@ -101,7 +106,6 @@
 		?>
 		<br />
 		<a href='home.php'>Back to main page</a>
-		</div>
 	</body>
 </html>
 <?php
