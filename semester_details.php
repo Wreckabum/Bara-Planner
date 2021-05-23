@@ -78,7 +78,8 @@
 		<script src='include/js/dataTables.min.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?><div class='container'>
+		<?php include("include/templates/header.php"); ?>
+		<div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:<?= (($_GET['err'] >= 9) ? "#0C7B0C" : "#E22C2C" ) ?>; padding:10px;'><?= $err ?></div>
 		</center>

@@ -60,7 +60,8 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include('include/templates/header.php'); ?><div class='container'>
+		<?php include('include/templates/header.php'); ?>
+		<div class='container'>
 		<center>
 			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 		</center>

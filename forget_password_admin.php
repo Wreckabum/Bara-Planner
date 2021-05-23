@@ -194,7 +194,8 @@
 		</style>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?><div class='container'>
+		<?php include("include/templates/header.php"); ?>
+		<div class='container'>
 		<div class='wrapper' style='padding:0 20px;margin:auto;'>
 			<h2>Reset Password</h2>
 			<p>Please fill in the following user details to reset their password.</p>
