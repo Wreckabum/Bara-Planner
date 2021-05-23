@@ -298,13 +298,13 @@
 			});
 			
 			if(isNaN(total_perc) || total_perc != 0){
-				alert('The total contribution percentages must total up to <?= $max_percentage ?>%.\\nYou have ' + total_perc + '% remaining to distribute.');
+				alert('The total contribution percentages must total up to <?= $max_percentage ?>%.\nYou have ' + total_perc + '% remaining to distribute.');
 				e.preventDefault();
 				
 				return false;
 			}
 			
-			return confirm('Confirm contribution percentage?\\nUpdates can be made at a later time.');
+			return confirm('Confirm contribution percentage?\nUpdates can be made at a later time.');
 		});
 	</script>
 </html>
