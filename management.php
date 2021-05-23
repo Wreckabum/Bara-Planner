@@ -207,10 +207,6 @@
 				}
 			?>
 		</div>
-		<div class='row'>
-			<br />
-			<a href='home.php'>Back to main page</a>
-		</div>
 	</div>
 	</body>
 </html>
