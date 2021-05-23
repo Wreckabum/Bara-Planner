@@ -65,88 +65,89 @@
 		<script src='include/js/jquery-light-v3.5.1.js'></script>
 	</head>
 	<body>
-		<?php include("include/templates/header.php"); ?><div class='container'>
-		<center>
-			<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
-		</center>
-		<div id='projects_container' style='display:inline-block; width:48%; vertical-align:top;'>
-			<?php
-				foreach($all_projects as $project){
-					if($project->get_year() == $account->get_year() && $project->get_quarter() == $account->get_quarter()){
-			?>
-						<table id='proj_<?= $project->id ?>_<?= $project->proj_id ?>' class='basic_table' style='width:100%;'>
+		<?php include("include/templates/header.php"); ?>
+		<div class='container' style='max-width:none;'>
+			<center>
+				<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
+			</center>
+			<div id='projects_container' style='display:inline-block; width:48%; vertical-align:top;'>
+				<?php
+					foreach($all_projects as $project){
+						if($project->get_year() == $account->get_year() && $project->get_quarter() == $account->get_quarter()){
+				?>
+							<table id='proj_<?= $project->id ?>_<?= $project->proj_id ?>' class='basic_table' style='width:100%;'>
+								<tr>
+									<td colspan='2'>
+										(<?= $project->id ?>) <?= $project->proj_id ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Name:
+									</td>
+									<td>
+										<?= $project->get_name() ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Description:
+									</td>
+									<td>
+										<?= nl2br($project->get_description()) ?>
+									</td>
+								</tr>
+							</table>
+							<br />
+				<?php
+						}
+					}
+				?>
+			</div>
+			<div id='choices_container' style='display:inline-block; width:48%; vertical-align:top;'>
+				<div id='choices_inner_container'>
+					<form action='review_choices.php' method='POST'>
+						<table id='make_choices' class='basic_table' style='width:100%;'>
 							<tr>
 								<td colspan='2'>
-									(<?= $project->id ?>) <?= $project->proj_id ?>
+									Your Choices
 								</td>
 							</tr>
+							<?php
+								for($i = 1; $i <= 3; $i++){
+							?>
+									<tr>
+										<td style='width:5%; padding:5px; text-align:center;'>
+											#<?= $i ?>
+										</td>
+										<td style='width:95%; padding:5px;'>
+											<select name='choice_<?= $i ?>' style='width:97%;' required>
+												<?php
+													foreach($all_projects as $project){
+														if($project->get_year() == $account->get_year() && $project->get_quarter() == $account->get_quarter()){
+												?>
+															<option value='<?= $project->id ?>'>(<?= $project->id ?>) <?= $project->get_name() ?></option>
+												<?php
+														}
+													}
+												?>
+											</select>
+										</td>
+									</tr>
+							<?php
+								}
+							?>
 							<tr>
-								<td style='width:25%;'>
-									Name:
-								</td>
-								<td>
-									<?= $project->get_name() ?>
-								</td>
-							</tr>
-							<tr>
-								<td style='width:25%;'>
-									Description:
-								</td>
-								<td>
-									<?= nl2br($project->get_description()) ?>
+								<td colspan='2' style='padding:5px;'>
+									<input type='submit' name='make_choice' value='Review Choices'>
 								</td>
 							</tr>
 						</table>
-						<br />
-			<?php
-					}
-				}
-			?>
-		</div>
-		<div id='choices_container' style='display:inline-block; width:48%; vertical-align:top;'>
-			<div id='choices_inner_container'>
-				<form action='review_choices.php' method='POST'>
-					<table id='make_choices' class='basic_table' style='width:100%;'>
-						<tr>
-							<td colspan='2'>
-								Your Choices
-							</td>
-						</tr>
-						<?php
-							for($i = 1; $i <= 3; $i++){
-						?>
-								<tr>
-									<td style='width:5%; padding:5px; text-align:center;'>
-										#<?= $i ?>
-									</td>
-									<td style='width:95%; padding:5px;'>
-										<select name='choice_<?= $i ?>' style='width:97%;' required>
-											<?php
-												foreach($all_projects as $project){
-													if($project->get_year() == $account->get_year() && $project->get_quarter() == $account->get_quarter()){
-											?>
-														<option value='<?= $project->id ?>'>(<?= $project->id ?>) <?= $project->get_name() ?></option>
-											<?php
-													}
-												}
-											?>
-										</select>
-									</td>
-								</tr>
-						<?php
-							}
-						?>
-						<tr>
-							<td colspan='2' style='padding:5px;'>
-								<input type='submit' name='make_choice' value='Review Choices'>
-							</td>
-						</tr>
-					</table>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-		<br />
-		<a href='home.php'>Back to main page</a>
+			<br />
+			<a href='home.php'>Back to main page</a>
 		</div>
 	</body>
 	<script>
