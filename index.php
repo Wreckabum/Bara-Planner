@@ -47,7 +47,7 @@
 		
 		//If email is empty
 		if(empty($email)){
-			$email_error = "Please enter email.";
+			$email_error = "Please enter your SIM email.";
 		}else{
 			$email = trim($email);
 		}
@@ -74,7 +74,7 @@
 				//Redirect user to main landing page
 				header("location: home.php");
 			}else{
-				$login_error = "Login failed.";
+				$login_error = "Login failed! Please contact a SIM administrator to retrieve your username/password.";
 			}
 		}
 		
@@ -356,6 +356,7 @@
 			<div class='wrapper' style='padding:0 20px;'>
 				<h2>Login</h2>
 				<p>Please fill in your credentials to login.</p>
+				
 				<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 					<div class='form-group <?= (!empty($email_error)) ? 'has-error' : ''; ?>'>
 						<label>Username</label>
@@ -386,26 +387,27 @@
 				<input type='submit' value='Admin'>
 			</form>
 			<br />
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+			<!-- <form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='sZoS3rWaSJ'>
 				<input type='submit' value='Faculty'>
 			</form>
+			<br /> -->
+			
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+				<input type='hidden' name='email' value='nil.mckea@mymail.sim.edu.sg'>
+				<input type='hidden' name='password' value='wm5bvNjZSd'>
+				<input type='submit' value='Faculty - Supervisor'>
+			</form>
 			<br />
-			<!-- 
-				<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-					<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
-					<input type='hidden' name='password' value='sZoS3rWaSJ'>
-					<input type='submit' value='Faculty - Supervisor'>
-				</form>
-				<br />
-				<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-					<input type='hidden' name='email' value='nil.mckea@mymail.sim.edu.sg'>
-					<input type='hidden' name='password' value='wm5bvNjZSd'>
-					<input type='submit' value='Faculty - Assessor'>
-				</form>
-				<br />
-			-->
+
+			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
+				<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
+				<input type='hidden' name='password' value='sZoS3rWaSJ'>
+				<input type='submit' value='Faculty - Assessor'>
+			</form>
+			<br />
+			
 			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
 				<input type='hidden' name='email' value='tobia.bum@mymail.sim.edu.sg'>
 				<input type='hidden' name='password' value='MDEcSDnQTP'>
