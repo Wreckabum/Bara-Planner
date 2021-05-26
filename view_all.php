@@ -746,7 +746,7 @@
 														<td style='text-align:center;'>
 															<?php
 																foreach($student->get_choices() as $key => $choice){
-																	echo "#". ($key + 1) ." - ". $all_archived_projects[$choice]->get_name() ."<br />";
+																	echo "#". ($key + 1) ." - ". ((isset($all_archived_projects[$choice])) ? $all_archived_projects[$choice]->get_name() : "N/A") ."<br />";
 																}
 															?>
 														</td>
