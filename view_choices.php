@@ -40,9 +40,80 @@
 		</style>
 	</head>
 	<body>
-		<?php
-			include("include/templates/header.php");
-			
+		<?php include("include/templates/header.php"); ?>
+		<table id='own_details' class='basic_table' style='width:40%;'>
+			<tr>
+				<td colspan='2'>
+					Your Details
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					UOW ID:
+				</td>
+				<td>
+					<?= $account->uow_id ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					SIM ID:
+				</td>
+				<td>
+					<?= $account->sim_id ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Name:
+				</td>
+				<td>
+					<?= $account->get_name() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					SIM E-mail:
+				</td>
+				<td>
+					<?= $account->get_sim_email() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Major:
+				</td>
+				<td>
+					<?= get_major($account->get_majors())->get_name() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Type:
+				</td>
+				<td>
+					<?= $account->get_account_type() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Year:
+				</td>
+				<td>
+					<?= $account->get_year() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Quarter:
+				</td>
+				<td>
+					<?= $account->get_quarter() ?>
+				</td>
+			</tr>
+		</table>
+		<br />
+		<?php			
 			if(empty($projects)){
 				if($account->can_make_choice()){
 		?>
@@ -95,7 +166,7 @@
 				
 				if($account->can_make_choice()){
 		?>
-					<a href='make_choices.php'>Update Choices</a>
+					<a href='make_choices.php'>Update Choices</a> - (Deadline is at <?= date("d M Y", strtotime($account->get_choices_deadline())) ?>)
 		<?php
 				}else{
 		?>

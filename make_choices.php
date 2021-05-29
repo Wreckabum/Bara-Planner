@@ -67,6 +67,77 @@
 	<body>
 		<?php include("include/templates/header.php"); ?>
 		<div class='container' style='max-width:none;'>
+			<table id='own_details' class='basic_table' style='width:40%;'>
+				<tr>
+					<td colspan='2'>
+						Your Details
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						UOW ID:
+					</td>
+					<td>
+						<?= $account->uow_id ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						SIM ID:
+					</td>
+					<td>
+						<?= $account->sim_id ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						Name:
+					</td>
+					<td>
+						<?= $account->get_name() ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						SIM E-mail:
+					</td>
+					<td>
+						<?= $account->get_sim_email() ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						Major:
+					</td>
+					<td>
+						<?= get_major($account->get_majors())->get_name() ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						Type:
+					</td>
+					<td>
+						<?= $account->get_account_type() ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						Year:
+					</td>
+					<td>
+						<?= $account->get_year() ?>
+					</td>
+				</tr>
+				<tr>
+					<td style='width:25%;'>
+						Quarter:
+					</td>
+					<td>
+						<?= $account->get_quarter() ?>
+					</td>
+				</tr>
+			</table>
 			<center>
 				<div style='display:<?= (($err == "") ? "none" : "block" ) ?>; color:#E22C2C; padding:10px;'><?= $err ?></div>
 			</center>

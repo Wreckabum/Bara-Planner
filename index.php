@@ -21,21 +21,6 @@
 	//Connect to database
 	sql_connect();
 	
-	//Testing new student for demo
-	$new_student = "";
-		
-	$q = db_query("SELECT `password` FROM `accounts` WHERE `sim_email` = 'oisin.donal@mymail.sim.edu.sg';");
-	
-	if(mysqli_num_rows($q) > 0){
-		$new_student = 
-			"<br />
-			<form action='". htmlspecialchars($_SERVER['PHP_SELF']) ."' method='post'>
-				<input type='hidden' name='email' value='oisin.donal@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='". mysqli_fetch_assoc($q)['password'] ."'>
-				<input type='submit' value='Newly Added Student'>
-			</form>";
-	}
-	
 	// On form submission
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		//Connect to database
@@ -122,52 +107,6 @@
 					<sup>*If you have forgotten your password, please contact an SIM administrator to have it reset.</sup>
 				</form>
 			</div>
-			<br />
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='carve.delah@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='FfI0M2Na'>
-				<input type='submit' value='Super Admin'>
-			</form>
-			<br />
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='abiga.attre@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='XiRSszCDo9iS'>
-				<input type='submit' value='Admin'>
-			</form>
-			<br />
-			<!-- <form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='sZoS3rWaSJ'>
-				<input type='submit' value='Faculty'>
-			</form>
-			<br /> -->
-			
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='nil.mckea@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='wm5bvNjZSd'>
-				<input type='submit' value='Faculty - Supervisor'>
-			</form>
-			<br />
-
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='erwin.haref@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='sZoS3rWaSJ'>
-				<input type='submit' value='Faculty - Assessor'>
-			</form>
-			<br />
-			
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='tobia.bum@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='MDEcSDnQTP'>
-				<input type='submit' value='Full-time Student'>
-			</form>
-			<br />
-			<form action='<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='post'>
-				<input type='hidden' name='email' value='delan.abell@mymail.sim.edu.sg'>
-				<input type='hidden' name='password' value='1FS3sT1bmx'>
-				<input type='submit' value='Part-time Student'>
-			</form>
-			<?= $new_student ?>
 		</div>
 	</body>
 </html>

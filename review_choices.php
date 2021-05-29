@@ -136,6 +136,22 @@
 					<?= $account->get_account_type() ?>
 				</td>
 			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Year:
+				</td>
+				<td>
+					<?= $account->get_year() ?>
+				</td>
+			</tr>
+			<tr>
+				<td style='width:25%;'>
+					Quarter:
+				</td>
+				<td>
+					<?= $account->get_quarter() ?>
+				</td>
+			</tr>
 		</table>
 		<br />
 		<?php

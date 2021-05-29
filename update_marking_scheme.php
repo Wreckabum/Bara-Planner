@@ -114,7 +114,7 @@
 					}
 				</style>
 				<h4>
-					Create new marking scheme
+					Create new marking scheme for Year <?= $_GET['y'] ?>, Quarter <?= $_GET['q'] ?>
 				</h4>
 				<input type='button' id='toggle_default' value='Load Default Marking Scheme' />
 				<br />
@@ -273,6 +273,9 @@
 		<?php
 			}else{
 		?>
+			<h4>
+				Marking Scheme for Year <?= $_GET['y'] ?>, Quarter <?= $_GET['q'] ?>
+			</h4>
 			<?= $marking_scheme_table ?>
 			<br />
 			<br />

@@ -141,6 +141,22 @@
 									</td>
 								</tr>
 								<tr>
+									<td style='width:25%;'>
+										Year:
+									</td>
+									<td colspan='2'>
+										<?= $group->get_year() ?>
+									</td>
+								</tr>
+								<tr>
+									<td style='width:25%;'>
+										Quarter:
+									</td>
+									<td colspan='2'>
+										<?= $group->get_quarter() ?>
+									</td>
+								</tr>
+								<tr>
 									<td style='<?= $supervisor_background ?>'>
 										Supervisor:
 									</td>
@@ -289,6 +305,22 @@
 					</tr>
 					<tr>
 						<td style='width:25%;'>
+							Year:
+						</td>
+						<td colspan='2'>
+							<?= $group->get_year() ?>
+						</td>
+					</tr>
+					<tr>
+						<td style='width:25%;'>
+							Quarter:
+						</td>
+						<td colspan='2'>
+							<?= $group->get_quarter() ?>
+						</td>
+					</tr>
+					<tr>
+						<td style='width:25%;'>
 							Supervisor:
 						</td>
 						<td colspan='2'>
@@ -403,6 +435,7 @@
 							</tr>
 					<?php
 						}
+						
 						if($group->is_assessor($account->sim_id) || $group->is_supervisor($account->sim_id)){
 					?>
 							<tr>
